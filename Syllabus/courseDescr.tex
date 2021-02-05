@@ -1,0 +1,240 @@
+\documentclass[10pt]{article}
+
+%Packages with options
+\usepackage[english]{babel}
+\usepackage[mathscr]{euscript}
+\usepackage[margin = 0.9in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[small]{titlesec}
+
+% Primary Packages
+\usepackage{adjustbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{commath}
+\usepackage{chngcntr}
+\usepackage{dsfont}
+\usepackage{econometrics}
+\usepackage{fancyhdr}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{marginnote}
+\usepackage{mathtools}
+\usepackage{natbib}
+\usepackage{mdframed}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{subfigure}
+\usepackage{tabularx}
+\usepackage{textcomp}
+
+% Secondary Pacakges [need to be loaded later]
+\usepackage{breqn}
+
+% Setting up page style 
+\pagestyle{fancy}
+\setlength{\headheight}{23pt}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\sectionmark}[1]{%
+\markboth{\thesection\quad #1}{}}
+\fancyhead{}
+\fancyhead[R]{\leftmark}
+\fancyfoot{}
+\fancyfoot[C]{\thepage}
+\linespread{1}
+
+%Change expectation and probability to doublescript
+\renewcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+
+
+% Make capital vectors commands from econometrics packages
+\newcommand{\vA}{\mathbf{A}}
+\newcommand{\vB}{\mathbf{B}}
+\newcommand{\vC}{\mathbf{C}}
+\newcommand{\vD}{\mathbf{D}}
+\newcommand{\vE}{\mathbf{E}}
+\newcommand{\vF}{\mathbf{F}}
+\newcommand{\vG}{\mathbf{G}}
+\newcommand{\vH}{\mathbf{H}}
+\newcommand{\vI}{\mathbf{I}}
+\newcommand{\vJ}{\mathbf{J}}
+\newcommand{\vK}{\mathbf{K}}
+\newcommand{\vL}{\mathbf{L}}
+\newcommand{\vM}{\mathbf{M}}
+\newcommand{\vN}{\mathbf{N}}
+\newcommand{\vO}{\mathbf{O}}
+\newcommand{\vP}{\mathbf{P}}
+\newcommand{\vQ}{\mathbf{Q}}
+\newcommand{\vR}{\mathbf{R}}
+\newcommand{\vS}{\mathbf{S}}
+\newcommand{\vT}{\mathbf{T}}
+\newcommand{\vU}{\mathbf{U}}
+\newcommand{\vV}{\mathbf{V}}
+\newcommand{\vW}{\mathbf{W}}
+\newcommand{\vX}{\mathbf{X}}
+\newcommand{\vY}{\mathbf{Y}}
+\newcommand{\vZ}{\mathbf{Z}}
+
+%Declare some shortcuts
+\newcommand{\thetaH}{\hat{\theta}}
+\newcommand{\thetaT}{\tilde{\theta}}
+\newcommand{\nuH}{\hat{\nu}}
+\newcommand{\nuT}{\tilde{\nu}}
+\newcommand{\muH}{\hat{\mu}}
+\newcommand{\sigmaH}{\hat{\sigma}}
+\newcommand{\DeltaT}{\tilde{\Delta}}
+\newcommand{\ris}{\rho_{i}^*}
+\newcommand{\ind}{\mathds{1}}
+\newcommand{\wcov}{\rightsquigarrow}
+\newcommand{\PK}{(K)}
+\newcommand{\andbox}{\hbox{ }\text{ and }\hbox{ }}
+
+
+%Declate New Math Operators
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmin}{arg\,min}
+\DeclareMathOperator{\cube}{Cub}
+\DeclareMathOperator{\do}{do}
+\DeclareMathOperator{\err}{err}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\polylog}{polylog}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Var}{Var}
+
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newtheoremstyle{exampstyle}
+  {1em plus .2em minus .1em}%   Space above
+  {1em plus .2em minus .1em}%   Space below
+  {} % Body font
+  {} % Indent amount
+  {\bfseries} % Theorem head font
+  {.} % Punctuation after theorem head
+  {.5em} % Space after theorem head
+  {} % Theorem head spec (can be left empty, meaning `normal')
+
+
+ {
+    \theoremstyle{exampstyle}
+    
+    \newtheorem{assumption}{Assumption}
+    \newtheorem*{assumption*}{Assumption}
+    \newtheorem{definition}{Definition}
+    \newtheorem*{definition*}{Definition}    
+    \newtheorem{example}{Example}
+    \newtheorem*{example*}{Example}
+    \newtheorem{remark}{Remark}
+    \newtheorem*{remark*}{Remark}
+    \newtheorem{specification}{Specification}
+    \newtheorem*{specification*}{Specification}
+ }
+
+\newtheorem{corollary}{Corollary}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem*{prop*}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+
+
+\newcommand{\blocktheorem}[1]{%
+  \csletcs{old#1}{#1}% Store \begin
+  \csletcs{endold#1}{end#1}% Store \end
+  \RenewDocumentEnvironment{#1}{o}
+    {\par\addvspace{1.5ex}
+     \noindent\begin{minipage}{\textwidth}
+     \IfNoValueTF{##1}
+       {\csuse{old#1}}
+       {\csuse{old#1}[##1]}}
+    {\csuse{endold#1}
+     \end{minipage}
+     \par\addvspace{1.5ex}}
+}
+\blocktheorem{assumption}
+\blocktheorem{definition}
+\blocktheorem{theorem}
+\blocktheorem{prop}
+\blocktheorem{specification}
+\raggedbottom
+
+%Reset equation counters for each section
+\counterwithin*{assumption}{section}
+\counterwithin*{corollary}{section}
+\counterwithin*{definition}{section}
+\counterwithin*{equation}{section}
+\counterwithin*{figure}{section}
+\counterwithin*{footnote}{subsection}
+\counterwithin*{lemma}{section}
+\counterwithin*{prop}{section}
+\counterwithin*{remark}{section}
+\counterwithin*{specification}{section}
+\counterwithin*{table}{section}
+\counterwithin*{theorem}{section}
+
+%Set bibliography style
+\bibliographystyle{apalike}
+
+
+
+\title{}
+\author{Manu Navjeevan}
+\date{\today}
+
+\begin{document}
+{\bf \Large Econ 103 Summer Quarter Proposed Course Description}\\{\small Instructor: Manu Navjeevan, Prerequisites: C- or better in Econ 41} 
+
+{\bf \large Introduction:}
+
+This course is intended to serve as an introduction to econometric modeling and analysis for upper level (sophomores and beyond) economics students. By the end of the course, students should be comfortable setting up simple econometric models, estimating the parameters of these models using data, and interpreting the estimated parameters and predictions of these models. A primary goal is to encourage students to think critically about inferences made from data that they may see in their daily lives, such as in news articles or online.
+
+{\bf \large Course Outline:}
+
+The course will roughly follow the outline below: 
+
+\begin{enumerate}
+  \item {\bf Week 1: Econ 41 Review}
+
+  {\it Topics to be covered: Expectation, Variance and Covariance, Conditional Expectation, Law of Large Numbers, Central Limit Theorem }
+
+  The goal of this section will be to introduce objects of the underlying random variables that we may be interested in estimating as well as establishing some tools (LLN and CLT) that will allow us to use data to estimate these objects of interest.
+
+  \item {\bf Weeks 2-3: Simple Linear Regression}
+
+  {\it Topics to be covered: Simple linear regression model, least squares estimators of model parameters, hypothesis testing, $R^2$ and forecast error}
+
+  Weeks 2 and 3 will be spent introducing the simple linear regression model and how to use data to estimate the parameters of this model, conduct inference for the estimated parameters, interpret these estimates, and evaluate the usefulness of the model.
+
+  \item {\bf Weeks 4-5: Multiple Linear Regression}
+
+  {\it Topics to be covered: Multiple linear regression, regression with higher order terms, interaction terms, adjusted $R^2$, F-tests, and basics of model selection}
+
+  Weeks 4 and 5 will be spent extending the simple linear regression model to incorporate multiple explanatory variables and higher order terms of existing explanatory variables, estimate the larger model, and conduct inference on the estimated parameters. After this basics of model selection (how to choose which variables to include) will be discussed. 
+
+  \item {\bf Week 6: Beyond Linear Regression}
+
+  {\it (Potential) Topics to be covered: Instrumental Variables, Differences in Differences, Potential outcomes framework, non-linear models} 
+
+  The final week will be spent discussing how to extend the tools learned in the course to estimate more flexible models using data, issues in using observational data to estimate causal effects, and potential routes to resolve these issues.
+\end{enumerate}
+
+{\bf \large Evaluation}
+
+Students will be graded via the following scheme:
+\begin{enumerate}
+  \item 60\%; problem sets (3): Bi-weekly problem sets will be graded mostly on completion.
+  \item 20\%; midterm: To be administered after week 3 (via CCLE if online), covering simple linear regression topics.
+  \item 20\%; data exercise: Administered in place of a final exam. Will give students a data set and ask them to come up with an appropriate statistical model, estimate and make inferences on the model, and interpret the estimated model.
+\end{enumerate}
+
+\end{document}
