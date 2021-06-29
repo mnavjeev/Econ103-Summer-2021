@@ -1,0 +1,173 @@
+\documentclass[notheorems,9pt]{beamer}
+
+% Packages with options
+\usepackage[english]{babel}
+\usepackage[mathscr]{euscript}
+\usepackage[utf8]{inputenc}
+
+% Primary Packages
+\usepackage{amsbsy, amsmath, amssymb, amsthm, bm, commath, chngcntr, dsfont, econometrics, enumitem, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
+
+% Rest of the setup is in the "setup_beamer" package
+\usepackage{setup_beamer}
+
+% Title, Author, Institute
+\title{Econ 103: Probability and Statistics}
+\author{Manu Navjeevan}
+\institute{UCLA}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}{Content Outline} 
+	\ucla{Single Random Variable}
+	\begin{itemize}
+		\item Discrete and Continuous random variables
+		\item Mean, variance, and expectations
+	\end{itemize}
+	\ucla{Multiple Random Variables}
+	\begin{itemize}
+		\item Conditional probabilities and conditional means
+		\item Covariance and independence
+	\end{itemize}
+	\ucla{The Normal Distribution}
+	\begin{itemize}
+		\item Properties and computing probabilities
+	\end{itemize}
+	\ucla{The Law of Large Numbers and the Central Limit Theorem}
+	\begin{itemize}
+		\item The sample mean as a random variable
+	\end{itemize}
+\end{frame}
+
+\section{Intro}
+
+\begin{frame}{Random Variable} 
+	\label{frame:random-variables}
+	\ucla{Question:} What is a random variable?
+
+	Intuitively, we can think of a random variable as a model of an outcome that is uncertain. 
+	\begin{itemize}
+		\item \red{Example:} Flipping a coin, traffic in the morning, etc.
+	\end{itemize}
+	\onslide<2->{While the outcome is random, the random variable does have a  \emph{distribution}. For any subset of the outcome space, the distribution describes the probability that the random variable takes a value in that subset. 
+	\begin{itemize}
+		\item \red{Example:} We know that our flipped coin has a 50\% probability of taking a value in the set \(\{H\}\), a 50\% probability of taking a value in the set \(\{T\}\), and a 100\% probability of taking a value in the set \(\{H,T\}\).
+\end{itemize}}
+\end{frame}
+
+\begin{frame}{Random Variables} 
+	\label{frame:rv-statistics}
+	\ucla{Question:} Why do we care about random variables? What does this have to do with econometrics?	
+
+	Consider the population of California. Suppose we want to know about the education levels of people in the population.
+	\begin{itemize}
+		\item<1-> The education level of a randomly selected person in the population is not deterministic. Different people have different levels of education. 
+		\item<2-> We can think about the education level as a \emph{random variable} with a distribution that describes the probability that a randomly selected person has an education level in certain range.
+		\begin{itemize}
+			\item i.e 30\% of people have high school diplomas, 40\% of people have college degrees, etc. 
+		\end{itemize}
+		\item<3-> In general however, we may not know the exact distribution of the random variable. Econometrics is about using a random sample of data to make inferences about the underlying distribution of the random variable.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Single Random Variables: Outcome Spaces} 
+	\label{frame:single-rv}
+	\onslide<1->{Let's formalize the discussion above. Let \(X\) denote a random variable. All random variables come equipped with an \emph{outcome space} that contains all the values that the random variable can take up.} 
+	\begin{itemize}
+		\item<2-> If \(X\) represents the flipping a coin, the outcome space is \(\{H,T\}\).
+		\item<3-> If \(X\) represents rolling a die, the outcome space is \(\{1,2,3,4,5,6\}\).
+		\item<4-> If \(X\) represents the 100m sprint time (in seconds) of an Olympic athlete, the outcome space may be \([9.5,10.5]\).
+	\end{itemize}
+	\onslide<5->{If the outcome space of \(X\) is \emph{countable} (think finite), then we say that \(X\) is a \red{discrete random variable}. If the outcome space of \(X\) is \emph{uncountable} (think infinite), we say that \(X\) is a \red{continuous random variable}}.
+	\begin{itemize}
+		\item<5-> Flipping a coin and rolling a die would be discrete random variables
+		\item<5-> The 100m sprint time of an Olympic athlete would be a continuous random variable.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Single Random Variables: Outcome Spaces and Probability} 
+	\label{frame:single-rv-outcomes}
+	\onslide<1->{In general in this class, we will notate the outcome space of a random variable \(X\) as \(\calO_X\). Let \(2^{\calO_X}\) denote all the subsets of \(\calO_X\). 
+
+	We will typically be interested in the probability that \(X\) takes values in some \(A \in 2^{\calO_X}\) (that is \(A\subseteq \calO_X\)). This probability is a number between 0 and 1 and will be notated as \(\P_X(A)\). We will require the probability \(\P_X(\cdot)\) to satisfy certain properties:}
+	\begin{itemize}
+		\item<2-> \(\P_X(\calO_X) = 1\) and \(\P_X(\emptyset)=0\).
+		\item<3-> \(0 \leq \P_X(A) \leq 1\) for any \(A \in 2^{\calO_X}\).
+		\item<4-> If \(A_1,A_2,\dots\) are pairwise disjoint, then \(\P_X(\cup_{i} A_i) = \sum_i \P_X(A_i)\).
+	\end{itemize}
+	\onslide<5->{When we say we are interested in the \emph{distribution} of the random variable \(X\), we really mean we are interested in \(\P_X(\cdot)\) as viewed as a map from \(2^{\calO_X}\) onto \([0,1]\).}
+\end{frame}
+\begin{frame}{Single Random Varibles: Discrete Random Variables} 
+	\label{frame:discrete-intro}
+	\onslide<1->{If \(X\) is a \red{discrete random variable} the distribution or probability function \(\P_X\) can be described by the \emph{probability mass function} or \emph{pmf}, \(p_X(\cdot):\calO_X \to [0,1]\).
+	\begin{itemize}
+		\item Recall that a discrete random variable has a countable (think finite) outcome space
+	\end{itemize}}
+	\vspace{5mm}
+
+	\onslide<2->{For each element \(a\) of the outcome space (\(a\in\calO_X\)), the probability mass function evaluated at \(a\), \(p_X(a)\), describes the probability that \(X\) takes value \(a\). That is \(p_X(a) = \P_X(\{a\})\)}.
+	\vspace{5mm}
+
+	\onslide<3->{By the last property of probability measures, the pmf can be used to recover the probability that \(X\) takes values in any subset \(A\) of the outcomes space \(\calO_X\)
+	\[
+		\P_X(A) = \sum_{a\in A} \P_X(\{a\}) = \sum_{a\in A}p_X(a) 
+	.\]} 
+\end{frame}
+\begin{frame}{Single Random Variables: Discrete Random Variables} 
+	\label{frame:discrete-ex}
+	\onslide<1->{Let's see an example of this. Let \(X\) denote the outcome of a fair dice roll. We can describe the distribution of \(X\) via the probability mass function
+	\[
+		p_X(a) = \begin{cases}
+			\frac{1}{6}  & \text{if }a \in \{1,2,3,4,5,6\}  \\
+			0 &\text{for any other value of \(a\)}
+		\end{cases}
+	\]}
+	\vspace{1mm}
+
+	\onslide<2->{Let's use the pmf to compute \(\P_X(A)\) for \(A = \{2,4,6\}\), that is use the pmf to compute the probability that \(X\) takes on an even value.}
+	\begin{align*}
+		\onslide<3->{\P_X(\{2,4,6\}) &= \sum_{a\in \{2,4,6\}} \P_X(\{a\})}\\
+		\onslide<4->{&= \sum_{a\in \{2,4,6\}} p_X(a)  }\\
+		\onslide<5->{&= \frac{1}{6}+\frac{1}{6}+\frac{1}{6} }\\
+		\onslide<6->{&= 1/2}
+	\end{align*}
+	\onslide<7->{\ucla{Of course, this result is a bit obvious. However, if the die was not fair, we would follow the same procedure to compute this probability.}}
+\end{frame}
+\begin{frame}{Single Random Variables: Continuous Random Variables} 
+	\label{frame:cont-intro}
+	\onslide<1->{If \(X\) is a \red{continuous random variable} we cannot use a probability mass function to describe its distribution.}
+	\begin{itemize}
+		\item<2-> Recall that if \(X\) is a continuous random variable then the outcome space \(\calO_X\) is (uncountably) infinite.
+		\item<2-> What would happen if \(\P_X(\{a\}) > 0\) for each \(a \in X\)?
+		\begin{itemize}
+			\item<3-> Then for any set \(A\)
+				\[
+					\P_X(A) = \sum_{a\in A}\P_X(\{a\}) = \infty 
+				.\] 
+			\item<3-> So we must have \(\P_X(\{a\}) = 0\) for all \(a \in \calO_X\).
+		\end{itemize}
+		\item<4-> Intuitively, what is the probability that an Olympic sprinters runs the 100m dash in exactly 9.8412312\dots seconds?
+		\begin{itemize}
+			\item<4-> Basically zero.
+		\end{itemize}
+	\end{itemize}
+	\onslide<5->{This rules out being able to use a pmf to describe the distribution of a continuous random variable.}
+\end{frame}
+\begin{frame}{Single Random Variables: Continuous Random Variables.} 
+	\label{frame:cont-intro2}
+	\onslide<1->{If \(X\) is a \red{continuous random variable} we cannot use a probability mass function to describe its distribution.}
+	\vspace{5mm} 
+	
+	\onslide<2->{Instead we will use the probability density function (pdf), \(f_X(\cdot)\) to describe the distribution of \(X\). The pdf is related to the probability measure \(\P_X\) via the following equation:
+	\[
+		\P_X(a \leq X \leq b) = \int_a^b f_X(x)\,dx
+	.\]}
+	\vspace{5mm}
+
+	\onslide<3->{The identity above as well as the rules for the probability measure \(\P_X\) can be used to calculate \(\P_X(A)\) for any set \(A\subseteq \calO_X\).} 
+\end{frame}
+\end{document}
+
+
