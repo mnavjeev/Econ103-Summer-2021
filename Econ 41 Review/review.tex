@@ -99,7 +99,7 @@
 	\end{itemize}
 	\onslide<5->{When we say we are interested in the \emph{distribution} of the random variable \(X\), we really mean we are interested in \(\P_X(\cdot)\) as viewed as a map from \(2^{\calO_X}\) onto \([0,1]\).}
 \end{frame}
-\begin{frame}{Single Random Varibles: Discrete Random Variables} 
+\begin{frame}{Single Random Variables: Discrete Random Variables} 
 	\label{frame:discrete-intro}
 	\onslide<1->{If \(X\) is a \red{discrete random variable} the distribution or probability function \(\P_X\) can be described by the \emph{probability mass function} or \emph{pmf}, \(p_X(\cdot):\calO_X \to [0,1]\).
 	\begin{itemize}
@@ -168,6 +168,518 @@
 
 	\onslide<3->{The identity above as well as the rules for the probability measure \(\P_X\) can be used to calculate \(\P_X(A)\) for any set \(A\subseteq \calO_X\).} 
 \end{frame}
+\begin{frame}{Single Random Variables: Continuous Random Variables} 
+	\label{frame:cont-ex}
+	\onslide<1->{\ucla{Example: }Let \(X\) be a continuous random variable with pdf \(f_X\) given
+	\[
+		f_X(a) = \begin{cases}
+			1 & \text{if } 0\leq a\leq 1 \\
+			0 & \text{otherwise }
+		\end{cases}	
+	\]
+	This distribution is called the \emph{uniform distribution} on \([0,1]\).}
+	\vspace{1mm}
+
+	\onslide<2->{\ucla{Problem: }What is \(\P_X([0,0.5])\)?}
+	
+	\onslide<3->{\ucla{Answer: }Use the pdf}
+	\begin{align*}
+		\onslide<4->{\P_X([0,0.5]) &= \int_0^{0.5} f_X(x)\, dx} \\ 
+		\onslide<5->{&= \int_0^{0.5} 1\, dx} \\
+		\onslide<6->{&= 0.5 - 0 = 0.5}
+	\end{align*}
+\end{frame}
+\begin{frame}{Single Random Variables: Review} 
+	\label{frame:single-rv-review}
+	\ucla{Let's recap}:
+
+	\red{Random Variables:}
+	\begin{itemize}
+		\item Describe an event whose outcome is unknown
+		\item Instead we have probabilities that the outcome takes values in a certain set. 
+	\end{itemize}
+	\onslide<2->{\red{Discrete Random Variable:}
+	\begin{itemize}
+		\item Random Variable whose  outcome space is countable (think finite)
+		\item Distribution/Probability measure completely described by pmf.
+		\begin{itemize}
+			\item \(p_X(a) = \P_X(\{a\})\)
+		\end{itemize}
+	\end{itemize}
+	}
+	\onslide<3->{\red{Continuous Random Variables:}
+	\begin{itemize}
+		\item Random variable whose outcome space is uncountable (think infinite)
+		\item Distribution/Probability measure completely described by pdf
+		\begin{itemize}
+			\item \(\P_X([a,b]) = \int_a^b f_X(x)\,dx\)
+		\end{itemize}
+	\end{itemize}
+	}	
+\end{frame}
+\begin{frame}{Single Random Variables} 
+	\centering\red{\Large Questions?}	
+\end{frame}
+\begin{frame}{Single Random Variables: Expectation} 
+	\label{frame:srv-mean}
+	One property of a random variable that we may be interested in is the \red{expectation} of a random variable. 
+	\begin{itemize}
+		\item The expectation can be thought of as a generalized concept of a mean.
+		\item That is it is the ``average'' value the random variable \(X\) will take, weighted by the probability that \(X\) takes each value
+	\end{itemize}
+	\onslide<2->{The expectation of \(X\) is denoted \(\E[X]\) or \(\mu_X\) and is calculated via the following
+	{\large 
+		\begin{table}[htpb]
+		\renewcommand{\arraystretch}{1.5}
+		\centering
+		\begin{tabular}{c|cc}
+			Type  & Discrete R.V & Continuous R.V \\
+			\hline
+			Formula & \(\sum_{a\in\calO_X} a\cdot p_X(a)\) & \( \int_{\calO_X} a\cdot  f_X(a)\,da\)
+		\end{tabular}
+		\end{table}}
+	}
+	\onslide<3->{
+	\begin{itemize}
+		\item Note that the difference between discrete and continuous is just summation vs. integral.
+	\end{itemize}}
+\end{frame}
+
+
+\begin{frame}{Single Random Varibles: Expectation} 
+	\label{frame:srv-mean-ex1}
+	Suppose we enter a lottery that pays us \(\$ 100\) with probability \(1/2\), \(\$400\) with probability \(1/4\), and \(\$0\) with probability \(1/4\). We can represent the payout of this lottery (in dollars) with a random variable \(X\) whose pmf is given
+	\[
+		p_X(a) = \begin{cases}
+			1/2 & \text{if } a \in \{100\} \\
+			1/4 & \text{if } a \in \{0,400\} \\
+			0 & \text{otherwise} 
+		\end{cases}	
+	.\] 
+	\onslide<2->{Let's calculate the \emph{expected value} of this lottery, or \(\E[X]\). This is the average amount we can expect to win by playing this lottery.}
+	\onslide<3->{Using the formula from the slide above:}
+	\begin{align*}
+		\onslide<3->{\E[X] &= \sum_{a\in \{0,100,400\}}a\cdot p_X(a)}\\
+		\onslide<4->{&= 0\cdot\frac{1}{4} + 100\cdot\frac{1}{2} + 400\cdot\frac{1}{4}}\\
+		\onslide<5->{&= 50 + 100 = \red{150}}
+	\end{align*}
+	\onslide<5->{We can expect to win about \$150 by playing this lottery}
+\end{frame}
+\begin{frame}{Single Random Variables: Expectation} 
+	\label{frame:srv-mean-ex2}
+	\onslide<+->
+	Let's consider the uniform distribution from before. That is, let \(X\) be continuously distributed with outcome space \(\calO_X=[0,1]\) and pdf given by 
+	\[
+		f_X(a) = \begin{cases}
+			1 & \text{if }0\leq a\leq 1 \\
+			0 & \text{otherwise }
+		\end{cases}
+	\] 
+	\onslide<+->
+	Suppose we want to calculate \(\E[X]\). Using the formula
+	\begin{align*}
+		\E[X] &= \int_{\calO_X} a\cdot f_X(a)\,da \\
+		\onslide<+->{&= \int_{0}^{1} a\cdot 1\,da \\}
+		\onslide<+->{&= \frac{a^2}{2}\bigg|_0^1 \\}
+		\onslide<+->{&= \frac{1}{2} - 0 = \red{\frac{1}{2}}}  
+	\end{align*}
+	\onslide<+->
+	So the expected value of \(X\) is \(\frac{1}{2}\). There are many ways to interpret this expected value, the most straightforward for me is the average amount you can expect to win from a lottery whose payouts follow the distribution of \(X\). 
+\end{frame}
+
+
+\begin{frame}{Single Random Variables: Expectation} 
+	\label{frame:srv-mean2}
+	\onslide<+->
+	We can generalize this concept a bit further and consider the mean of any function \(g(X)\), which is typically denoted \(\E[g(X)]\).
+	\begin{itemize}
+		\item Note that \(g(X)\) itself is a random variable. It's outcome is not deterministic but rather follows a distribution based on \(X\).
+		\item As with the normal expectation, we can think about this as the average value of \(g(X)\). 
+	\end{itemize}
+	\onslide<+->
+	The formula for calculating \(\E[g(X)]\) is basically the same as for calculating \(\E[X]\).
+	{\large 
+		\begin{table}[htpb]
+		\renewcommand{\arraystretch}{1.5}
+		\centering
+		\begin{tabular}{c|cc}
+			Type  & Discrete R.V & Continuous R.V \\
+			\hline
+			Formula & \(\sum_{a\in\calO_X} g(a)\cdot p_X(a)\) & \( \int_{\calO_X} g(a)\cdot  f_X(a)\,da\)
+		\end{tabular}
+		\end{table}}
+	\onslide<+->
+	\vspace{2mm}
+	\begin{itemize}
+		\item All that has changed here is that we are multiplying the pmf/pdf by \(g(a)\) instead of by \(a\).
+	\end{itemize}
+\end{frame}
+\begin{frame}{Single Random Variables: Expectation} 
+	\label{frame:srv-mean-properties}
+	The formulas from this generalization also gives us a nice property that we will use later. Recall from the last slide we can calculate \(\E[g(X)]\) using:
+	{\large 
+		\begin{table}[htpb]
+		\renewcommand{\arraystretch}{1.5}
+		\centering
+		\begin{tabular}{c|cc}
+			Type  & Discrete R.V & Continuous R.V \\
+			\hline
+			Formula & \(\sum_{a\in\calO_X} g(a)\cdot p_X(a)\) & \( \int_{\calO_X} g(a)\cdot  f_X(a)\,da\)
+		\end{tabular}
+		\end{table}}
+	\onslide<2->
+	\vspace{5mm}
+
+	It is then straightforward to see the following: 
+	\begin{align*}
+		\E[ag(X)+bh(X)] &= a\E[g(X)] + b\E[h(X)]
+	\end{align*}
+	for any \(a,b\in\SR\). We will refer to this property as the \red{linearity of the expectation}. Later on when we consider multiple or joint random variables, we will see that this can be naturally extended and for two different random variables \(X\) and \(Y\):
+	\[
+	    \E[aX+bY] = a\E[X] + b\E[Y]
+	.\] 
+\end{frame}
+\begin{frame}{Single Random Variables: Expectation} 
+	\label{frame:srv-mean-ex3}
+	\onslide<+->
+	Let's return to the uniform distribution from before. Suppose that \(X\) follows the pdf
+	\[
+		f_X(a) = \begin{cases}
+			1 & \text{if }0\leq a\leq 1\\
+			0 & \text{otherwise}
+		\end{cases}
+	\] 
+	\onslide<+->
+	Suppose we want to calculate \(\E[X^2]\). This is like calculating \(\E[g(X)]\) where \(g(a) = a^2\). Using the formula from before
+	\begin{align*}
+		\E[X^2] &= \int_{\calO_X} a^2\cdot f_X(a)\,da \\
+		\onslide<+->{&=\int_0^1 a^2\cdot 1\,da \\}
+		\onslide<+->{&=\frac{a^3}{3}\bigg|_0^1\\}
+		\onslide<+->{&=\frac{1}{3}-0 = \red{\frac{1}{3}}}
+	\end{align*}
+	\onslide<+->
+	For an arbitrary random variable \(X\), \(\E[X^2]\) is typically referred to as the \emph{second moment} of \(X\).
+\end{frame}
+\begin{frame}{Single Random Variables: Variance} 
+	\label{frame:srv-variance}
+	\onslide<+->
+	Now that we can compute \(\E[g(X)]\) for any random variable \(X\) and any function \(g(\cdot)\), we are ready to talk about the variance. 
+
+	The variance of a random variable \(X\) is given by the formula
+	\begin{align*}
+		\sigma^2_X = \Var(X) &= \E[(X-\E[X])^2] \\
+		\intertext{The variance is a measure of the ``spread'' of the random variable \(X\); it represents how far on average \(X\) is from its mean. Using linearity of the expectation the expression above can be simplified:}
+		\onslide<+->{
+				&= \E[X^2 - 2X\E[X] + (\E[X])^2] \\
+				&= \E[X^2]-2\E[X]\E[X] + \E[X]^2\\
+				&= \E[X^2] - 2\E[X]^2 + \E[X]^2\\
+				&= \E[X^2]-(\E[X])^2}
+	\end{align*}
+	\onslide<+->
+	Typically this last expression is easiest to work with. However, the first expression gives us an important property: the variance is always \(\geq 0\). 
+
+\end{frame}
+\begin{frame}{Single Random Variables: Variance} 
+	\label{frame:srv-var2}
+	\onslide<+->
+	From the formula \(\Var(X) = \E[X^2]-(\E[X])^2\) as well as the linearity of the expectation we can see the variance has some nice properties. For any constants \(a,b \in \SR\) and any random variable \(X\) we get that
+	\begin{itemize}
+		\item \(\Var(X+a) = \Var(X)\)
+		\item \(\Var(aX) = a^2\Var(X)\)
+	\end{itemize}
+	\onslide<+->
+	Putting these together gives us: \(\Var(aX+b)= a^2\Var(X)\).
+	
+	\green{Exercise: See if you can work this out yourselves. It shouldn't take more than a few minutes.}
+\end{frame}
+\begin{frame}{Single Random Variables: Variance} 
+	\label{frame:srv-var3}
+	Intuitively, \(\Var(X+a) = \Var(X)\) means that the spread around the mean is not effected by just shifting the mean of the random variable (while otherwise keeping the distribution the same).
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.7\linewidth]{X-dist.png}
+		\caption{Variance remains the same for both variables}%
+		\label{fig:X-dist}
+	\end{figure}
+\end{frame}
+\begin{frame}{Single Random Variables: Variance} 
+	\label{frame:srv-var4}
+	\onslide<+->
+	The square root of the variance is denoted 
+	\[
+	    \sigma_X = \sqrt{\sigma^2_X} = \sqrt{\Var(X)}
+	.\] 
+	and is called the \red{standard deviation} of \(X\).
+\end{frame}
+\begin{frame}{Single Random Variables: Variance} 
+	\label{frame:srv-var-ex1}
+	Let's see this in practice. Suppose we have a lottery that pays \$200 with probability \(\frac{1}{2}\) and nothing (\$0) with probability \(\frac{1}{2} \). The payout of this lottery is a random variable \(X\) with pmf
+	\[
+	    p_X(a) = \begin{cases}
+	    	\frac{1}{2}  & \text{if }a \in \{0,200\}  \\
+			0 &\text{otherwise }
+	    \end{cases}
+	.\] 
+	It is straightforward to see that the expected payout of this lottery is \$100, \(\E[X]=100\). 
+	\onslide<2->
+	However, we may want to know how much we can expect our winnings to deviate from the expected value. that is, we want to know what the variance of the payouts is. 
+
+	Let's compute this two ways, first using the formula \(\Var(X) = \E[(X-\E[X])^2]\) and the second using \(\Var(X)= \E[X^2]-(\E[X])^2\).
+\end{frame}
+\begin{frame}{Single Random Variables: Variance} 
+	\label{frame:srv-var-ex1-2}
+	\onslide<1->{
+	The payout of this lottery is a random variable \(X\) with pmf
+	\[
+	    p_X(a) = \begin{cases}
+	    	\frac{1}{2}  & \text{if }a \in \{0,200\}  \\
+			0 &\text{otherwise }
+	    \end{cases}
+	.\]}\only<2-6>{First: 
+		\begin{align*}
+			\Var(X) &= \E[(X-\E[X])^2] \\
+			\only<3-6>{ &=\E[(X-100)^2] \\}
+			\only<4-6>{&=\sum_{a\in\{0,200\}} (a - 100)^2\cdot p_X(a)\\}
+			\only<5-6>{&=(0-100)^2\cdot\frac{1}{2}  + (200-100)^2\cdot\frac{1}{2}\\}
+			\only<6>{&= 2\cdot \frac{100^2}{2}=100^2=\red{10000}}
+		\end{align*}}\only<7->{Second:
+		\begin{align*}
+			\Var(X) &= \E[X^2]-(\E[X])^2 \\
+			\only<8->{&= \sum_{a\in\{0,200\}}a^2\cdot p_X(a) - 100^2\\}
+			\only<9->{&= 0^2\cdot\frac{1}{2} + 200^2\cdot\frac{1}{2} - 100^2 \\}
+			\only<10->{&= \frac{(2\cdot 100)^2}{2} - 100^2\\ &= \frac{4}{2}\cdot 100^2 - 100^2 = 100^2 = \red{10000}  }
+		\end{align*}
+		\only<10->{No matter how we compute it, the variance of this lottery is \(100^2 = 10000\). This makes sense as no matter what happens (win or lose), we are \$100 away from the expected payout.}}
+\end{frame}
+\begin{frame}{Single Random Variables: Questions?} 
+	\label{frame:srv-q2}
+	\centering
+	\red{\Large Questions?}
+\end{frame}
+\begin{frame}{Multiple Random Variables: Introduction} 
+	\label{frame:mrv-intro1}
+	Oftentimes we are not only interested in a single random variable, but the relationship between two random variables. In fact this will be the case through the rest of this course:
+	\begin{itemize}
+		\item We care about the relationship between education and income
+		\item We care about the relationship between consumption of a medicine and a health outcome
+	\end{itemize}
+	\onslide<2->
+	In the examples above notice that, not only are the random variables themselves not determistic 
+	\begin{itemize}
+		\item not everyone has the same education/income
+	\end{itemize}
+	but the relationship between the two random variables may not be either
+	\begin{itemize}
+		\item not everyone who takes a medicine will have the same health outcome
+	\end{itemize}
+\end{frame}
+\begin{frame}{Multiple Random Variables: Introduction} 
+	\label{frame:mrv-intro2}
+	\ucla{Question:} How do we think about joint random variables?
+
+	\onslide<2->\ucla{Answer:} Much the same as before. Let \((X,Y)\) be a pair of joint random variables. This means there is some outcome space \(\calO_{XY}\) that \((X,Y)\) can take values in and a probability measure \(\P_{XY}(\cdot): 2^{\calO_{XY}}\to[0,1]\) that takes in subsets of the outcome space \(A\subseteq \calO_{XY}\) and gives the probability of both \(X\) and \(Y\) taking values in the set \(A\).
+	\begin{itemize}
+		\item For example if \(X\) is income and \(Y\) is age, \[\P_{XY}(\{0\leq X\leq 100000, 40\leq Y\leq 42\})\] is the probability that a randomly selected person from the population has an income between \$0 and \$100,000 and is between 40 and 42 years old.
+	\end{itemize}
+	\onslide<3->
+	As before if \(\calO_{XY}\) is countable (finite), we say that \((X,Y)\) are jointly discrete random variables whereas if \(\calO_{XY}\) is uncountable (infinite) we say that \((X,Y)\) are jointly continuous random variables.
+\end{frame}
+
+\begin{frame}{Multiple Random Variables: Discrete Random Variables} 
+	\label{frame:mrv-intro3}
+	Let's quickly go over an example of a joint discrete random variables. As before, the distribution of jointly discrete random variables will be defined by a joint probability mass function. 
+	\onslide<2->
+	\begin{itemize}
+		\item Because we are considering two random variables, \(X,Y\), we can represent the probability mass function as a table
+	\end{itemize}
+\end{frame}
+\begin{frame}{Multiple Random Variables: Discrete Random Variables} 
+	\label{frame:mrv-intro4}
+	Let \(X\) be a random variable that describes whether a person gets 4 hours of sleep a night, 8 hours a sleep a night, or 12 hours of sleep a night. Let \(Y\) be a random variable that describes whether a person drinks 1 or 2 cups of coffee a day. 
+
+	The joint pmf of \(X\) and \(Y\) can be described with the table below
+	\begin{table}[htpb]
+		\centering
+		\begin{tabular}{c|cc}
+			\(p(x,y)\) & 1 cup  & 2 cups\\
+			\hline
+			4 hours & 0 & 1/6 \\
+			8 hours & 1/3 & 1/3 \\
+			12 hours & 1/6 & 0
+		\end{tabular}
+	\end{table}
+	Using this table we can see that the probability that a randomly selected person gets 8 hours of sleep and drinks 1 cup of coffee a day is \(1/3\).
+
+	\green{Exercise: What is the probability that a randomly selected person gets 8 hours of sleep?}
+\end{frame}
+
+\begin{frame}{Multiple Random Variables: Continuous Random Variables} 
+	\label{frame:mrv-cont}
+	Now we'll go over an example of a joint continuously distributed random variable. Just like with single random variables, the distribution of a continuous random variable is defined by a probability density function, \(f_{XY}(x,y)\).
+	\onslide<2->
+	\begin{itemize}
+		\item As before, the joint pdf will be related to the joint probability measure \(\P_{XY}(\cdot)\) via the relation
+		\[
+			\P_{XY}(\{a\leq X\leq b, c\leq Y\leq d\}) = \int_a^b\int_c^d f_{XY}(x,y)\,dy\,dx
+		.\] 
+	\end{itemize}
+\end{frame}
+\begin{frame}{Multiple Random Variables: Continuous Random Variables} 
+	\label{frame:mrv-cont2}
+	Let's consider two sprinters in the 100m dash. Let \(X\) denote the finish time of the \ucla{UCLA} sprinter and \(Y\) denote the finish time of the \red{USC} sprinter. Suppose their times follow the following joint pdf
+	\[
+		f_{XY}(x,y) = \begin{cases}
+			1 & \text{if }9.5\leq x\leq 10.5, 10 \leq y \leq 11 \\
+			0 &\text{otherwise}
+		\end{cases}
+	.\]
+	\onslide<2->
+	Let's try to find the probability that the the UCLA sprinter runs faster than 10 seconds and that the USC sprinter runs faster than 10.5 seconds. That is we want \(\P_{XY}(\{X\leq 10, Y\leq 10.5\})\).
+	\onslide<3->
+	\begin{align*}
+		\P_{XY}(\{X\leq 10,Y\leq 10.5\}) &= \int_{9.5}^{10}\int_{10}^{10.5} f_{XY}(x,y)\,dy\,dx\\
+										 &= \int_{9.5}^{10}\int_{10}^{10.5} 1\,dy\,dx\\
+										 &= \int_{9.5}^{10}0.5\,dx\\
+										 &= 0.5\cdot0.5 = \green{0.25}
+	\end{align*}
+\end{frame}
+\begin{frame}{Multiple Random Variables: Expectations} 
+	\label{frame:mrv-expectations}
+	Just as before we may want to consider the average or expected value that some function, \(g(X,Y)\), of our joint random variables may take. That is, we want to calculate \(\E[g(X,Y)]\). 
+	\onslide<2->
+
+	Here are some examples of functions \(g(x,y)\) for which we may be interested in \(\E[g(X,Y)]\):
+	\begin{itemize}
+		\item \(g(x,y) = x\implies \E[g(X,Y)] = \E[X]\), the expected value of \(X\)
+		\item \(g(x,y) = x-y\implies \E[g(X,Y)]= \E[X-Y]\), the average difference between \(X\) and \(Y\).
+		\item \(g(x,y) = \mathds{1}\{x\leq a, y\leq b\}\implies \E[g(X,Y)] = \P_{XY}(\{X\leq a,Y\leq b\})\).
+		\item \(g(x,y) = (x-\mu_X)(y-\mu_Y)\implies \E[g(X,Y)]= \Cov(X,Y)\), the covariance between \(X\) and \(Y\).
+	\end{itemize}
+\end{frame}
+\begin{frame}{Multiple Random Variables: Expectations} 
+	\label{frame:mrv-expectations2}
+	\onslide<+->
+	The formula for calculating expected value is the same as before:
+	{\large 
+		\begin{table}[htpb]
+		\renewcommand{\arraystretch}{1.5}
+		\centering
+		\begin{tabular}{c|cc}
+			Type  & Discrete R.V & Continuous R.V \\
+			\hline
+			Formula & \(\sum_{a,b\in\calO_{XY}} g(a,b)p_{XY}(a,b)\) & \( \int_{X}\int_Y g(a,b)f_{XY}(a,b)\,db\,da\)
+		\end{tabular}
+		\end{table}}
+	\vspace{5mm}
+	\ucla{Intuition}: We are evaluating the function at each point in the outcome space and weighting by the probability of that outcome occuring.
+	\onslide<+->
+
+	Again note that we have the following linearity of the expectation. For any two functions \(g(x,y)\) and \(h(x,y)\) and any \(a,b\in\SR\):
+	\[
+		\E[a\cdot g(X,Y) + b\cdot h(X,Y)] = a\E[g(X,Y)] + b\E[h(X,Y)]
+	.\] 
+	in particular, \(\green{\E[aX+bY] = a\E[X]+b\E[Y]}\).
+\end{frame}
+
+\begin{frame}{Multiple Random Variables: Expectations} 
+	\label{frame:mrv-expectations-ex1}
+	\onslide<+->
+	Let's return to the 100m dash example from before, with \(X\) representing the finishing time of the \ucla{UCLA} and \(Y\) representing the finishing time of the \red{USC} sprinter. 
+	\[
+		f_{XY}(x,y) = \begin{cases}
+			1 & \text{if }9.5\leq x\leq 10.5, 10 \leq y \leq 11 \\
+			0 &\text{otherwise}
+		\end{cases}
+	.\]
+	Let's try and calculate \(\E[X-Y]\), the expected difference in finishing times between the UCLA and USC sprinters.
+	\onslide<+->
+	\begin{align*}
+		\E[X-Y] &= \int_{9.5}^{10.5} \int_{10}^{11} (x-y)f_{XY}(x,y)\,dy\,dx\\
+		\onslide<+->{&= \int_{9.5}^{10.5}\int_{10}^{11} x \,dy\,dx - \int_{9.5}^{10.5}\int_{10}^{11} y\,dy\,dx \\}
+		\onslide<+->{&= \int_{9.5}^{10.5} x\,dx - \int_{9.5}^{10.5} \frac{11^2-10^2}{2}\,dx \\}
+		\onslide<+->{&= \frac{10.5^2-9.5^2}{2} - 10.5 = \red{-0.5}} 
+	\end{align*}
+\end{frame}
+
+\begin{frame}{Multiple Random Variables: Covariance} 
+	\label{frame:mrv-covariance}
+	As mentioned before, a particular expectation we may be interested is the \red{covariance} between \(X\) and \(Y\), defined as 
+	\[
+		\Cov(X,Y)= \E[(X-\E[X])(Y-\E[Y])]
+	.\] 
+	The covariance measures how much the variables \(X\) and \(Y\) ``move together'' and will be of particular interest to us in econometrics.
+	\onslide<2->
+
+	As before, we can simplify the expression for covariance:
+	\begin{align*}
+		\Cov(X,Y) &= \E[XY-X\E[Y] - Y\E[X] +\E[X]\E[Y]] \\
+				  &= \E[XY] - \E[X]\E[Y] - \E[Y]\E[X] + \E[X]\E[Y] \\
+				  &= \E[XY]-\E[X]\E[Y]
+  	\end{align*}
+\end{frame}
+\begin{frame}{Multiple Random Variables: Covariance} 
+	\label{frame:mrc-covariance-ex1}
+	Let's calculate the covariance between \(X\) and \(Y\) from the example before:
+	\[
+		f_{XY}(x,y) = \begin{cases}
+			1 & \text{if }9.5\leq x\leq 10.5, 10 \leq y \leq 11 \\
+			0 &\text{otherwise}
+		\end{cases}
+	.\]
+	From the last exercise we know that \(\E[X] = 10\) and \(\E[Y] = 10.5\). What remains is to calculate \(\E[XY]\):
+	\onslide<2->
+	\begin{align*}
+		\E[XY] &= \int_{9.5}^{10.5}\int_{10}^{11} xy f_{XY}(x,y)\,dy\,dx \\
+		\onslide<3->{&= \int_{9.5}^{10.5}x\int_{10}^{11}y\,dy\,dx \\} 
+		\onslide<4->{&= \int_{9.5}^{10.5}x\left(\frac{11^2-10^2}{2}\right)\,dx\\}
+		\onslide<5->{&= 10.5\left(\frac{10.5^2-9.5^2}{2}\right)= 10.5\cdot 10 = \red{105}}
+	\end{align*}
+	\onslide<6->
+	So \(\Cov(X,Y) = \E[XY] - \E[X]\E[Y] = 105-105=0\). At least to a first order, there is no association between the UCLA sprinters times and the USC sprinters times.
+\end{frame}
+
+\begin{frame}{Multiple Random Variables: Correlation} 
+	\label{frame:mrv-correlation}
+	Another quantity of interest here is the \red{correlation coeffecient} defined as 
+	\[
+		\rho_{XY} = \frac{\Cov(X,Y)}{\sigma_X\sigma_Y} 
+	.\] 
+	where we recall that
+	\begin{align*}
+		\sigma_X &= \sqrt{\sigma_X^2} = \sqrt{\Var(X)} = \sqrt{\E[(X-\E[X])^2]} \\
+		\sigma_Y &= \sqrt{\sigma_Y^2} = \sqrt{\Var(Y)} = \sqrt{\E[(Y-\E[Y])^2]}
+	\end{align*}
+	\onslide<2->
+	Calculating the correlation is no more difficult that calculating the covariance, but it is a bit tedious so we won't go over an example right now. 
+\end{frame}
+\begin{frame}{Multiple Random Variables: Conditioning and Independence} 
+	\label{frame:mrv-conditioning}
+	Finally, given two joint random variables, \(X\) and \(Y\), we may be interested in characterestics of the distribution of \(Y\) \emph{conditional} on \(X\) taking a certain value. 
+
+	Typically this will be denoted \(\E[Y|X=x]\) and will be called the \red{conditional expectation} of \(Y\) given \(X=x\).
+	\onslide<2->
+	\begin{itemize}
+		\item<2-> We may be interested in the average income for people with college degrees, \(\E[\text{Income} \mid \text{Education = College Graduate}]\)
+		\item<3-> We may be interested in the average sales price of a home with floor size 1200 sq. ft, \(\E[\text{Sales Price}\mid\text{Sqft} = 1200]\).
+		\item<4-> We may be interested in the average lifespan for smokers, \(\E[\text{Lifespan}\mid\text{Smoker}=1]\).
+	\end{itemize}
+	\onslide<5->
+	In all of these note that knowing the conditional expectation is useful for making predictions as we typically observe the \(X\) variable before we observe the \(Y\) variable.
+\end{frame}
+\begin{frame}{Multiple Random Variables: Conditioning and Independence} 
+	\label{frame:mrv-conditioning-formula}
+	Calculating the conditional expectation	essentially involves fixing the \(X\) variable at the point \(X=x\) and then integrating.
+	{\large 
+		\begin{table}[htpb]
+		\renewcommand{\arraystretch}{1.5}
+		\centering
+		\begin{tabular}{c|cc}
+			Type  & Discrete R.V & Continuous R.V \\
+			\hline
+			\(\E[Y|X=x]\) & \(\sum_{y} y\cdot p_{XY}(y,x)\) & \( \int_Y y\cdot f_{XY}(x,y)\,dy\)
+		\end{tabular}
+		\end{table}}
+	\onslide<2->
+	\ucla{Remark:} Note that \(X=x\) is fixed in the above equations while we allow \(Y\) to vary. 
+\end{frame}
 \end{document}
-
-
