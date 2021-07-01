@@ -246,7 +246,7 @@
 \end{frame}
 
 
-\begin{frame}{Single Random Varibles: Expectation} 
+\begin{frame}{Single Random Variables: Expectation} 
 	\label{frame:srv-mean-ex1}
 	Suppose we enter a lottery that pays us \(\$ 100\) with probability \(1/2\), \(\$400\) with probability \(1/4\), and \(\$0\) with probability \(1/4\). We can represent the payout of this lottery (in dollars) with a random variable \(X\) whose pmf is given
 	\[
@@ -422,7 +422,7 @@
 	.\] 
 	It is straightforward to see that the expected payout of this lottery is \$100, \(\E[X]=100\). 
 	\onslide<2->
-	However, we may want to know how much we can expect our winnings to deviate from the expected value. that is, we want to know what the variance of the payouts is. 
+	However, we may want to know how much we can expect our winnings to deviate from the expected value. That is, we want to know what the variance of the payouts is. 
 
 	Let's compute this two ways, first using the formula \(\Var(X) = \E[(X-\E[X])^2]\) and the second using \(\Var(X)= \E[X^2]-(\E[X])^2\).
 \end{frame}
@@ -464,7 +464,7 @@
 		\item We care about the relationship between consumption of a medicine and a health outcome
 	\end{itemize}
 	\onslide<2->
-	In the examples above notice that, not only are the random variables themselves not determistic 
+	In the examples above notice that, not only are the random variables themselves not deterministic 
 	\begin{itemize}
 		\item not everyone has the same education/income
 	\end{itemize}
@@ -534,7 +534,7 @@
 		\end{cases}
 	.\]
 	\onslide<2->
-	Let's try to find the probability that the the UCLA sprinter runs faster than 10 seconds and that the USC sprinter runs faster than 10.5 seconds. That is we want \(\P_{XY}(\{X\leq 10, Y\leq 10.5\})\).
+	Let's try to find the probability that the UCLA sprinter runs faster than 10 seconds and that the USC sprinter runs faster than 10.5 seconds. That is we want \(\P_{XY}(\{X\leq 10, Y\leq 10.5\})\).
 	\onslide<3->
 	\begin{align*}
 		\P_{XY}(\{X\leq 10,Y\leq 10.5\}) &= \int_{9.5}^{10}\int_{10}^{10.5} f_{XY}(x,y)\,dy\,dx\\
@@ -571,7 +571,7 @@
 		\end{tabular}
 		\end{table}}
 	\vspace{5mm}
-	\ucla{Intuition}: We are evaluating the function at each point in the outcome space and weighting by the probability of that outcome occuring.
+	\ucla{Intuition}: We are evaluating the function at each point in the outcome space and weighting by the probability of that outcome occurring.
 	\onslide<+->
 
 	Again note that we have the following linearity of the expectation. For any two functions \(g(x,y)\) and \(h(x,y)\) and any \(a,b\in\SR\):
@@ -640,7 +640,7 @@
 
 \begin{frame}{Multiple Random Variables: Correlation} 
 	\label{frame:mrv-correlation}
-	Another quantity of interest here is the \red{correlation coeffecient} defined as 
+	Another quantity of interest here is the \red{correlation coefficient} defined as 
 	\[
 		\rho_{XY} = \frac{\Cov(X,Y)}{\sigma_X\sigma_Y} 
 	.\] 
@@ -654,7 +654,7 @@
 \end{frame}
 \begin{frame}{Multiple Random Variables: Conditioning and Independence} 
 	\label{frame:mrv-conditioning}
-	Finally, given two joint random variables, \(X\) and \(Y\), we may be interested in characterestics of the distribution of \(Y\) \emph{conditional} on \(X\) taking a certain value. 
+	Finally, given two joint random variables, \(X\) and \(Y\), we may be interested in characteristics of the distribution of \(Y\) \emph{conditional} on \(X\) taking a certain value. 
 
 	Typically this will be denoted \(\E[Y|X=x]\) and will be called the \red{conditional expectation} of \(Y\) given \(X=x\).
 	\onslide<2->
@@ -668,7 +668,7 @@
 \end{frame}
 \begin{frame}{Multiple Random Variables: Conditioning and Independence} 
 	\label{frame:mrv-conditioning-formula}
-	Calculating the conditional expectation	essentially involves fixing the \(X\) variable at the point \(X=x\) and then integrating.
+	Calculating the conditional expectation	essentially involves fixing the \(X\) variable at the point \(X=x\), integrating, and then dividing by the probability that \(X=x\).
 	{\large 
 		\begin{table}[htpb]
 		\renewcommand{\arraystretch}{1.5}
@@ -676,10 +676,85 @@
 		\begin{tabular}{c|cc}
 			Type  & Discrete R.V & Continuous R.V \\
 			\hline
-			\(\E[Y|X=x]\) & \(\sum_{y} y\cdot p_{XY}(y,x)\) & \( \int_Y y\cdot f_{XY}(x,y)\,dy\)
+			\(\E[Y|X=x]\) & \( \frac{\sum_y y\cdot p_{XY}(y,x)}{\sum_y p_{XY}(x,y)}\) & \( \frac{\int_Y y\cdot f_{XY}(x,y)\,dy}{\int_Y f_{XY}(x,y)\,dy}\)
 		\end{tabular}
 		\end{table}}
 	\onslide<2->
-	\ucla{Remark:} Note that \(X=x\) is fixed in the above equations while we allow \(Y\) to vary. 
+	\begin{remark}[]
+		Note that \(\sum_y p_{XY}(x,y) = \P_{XY}(\{X=x\})\). We call the quantity \(\int_Y f_{XY}(x,y)\,dy\) the \green{marginal distribution} of \(X\) at \(x\) and denote it \(f_X(x)\).
+	\end{remark}
+	\onslide<3->
+	We see that \(X=x\) is fixed in the above equations while we allow \(Y\) to vary. We then divide by the probability that \(X=x\) (or the density of \(X\) at \(x\), which is the continuous analogue).
+	
 \end{frame}
+\begin{frame}{Multiple Random Variables: Conditioning and Independence} 
+	\label{frame:mrv-conditioning-example}
+	Let's return to a previous example where \(Y\) is the number of hours of sleep one gets a night and \(X\) is the number of cups of coffee that one drinks a day. 
+	
+	The joint pmf of \(X\) and \(Y\) can be described with the table below
+	\begin{table}[htpb]
+		\centering
+		\begin{tabular}{c|cc}
+			\(p(x,y)\) & 1 cup  & 2 cups\\
+			\hline
+			4 hours & 0 & 1/6 \\
+			8 hours & 1/3 & 1/3 \\
+			12 hours & 1/6 & 0
+		\end{tabular}
+	\end{table}
+	\onslide<2->
+	Let's compute the number of hours of sleep we can expect someone gets \red{conditional on} them drinking 2 cups of coffee. To this, let's first calculate the probability that one drinks 2 cups of coffee.
+	\onslide<3->
+	\begin{align*}
+		\P_{XY}(\{X=x\}) &=p_{XY}(x,y) = \frac{1}{6} + \frac{1}{3} = \frac{1}{2} 
+	\end{align*}
+	\onslide<4->
+	Now let's fix \(X=2\) and calculate \(\sum_y y\cdot p_{XY}(2,y)\)
+	\[
+		\sum_y y\cdot p_{XY}(2,y) = 4\cdot \frac{1}{6} + 8\cdot\frac{1}{3} + 12\cdot 0 = \frac{10}{3}   
+	.\] 
+	\onslide<5->
+	Putting this together we find that
+	\[
+		\E[Y|X=2] = \frac{10}{3}\cdot\frac{2}{1} = \frac{20}{3} \approx 6.6667
+	.\] 
+\end{frame}
+\begin{frame}{Multiple Random Variables: Conditioning and Independence} 
+	\label{frame:mrv-independence}
+	This is great, but sometimes knowing \(X\) may not help us predict \(Y\). Intuitively, knowledge of \(X\) does not give us any additional knowledge of \(Y\). 
+
+	If this is the case we say that \(X\) is \red{independent} of \(Y\) and denote \(X\perp Y\).
+
+	Some examples of independent random variables:
+	\begin{itemize}
+		\item<2-> Knowing that one coin flip came up heads doesn't give you any information about the next coin flip, we can say that successive coin flips are independent
+		\item<3-> If I buy lottery tickets, whether or not I win the lottery is independent of the color of the shirt I was wearing that day
+		\begin{itemize}
+			\item<4-> Unless I was wearing my lucky t-shirt
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}{Multiple Random Variables: Conditioning and Independence} 
+	\label{frame:mrv-indep-charac}
+	There are many characterizations of independence, but for now all we care about are the following implications. If \(X\perp Y\) then:
+	\begin{align*}
+		\P_{XY}(a\leq X\leq b, c\leq Y\leq d) &= \P_{XY}(a\leq X\leq b)\P_{XY}(c\leq Y\leq d)\;\;\;\forall a,b,c,d\\
+		\intertext{and}
+		\E[g(Y)|X=x] &= \E[g(Y)]\;\;\;\forall x\in\calO_X
+	\end{align*}
+\end{frame}
+\begin{frame}{Multiple Random Variables: Conditioning and Independence} 
+	\label{frame:mrc-indep-careful}
+	Assuming two random variables are independent is useful as the above implications will greatly simplify calculations later on. However, we need to be careful when doing so, as it is a rather strong assumption to make.
+
+	Let's see some examples of variables that seem independent but may not be
+	\begin{itemize}
+		\item We may think that weather in a city is independent of average rent, is this the case?
+		\item Is attending a Greta Thunberg rally independent of your likelihood to attend another climate rally?
+	\end{itemize}
+\end{frame}
+\begin{frame}{Multiple Random Variables} 
+	\centering\red{\Large Questions?}	
+\end{frame}
+
 \end{document}
