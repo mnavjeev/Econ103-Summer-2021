@@ -6,7 +6,7 @@
 \usepackage[utf8]{inputenc}
 
 % Primary Packages
-\usepackage{amsbsy, amsmath, amssymb, amsthm, bm, commath, chngcntr, dsfont, econometrics, enumitem, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
+\usepackage{amsbsy, amsmath, amssymb, amsthm, bm, commath, chngcntr, dsfont, econometrics, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
 
 % Rest of the setup is in the "setup_beamer" package
 \usepackage{setup_beamer}
@@ -20,7 +20,7 @@
 
 \begin{document}
 \frame{\titlepage}
-
+\section{Intro}
 \begin{frame}{Content Outline} 
 	\ucla{Single Random Variable}
 	\begin{itemize}
@@ -41,8 +41,6 @@
 		\item The sample mean as a random variable
 	\end{itemize}
 \end{frame}
-
-\section{Intro}
 
 \begin{frame}{Random Variable} 
 	\label{frame:random-variables}
@@ -72,7 +70,7 @@
 		\item<3-> In general however, we may not know the exact distribution of the random variable. Econometrics is about using a random sample of data to make inferences about the underlying distribution of the random variable.
 	\end{itemize}
 \end{frame}
-
+\section{Single Random Variables}
 \begin{frame}{Single Random Variables: Outcome Spaces} 
 	\label{frame:single-rv}
 	\onslide<1->{Let's formalize the discussion above. Let \(X\) denote a random variable. All random variables come equipped with an \emph{outcome space} that contains all the values that the random variable can take up.} 
@@ -142,7 +140,7 @@
 		\item<2-> Recall that if \(X\) is a continuous random variable then the outcome space \(\calO_X\) is (uncountably) infinite.
 		\item<2-> What would happen if \(\P_X(\{a\}) > 0\) for each \(a \in X\)?
 		\begin{itemize}
-			\item<3-> Then for any set \(A\)
+			\item<3-> Then for any (uncountable) set \(A\)
 				\[
 					\P_X(A) = \sum_{a\in A}\P_X(\{a\}) = \infty 
 				.\] 
@@ -456,6 +454,7 @@
 	\centering
 	\red{\Large Questions?}
 \end{frame}
+\section{Multiple Random Variables}
 \begin{frame}{Multiple Random Variables: Introduction} 
 	\label{frame:mrv-intro1}
 	Oftentimes we are not only interested in a single random variable, but the relationship between two random variables. In fact this will be the case through the rest of this course:
@@ -607,7 +606,7 @@
 	\[
 		\Cov(X,Y)= \E[(X-\E[X])(Y-\E[Y])]
 	.\] 
-	The covariance measures how much the variables \(X\) and \(Y\) ``move together'' and will be of particular interest to us in econometrics.
+	The covariance measures how much the variables \(X\) and \(Y\) ``move together'' and will be of particular interest to us in econometrics. It is often notated as \(\sigma_{XY} = \Cov(X,Y)\).
 	\onslide<2->
 
 	As before, we can simplify the expression for covariance:
@@ -637,6 +636,37 @@
 	\onslide<6->
 	So \(\Cov(X,Y) = \E[XY] - \E[X]\E[Y] = 105-105=0\). At least to a first order, there is no association between the UCLA sprinters times and the USC sprinters times.
 \end{frame}
+\begin{frame}{Multiple Random Variables: Covariance} 
+	\label{frame:cov-properties}
+	From the expression \(\Cov(X,Y) = \E[XY]- \E[X]\E[Y]\), we can see some important properties of the covariance that we will use later on 
+	\begin{enumerate}
+		\item<1-> \red{Linearity:} \(\Cov(aX,bY) = ab\Cov(X,Y)\)
+		\[
+			\green{\Cov(aX,bY) = \E[(aX)(bY)] - \E[aX]\E[bY] = ab\left(\E[XY] - \E[X]\E[Y]\right)}
+		.\] 
+		\item<2-> \red{Symmetry:} \(\Cov(X,Y) = \Cov(Y,X)\) and \(\Cov(X,X) = \Var(X)\)
+		\[
+			\green{\Cov(X,X) = \E[XX] - \E[X]\E[X] = \E[X^2]-(\E[X])^2 = \Var(X)}
+		.\] 
+		\item<3-> \red{Sums:} \(\Var(X+Y) = \Var(X) + \Var(Y) + 2\Cov(X,Y)\)
+		\begin{align*}
+			\green{\Var(X+Y)}\,&\green{=\E[(X+Y)^2] - \E[(X+Y)]^2}	\\
+							  &\green{=\E[X^2 + 2XY + Y^2] - \left(\E[X] + \E[Y]\right)^2}\\
+							  &\green{=\underbrace{\E[X^2]}_{\Var(X)} + 2\underbrace{\E[XY]}_{\Cov(X,Y)} + \underbrace{\E[Y^2]}_{\Var(Y)} - \underbrace{(\E[X])^2}_{\Var(X)} - 2\underbrace{\E[X]\E[Y]}_{\Cov(X,Y)} - \underbrace{(\E[Y])^2}_{\Var(Y)} }\\
+							  &\green{=\Var(X) + \Var(Y) + 2\Cov(X,Y)}
+		\end{align*}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Multiple Random Variables: Covariance} 
+	\label{frame:mrc-variance}
+	In fact, using the linearity of the covariance, \(\Cov(aX,bY) = ab\Cov(X,Y)\), \(\Var(aX) = a^2\Var(X)\), and \(\Var(bY)  = b^2\Var(Y)\) we can generalize the last property a bit to read
+	\begin{align*}
+		\ucla{\Var(aX + bY)} &= \Var(aX) + \Var(bY) + 2\Cov(aX,bY) \\ 
+							&= \ucla{a^2\Var(X) + b^2\Var(Y) + 2ab\Cov(X,Y)}
+	\end{align*}
+\end{frame}
+
 
 \begin{frame}{Multiple Random Variables: Correlation} 
 	\label{frame:mrv-correlation}
@@ -740,7 +770,7 @@
 	\begin{align*}
 		\P_{XY}(a\leq X\leq b, c\leq Y\leq d) &= \P_{XY}(a\leq X\leq b)\P_{XY}(c\leq Y\leq d)\;\;\;\forall a,b,c,d\\
 		\intertext{and}
-		\E[g(Y)|X=x] &= \E[g(Y)]\;\;\;\forall x\in\calO_X
+		\E[g(Y)|X=x] &= \E[g(Y)]\;\;\;\forall x\in\calO_X, g(\cdot):\calO_Y\to\SR
 	\end{align*}
 \end{frame}
 \begin{frame}{Multiple Random Variables: Conditioning and Independence} 
@@ -753,8 +783,222 @@
 		\item Is attending a Greta Thunberg rally independent of your likelihood to attend another climate rally?
 	\end{itemize}
 \end{frame}
+\begin{frame}{Multiple Random Variables: Review} 
+	\label{frame:mrv-review}
+	\ucla{Let's Recap:}
+
+	\onslide<1->
+	\red{Multiple Random Variables:}
+	\begin{itemize}
+		\item Describe multiple events whose outcomes are unknown.
+		\item Have probabilities that the outcomes \green{jointly} take values in arbitrary subsets of the \green{joint} outcome space.
+	\end{itemize}
+
+	\onslide<2->
+	\red{Expectations:}
+	\begin{itemize}
+		\item As before describe the ``average'' value of a function of the joint random variables.
+		\item The \green{covariance} function is a particular expectation we are interested in as it describes how two variables ``move with'' each other.
+	\end{itemize}
+	
+	\onslide<3->
+	\red{Conditioning and Independence:}
+	\begin{itemize}
+		\item The conditional expectation is the average value of \(Y\) for individuals who have \(X=x\).
+		\item If knowing \(X\) does not give us any information on the distribution of \(Y\) we say that \(X\) and \(Y\) are \green{independent}.
+	\end{itemize}
+\end{frame}
 \begin{frame}{Multiple Random Variables} 
 	\centering\red{\Large Questions?}	
+\end{frame}
+\section{The Normal Distribution}
+\begin{frame}{The Normal Distribution} 
+	\label{frame:nd-into}
+	A particular distribution that will be of interest to us is the \red{normal distribution}.
+	\begin{definition}[Normal Distribution]
+		\label{def:nd}
+		A random variable \(X\) follows a normal distribution with mean \(\mu\) and variance \(\sigma^2\) if it is continuously distributed with probability density function (pdf) given by 
+		\begin{equation}
+			f_X(x) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+		.\end{equation} 
+		If this is the case we denote \(X\sim N(\mu,\sigma^2)\). If \(Z\sim N(0,1)\) we say that \(Z\) follows a \red{standard normal distribution}.	
+	\end{definition}
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.4\linewidth]{normal-density.png}	
+	\end{figure}
+\end{frame}
+\begin{frame}{The Normal Distribution: Properties} 
+	\label{frame:nd-properties}
+	The normal distribution has some useful properties that will be useful later on in the course. We will review them here.
+	
+	\onslide<2->
+	\red{Property 1:} If \(X\sim N(\mu,\sigma^2)\) then \((X-\mu)/\sigma\sim N(0,1)\).
+
+	Why is this property useful? Because it means we can express probabilities for any normal random variable in terms of \(Z\sim N(0,1)\).
+
+	\onslide<3->
+	\green{Exercise:} Show that if \(X\sim N(2,100)\) then \(\P(X\geq 22) = \P(Z\geq 2)\).
+
+	\[
+		\P(X\geq 22) = \P\left(\frac{X-2}{10} \geq \frac{22 -2}{10} \right) = \P\left(Z \geq 2\right) 
+	.\] 
+	Here we use the fact that \(\mu=2\) and \(\sigma = \sqrt{100} = 10\).
+\end{frame}
+\begin{frame}{The Normal Distribution: Properties} 
+	\label{frame:nd-properties2}
+	\ucla{Question:} This property is great, but how do we calculate \(\P(Z\geq 2)\)?	
+
+	\ucla{Answer:} Either use Z-table or calculate in R. Will cover in lab. 
+\end{frame}
+\begin{frame}{The Normal Distribution: Properties} 
+	\label{frame:nd-properties3}
+	\red{Property 2:} If \(X\sim N(\mu_X,\sigma_X^2)\) and \(Y\sim N(\mu_Y,\sigma_Y^2)\) are jointly normal, then \(W=aX+bY\) is also normally distributed for any \(a,b\in\SR\).
+
+	\onslide<2->
+	\ucla{What is \(\E[W]\)?}
+	\begin{itemize}
+		\item Recall by linearity of expectation we have that \(\E[aX+bY] = a\E[X]+ b\E[Y]\)
+		\item So, \(\mu_W = \E[W] = a\mu_X + b\mu_Y\).
+	\end{itemize}
+	\onslide<3->
+	\ucla{What is \(\Var(W)\)?}
+	\begin{itemize}
+		\item Recall that \(\Var(aX+bY) = a^2\Var(X) + b^2\Var(Y) + 2ab\Cov(X,Y)\)
+		\item So, \(\Var(W) = \Var(aX+bY) = a^2\sigma_X^2 + b^2\sigma_Y^2 + 2ab\sigma_{XY}\)
+	\end{itemize}
+	\onslide<4->
+	Putting these together we get that
+	\[
+		W\sim N\left(a\mu_X + b\mu_Y, a^2\sigma_X^2 + b^2\sigma_Y^2 + 2ab\sigma_{XY}\right)
+	.\] 
+\end{frame}
+\begin{frame}{The Normal Distribution: Questions} 
+	\label{frame:nd-questions}
+	\centering
+	{\Large
+		\red{Questions?}
+	}
+\end{frame}
+\section{The Sample Mean}
+\begin{frame}{The Sample Mean} 
+	\label{frame:sm-intro}
+	\red{Example:} Suppose we are interested in the upcoming ASB election in which Martinez is running against Smith. We randomly selection \(n=100\) students from the population and ask them who they plan on voting for. Answers are recorded as 
+	\[
+	    X_i = \begin{cases}
+	    	1 & \text{if they answer Martinez} \\
+			0 & \text{if they answer Smith}
+	    \end{cases}
+	.\] 
+	Based on our sample \(\{X_i\}_{i=1}^{n=100}\) we compute the sample mean (\(\bar X_n\)) and sample variance \(s_n^2\) and find 
+	\[
+	    \bar X_n = \frac{1}{n}\sum_{i=1}^n X_i = 0.55 \andbox s_n^2 = \frac{1}{n}\sum_{i=1}^n \left(X_i-\bar X_n\right)^2 = 0.25
+	.\] 
+	\onslide<2->
+	\ucla{Questions:}
+	\begin{itemize}
+		\item<2-> Should we conclude that Martinez will win the election?
+		\item<3-> Would we find the same values for \(\bar X_n\) and \(s_n^2\) if we ran the poll again?
+		\item<4-> How should we acknowledge the uncertainty in \(\bar X_n\)?
+	\end{itemize}
+\end{frame}
+\begin{frame}{The Sample Mean: As a Random Variable} 
+	\begin{center}
+		\ucla{Key: Need to think of \(\bar X_n\) and \(s_n^2\) as random variables} 
+	\end{center}
+	\red{Random Sampling:}
+	\begin{itemize}
+		\item We think of the sample \(\{X_i\}_{i=1}^n\) as \(n\) different random variables.
+		\item Each \(X_i\) is sampled from (has the same distribution as) the population distribution so that \(\E[X_i]=\mu_X\) and \(\Var(X_i)=\sigma_X^2\).
+	\end{itemize}
+	\onslide<2->
+	In the context of the polling example this means that we are interested in the population of voters in the UCLA ASB election. We randomly select \(n=100\) people from this population.
+	\begin{itemize}
+		\item The identities of each of these people sampled is random.
+		\item We would like to use this random sample to learn about the population.
+	\end{itemize}
+\end{frame}
+\begin{frame}{The Sample Mean: As a Random Variable} 
+	Random sampling let's us learn about the population by looking at our sample. 
+	{\large 
+		\begin{table}[htpb]
+		\renewcommand{\arraystretch}{1.5}
+		\centering
+		\begin{tabular}{c|cc}
+			& Sample & Population \\
+			\hline
+			Measure of center & \(\bar X_n\) & \(\E[X]\)\\
+			Measure of spread & \(s_n^2\) & \(\Var(X)\)
+		\end{tabular}
+		\end{table}}
+	But, to make the connection precise we must understand the distribution of \(\bar X_n\). Let's start by getting the mean and variance of \(\bar X_n\).
+	\onslide<2->
+	\begin{enumerate}
+		\item<2-> \ucla{The expectation of \(\bar X_n\) is given \(\E[\bar X_n] = \E[X]\).}
+		\[
+			\green{\E[\bar X_n] = \E[\frac{1}{n}\sum_{i=1}^n X_i] = \frac{1}{n}\sum_{i=1}^n \E[X_i] = \E[X]}
+		.\] 
+	\item<3-> \ucla{The variance of \(\bar X_n\) is given \(\Var(\bar X_n) = \sigma_X^2/n\).}
+		\[
+			\green{\Var(\bar X_n) = \Var(\frac{1}{n}\sum_{i=1}^n X_i) = \frac{1}{n^2}\Var(\sum_{i=1}^n X_i^2) = \frac{1}{n^2}\sum_{i=1}^n \Var(X) = \sigma_X^2/n}
+		.\] 
+		Note that \(\Var(\bar X_n)\to 0\) as \(n\to\infty\). This is the basis of the \red{Law of Large Numbers} which states that \(\bar X_n \to \mu_X\) as \(n\to\infty\).
+	\end{enumerate}
+\end{frame}
+\begin{frame}{The Sample Mean: Central Limit Theorem} 
+	\label{frame:clt1}
+	\ucla{Question: We know the mean and variance of \(\bar X_n\) but what is it's distribution?}
+	\begin{itemize}
+		\item Knowing the distribution of the sample mean is useful for computing say 
+		\[
+			\P\left(|\bar X_n - \E[X]| > 0.05\right)
+		\] 
+		which is in turn a useful quantity to know for using \(\bar X_n\) to make inferences about \(\E[X]\).
+	\end{itemize}
+	\onslide<2->
+	\ucla{Answer: Central limit theorem tells us that for \(n\) sufficiently large \[\bar X_n \sim N(\mu_x, \sigma_X^2/n)\]}
+	\begin{itemize}
+		\item What is ``sufficiently large''? It's a bit ambiguous, but typically we think that the central limit theorem provides a good approximation for the distribution of \(\bar X_n\) when \(n > 30\).
+	\end{itemize}
+\end{frame}
+\begin{frame}{The Sample Mean: Central Limit Theorem} 
+	\label{frame:clt2}
+	Using the properties of the normal distribution, we see that approximately for \(n\) large:
+	\[
+		\frac{\bar X_n - \E[\bar X_n]}{\sqrt{\Var(\bar X_n)}} = \frac{\bar X_n -\mu_X}{\sigma_X/\sqrt{n}}\sim N(0,1)
+	.\] 
+	\vfill
+	We can replace \(\sigma_X\) with \(s_n\) to get that for \(n\) large
+	\[
+		\frac{\bar X_n - \mu_X}{s_n/\sqrt{n}}\approx \frac{\bar X_n - \mu_X}{\sigma_X/\sqrt{n}}\sim N(0,1)  
+	.\] 
+\end{frame}
+\begin{frame}{The Sample Mean: Central Limit Theorem} 
+	\label{frame:clt3}
+	\[
+		\ucla{\frac{\bar X_n -\mu_X}{s_n/\sqrt{n}}\sim N(0,1)}
+	\] 
+	\vspace{3mm}
+
+	This result ends up being very useful for using \(\bar X_n\) to learn about \(\mu_X\) by allowing us to build confidence intervals or conduct hypothesis tests.
+\end{frame}
+\begin{frame}{The Sample Mean: Central Limit Theorem} 
+	\label{frame:clt4}
+	Let's return to our initial polling example to see the usefuleness of the central limit theorem. Recall that in this example \(\bar X_n = 0.55\) and \(s_n^2= 0.25\).
+
+	\ucla{Problem:} What is the probability of finding (with \(n=100\)) \(\bar X_n = 0.55\) and \(s_n^2 = 0.25\) if the true proportion of Martinez voters in the population is \(\E[X]=0.5\)?
+
+	\ucla{Answer:} Using the central limit theorem
+	\begin{align*}
+		\P(\bar X_n \geq 0.55) &= \P\left(\frac{\bar X_n-\mu_X}{s_n/\sqrt{n}} \geq \frac{0.55-\mu_X}{s_n/\sqrt{n}}\right) \\
+							   &= \P\left(\frac{\bar X_n -\mu_X}{s_n/\sqrt{n}} \geq \frac{0.55 - 0.5}{0.5/10}  \right) \\
+							   &\approx \P(Z \geq 1) = 0.159
+	\end{align*}
+\end{frame}
+\begin{frame}{The Sample Mean: Questions} 
+	\label{frame:questions}
+	\centering
+	{\Large \red{Questions}}
 \end{frame}
 
 \end{document}
