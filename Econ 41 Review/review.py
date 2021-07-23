@@ -35,4 +35,14 @@ plt.ylabel("Distribution")
 plt.savefig("normal-density")
 # plt.show()
 
-
+# Standard normal
+mu = 0
+variance = 1
+sigma = math.sqrt(variance)
+x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
+plt.figure(dpi=300)
+plt.plot(x, stats.norm.pdf(x, mu, sigma), label = "X ~ N(0,1)")
+plt.title("Normal Density")
+plt.xlabel("X")
+plt.ylabel("Distribution")
+plt.savefig("normal-density-standard")

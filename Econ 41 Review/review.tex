@@ -873,6 +873,21 @@
 		W\sim N\left(a\mu_X + b\mu_Y, a^2\sigma_X^2 + b^2\sigma_Y^2 + 2ab\sigma_{XY}\right)
 	.\] 
 \end{frame}
+\begin{frame}{The Normal Distribution: Properties} 
+	\label{frame:symmetry}
+	\red{Property 3:} The distribution of \(X \sim N(0,\sigma^2)\) is symmetric. That is, for any \(x\), \(\Pr(X \geq x) = \Pr(X \leq -x)\).
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.50\linewidth]{normal-density-standard.png}
+		\caption{Density is symmetric around zero}%
+	\end{figure}
+	\onslide<2->
+	This is useful as it means that if \(X \sim N(0,\sigma_X^2)\) we can compute
+	 \[
+		 \Pr(|X|\geq x) = \Pr(X\geq x) + \Pr(X \leq -x) = 2\Pr(X\geq x)
+	.\] 
+\end{frame}
+
 \begin{frame}{The Normal Distribution: Questions} 
 	\label{frame:nd-questions}
 	\centering
