@@ -22,6 +22,26 @@
 \frame{\titlepage}
 \begin{frame}{Content Outline} 
 	\label{frame:content-outline}
+	\ucla{Linear Regression}
+	\begin{itemize}
+		\item Line of best fit and linear model
+		\item Formulas for parameters 
+	\end{itemize}
+	\ucla{Estimation}
+	\begin{itemize}
+		\item Using data to estimate parameters of interest
+		\item Formulas for parameter estimates
+	\end{itemize}
+	\ucla{Asymptotic Distribution}
+	\begin{itemize}
+		\item Approximate distribution of parameter estimates for ``large \(n\)''
+		\item Estimating variance of parameter estimates
+	\end{itemize}
+	\ucla{Hypothesis Testing and Confidence Intervals}
+	\begin{itemize}
+		\item Using asymptotic distribution to test statements about underlying parameters
+		\item Using asymptotic distribution to give a range of plausible underlying parameter values 
+	\end{itemize}
 \end{frame}
 %TODO: Add a content outline
 \section{The Basic Model}
@@ -632,7 +652,7 @@
 	\[
 		\sqrt{n}\left(\ucla{\hat\beta_1}-\ucla{\beta_1}\right) \sim \frac{N(0,\sigma_\eps^2\sigma_X^2)}{\sigma_X^2} = N\big(0,\underbrace{\sigma_\eps^2/\sigma_X^2}_{:=\sigma_{\beta_1}^2}\big)
 	.\] 
-	where in the last equality we use the fact that \(a\Var(Z) = \Var(a^2Z)\).
+	where in the last equality we use the fact that \(N(0,a)/b\sim N(0,a/b^2)\).
 	\onslide<2->
 	Other ways of putting this are, approximately for \(n\) large:
 	\begin{align*}
@@ -1313,10 +1333,78 @@
 	\onslide<3->
 	In this case \(\alpha = 0.05\). From above we have that \(z_{0.975} \approx 1.96\). Plugging in our values from above the \(95\%\) confidence interval for  \(\ucla{\beta_1}\) is given
 	\[
-	    0.025 \pm 1.96\cdot\frac{\sqrt{0.0625}}{\sqrt{100}} = 0.025 \pm 1.96\cdot\frac{0.25}{10}  
+		0.025 \pm 1.96\cdot\frac{\sqrt{0.0625}}{\sqrt{100}} = 0.025 \pm 1.96\cdot\frac{0.25}{10} = [-0.024,0.074] 
+	.\]
+\end{frame}
+\begin{frame}{Linear Regression: Confidence Interval Example} 
+	\label{frame:ci10}
+	Plugging in our values from above the \(95\%\) confidence interval for  \(\ucla{\beta_1}\) is given
+	\[
+		0.025 \pm 1.96\cdot\frac{\sqrt{0.0625}}{\sqrt{100}} = 0.025 \pm 1.96\cdot\frac{0.25}{10} = [-0.024,0.074] 
+	\]
+	\ucla{Questions:}
+	\begin{enumerate}
+		\item<1-> How do we interpret this confidence interval?
+		\item<2-> Suppose we wanted to test \(\green{H_0}:\ucla{\beta_1} = 0\) vs \(\red{H_1}:\ucla{\beta_1}\neq 0\) at level \(\alpha = 0.05\). What would be the result?
+		\begin{itemize}
+			\item<3-> What about if we wanted to test this hypothesis at level \(\alpha = 0.025\)?
+		\end{itemize}
+	\end{enumerate}
+\end{frame}
+\section{Conclusion}
+\begin{frame}{Linear Regression: Final Notes} 
+	\label{frame:final-notes}
+	In this lecture we have introduced the line of best fit parameters
+	\[
+		\ucla{\beta_0},\ucla{\beta_1} = \arg\min_{\tilde\beta_0,\tilde\beta_1} \E\left[(Y-\ucla{\beta_0}-\ucla{\beta_1}X)^2\right]
+	\] 
+	After taking \(\eps = Y - \ucla{\beta_0} - \ucla{\beta_1}X\), these parameters generate the linear model
+	\[
+		Y = \ucla{\beta_0} + \ucla{\beta_1}X + \eps,\;\;\;\E[\eps] = \E[\eps X] = 0
+	.\]
+	\onslide<2->
+	\vfill
+	While the linear model is often easier to work with, it is useful to keep the line of best fit interpretation in the back of our mind. It provides our model interpretability even when the true relationship between \(Y\) and \(X\) is not linear.
+\end{frame}
+\begin{frame}{Linear Regression: Final Notes} 
+	\label{frame:final-notes2}
+	Since we do not know the joint distribution of \((Y,X)\), we have to use data, \(\{Y_i,X_i\}_{i=1}^n\) to estimate  \(\ucla{\hat\beta_0}\) and \(\ucla{\hat\beta_1}\) 
+	\[
+		\ucla{\hat\beta_0},\ucla{\hat\beta_1} = \arg\min_{b_0,b_1}\frac{1}{n}\sum_{i=1}^n (Y_i - b_0 - b_1X_i)^2
 	.\] 
+	Taking first order conditions this gives
+	\begin{align*}
+		\ucla{\hat\beta_0} &= \bar Y - \ucla{\hat\beta_1}\bar X \\
+		\ucla{\hat\beta_1} &= \frac{\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X)}{\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2} 
+	\end{align*}
+\end{frame}
+\begin{frame}{Linear Regression: Final Notes} 
+	\label{frame:final-notes3}
+	We also derived the asymptotic distribution of our estimates. Using the law of large numbers and the central limit theorem we can say that, under homoskedasticity, approximately for large \(n\),
+	\begin{align*}
+		\ucla{\hat\beta_0} &\sim N\left(\ucla{\beta_0}, \E[X^2]\frac{\hat\sigma_\eps^2}{n\sigma_X^2}\right) \\
+		\ucla{\hat\beta_1} &\sim N\left(\ucla{\beta_1}, \frac{\sigma_\eps^2}{n\sigma_X^2}\right)
+	\end{align*}
+	Estimation of \(\hat\sigma_\eps^2 = \frac{1}{n}\sum_{i=1}^n \hat\eps_i^2\)
+\end{frame}
+\begin{frame}{Linear Regression: Final Notes} 
+	\label{frame:final-notes4}
+	Finally, we covered how to use these asymptotic distributions and our data to test various hypothesis about the underlying parameters such as  
+	\begin{align*}
+		\green{H_0}:\ucla{\beta_0} = 5\vsbox \red{H_1}:\ucla{\beta_0}\neq 5
+	\end{align*}
+	or
+	\begin{align*}
+		\green{H_0}:\ucla{\beta_1} \leq 0\vsbox \red{H_1}:\ucla{\beta_1} > 0
+	\end{align*}
+	As well as construct confidence intervals for the parameters \( \ucla{\beta_0}\) and \(\ucla{\beta_1}\).
+	\onslide<2->
+	\begin{itemize}
+		\item These sorts of inferential results are important for policy analysis and separate the econometrics/statistics approaches from machine learning 
+	\end{itemize}
 \end{frame}
 
+%TODO: Homework question comparing rejection from a two sided test to rejection from a one sided test with half the level
 %TODO: Homework question about conditional expectation beta and binary X
 %TODO: Homework question about sampling (relevant population, is i.i.d violated)
 %TODO: Homework question about computing a t-statistic
