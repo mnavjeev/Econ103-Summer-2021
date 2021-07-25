@@ -23,6 +23,7 @@
 \begin{frame}{Content Outline} 
 	\label{frame:content-outline}
 \end{frame}
+%TODO: Add a content outline
 \section{The Basic Model}
 \begin{frame}{Linear Regression as Line of Best Fit} 
 	\label{frame:estimand}
@@ -900,10 +901,428 @@
 	
 	In this section we will formally discuss hypothesis testing. 
 \end{frame}
-\begin{frame}{Linear Regression: Hypothesis Testing} 
+\begin{frame}{Linear Regression: What is a Hypothesis Test?} 
 	\label{frame:hyp2}
-	Often in linear regression analysis, we are interested in 
+	Often in linear regression analysis, we are interested in using parameter estimates, \(\ucla{\hat\beta_0}\) and \(\ucla{\hat\beta_1}\), to test some baseline or \underline{null} hypothesis about the poulation against an opposite or \underline{alternative} hypothesis.
+	\begin{itemize}
+		\item<1-> There is no association between years of education and income
+		\begin{itemize}
+		\item \green{Null Hypothesis:} \(\ucla{\beta_1}=0\). 
+		\item \red{Alternative Hypothesis:} \( \ucla{\beta_1} \neq 0 \iff |\ucla{\beta_1}| > 0\)
+		\end{itemize}
+		\item<2-> Smoking has a negative effect on life expectancy
+		\begin{itemize}
+			\item \green{Null Hypothesis:} \(\ucla{\beta_1} \leq 0\)
+			\item \red{Alternative Hypothesis:} \( \ucla{\beta_1} > 0\)
+		\end{itemize}
+		\item<3-> There is a positive association between the miles per gallon of a car and its final sales price
+		\begin{itemize}
+			\item \green{Null Hypothesis:} \( \ucla{\beta_1} \geq 0\)
+			\item \red{Alternative Hypothesis:} \( \ucla{\beta_1} < 0\)
+		\end{itemize}
+	\end{itemize}
 \end{frame}
+\begin{frame}{Linear Regression: What is a Hypothesis Test?} 
+	\label{frame:hyp3}
+	We will denote the null hypothesis as \(H_0\) and the alternative as \(H_1\). 	
+	\begin{itemize}
+		\item<1-> There is no association between years of education and income
+		\begin{itemize}
+		\item \green{\(H_0\):} \(\ucla{\beta_1}=0\). 
+		\item \red{\(H_1\):} \( \ucla{\beta_1} \neq 0 \iff |\ucla{\beta_1}| > 0\)
+		\end{itemize}
+		\item<2-> Smoking has a negative effect on life expectancy
+		\begin{itemize}
+			\item \green{\(H_0\):} \(\ucla{\beta_1} \leq 0\)
+			\item \red{\(H_1\):} \( \ucla{\beta_1} > 0\)
+		\end{itemize}
+		\item<3-> There is a positive association between the miles per gallon of a car and its final sales price
+		\begin{itemize}
+			\item \green{\(H_0\):} \( \ucla{\beta_1} \geq 0\)
+			\item \red{\(H_1\):} \( \ucla{\beta_1} < 0\)
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}{Linear Regression: What is a Hypothesis Test?} 
+	\label{frame:hyp4}
+	If \(H_1\) contains a  ``\(\neq\)'' sign, we call this a ``two-sided'' alternative.
+
+	\ucla{Example:} There is no association between years of education and income
+	\begin{itemize}
+		\item \green{\(H_0\):} \(\ucla{\beta_1} = 0\) 
+		\item \red{\(H_1\):} \( \ucla{\beta_1} \neq 0\)
+	\end{itemize}
+
+	\vfill
+	\onslide<2->
+	If \(H_1\) contains a ``\(>\)'' or a ``\(<\)'' sign, we call this a ``one-sided'' alternative.
+
+	\ucla{Example:} Cups of coffee drank has a negative association with hours of sleep
+	\begin{itemize}
+		\item \green{\(H_0\):}  \(\ucla{\beta_1} \leq 0\)
+		\item \red{\(H_1\):}  \( \ucla{\beta_1} > 0\)
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Linear Regression: How to Hypothesis Test} 
+	\label{frame:hyp5}
+	So, how do we use our data and parameter estimates  \( \ucla{\hat\beta_1}\) and \( \ucla{\hat\beta_0}\) to test hypotheses?
+	\vspace{0.5cm}
+	Given a null hypothesis \(H_0\) and an alternative hypothesis, we have two options. 
+	 \begin{itemize}
+		\item<2-> We can \red{reject} the null hypothesis in favor of the alternative hypothesis.
+		\begin{itemize}
+			\item<3-> Do this when the probability of obtaining our observed value of \(\hat\beta\) (or something even further from the null hypothesis) under the null hypothesis is \underline{smaller} than a pre-specified value \(\alpha\).
+			\item<4-> The value \(\alpha\) is called the  ``level'' or ``significance level'' of the test. 
+			\item<5-> It is also the probability of a ``Type 1'' error, the probability that we will reject the null hypothesis when the null hypothesis is true.
+		\end{itemize}
+		\item<6-> We can \green{fail to reject} the null hypothesis.
+		\begin{itemize}
+			\item Do this when the probability of obtaining our observed value of \(\hat\beta\) (or something even further from the null hypothesis) under the null hypothesis is \underline{larger} than a pre-specified value \(\alpha\).
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Linear Regression: How to Hypothesis Test} 
+	\label{frame:hyp6}
+	How do we calculate the probability, given that our null hypothesis is true, of observing our value of \( \ucla{\hat\beta}\) or something even further from the null hypothesis?
+
+	Recall that, approximately for large \(n\)
+	\[
+		\frac{\ucla{\hat\beta_1}-\ucla{\beta_1}}{\hat\sigma_{\beta_1}/\sqrt{n}} \sim N(0,1) 
+		\andbox
+		\frac{\ucla{\hat\beta_0}-\ucla{\beta_0}}{\hat\sigma_{\beta_0}/\sqrt{n}} \sim N(0,1) 
+	.\] 
+	where \(\hat\sigma_{\beta_1}^2 = \hat\sigma_{\eps}^2/\hat\sigma_X^2\) and  \(\hat\sigma_{\beta_0}^2 = \frac{1}{n}\sum_{i=1}^n X_i^2\cdot\hat\sigma_\eps^2/\hat\sigma_X^2\). 
+\end{frame}
+\begin{frame}{Linear Regression: How to Hypothesis Test} 
+	\label{frame:hyp7}
+	\only<1>{
+	Let \(Z\sim N(0,1)\). Using the distributions above, if we are testing \(\green{H_0}: \ucla{\beta_1} = b\) against \(\red{H_1}: \ucla{\beta_1}\neq b\) we can compute the probability (under the null hypothesis) that we observe our value of \(\ucla{\hat\beta_1}\) or something even further  from the null hypothesis by computing
+	\[
+		\Pr\left(|Z| > \bigg|\frac{\ucla{\hat\beta_1} - b}{\hat\sigma_{\beta_1}/\sqrt{n}}\bigg|\right)
+	.\]}
+	\only<2>{
+
+		\noindent If we are testing \(\green{H_0}: \ucla{\beta_1} \geq  b\) against \(\red{H_1}: \ucla{\beta_1} < b\) we can compute the probability (under the null hypothesis) that we observe our value of \(\ucla{\hat\beta_1}\) or something even further  from the null hypothesis by computing
+	\[
+		\Pr\left(Z < \frac{\ucla{\hat\beta_1} - b}{\hat\sigma_{\beta_1}/\sqrt{n}}\right)
+	.\]}
+	\only<3>{
+
+	\noindent If we are testing \(\green{H_0}: \ucla{\beta_1} \leq  b\) against \(\red{H_1}: \ucla{\beta_1} > b\) we can compute the probability (under the null hypothesis) that we observe our value of \(\ucla{\hat\beta_1}\) or something even further  from the null hypothesis by computing
+	\[
+		\Pr\left(Z > \frac{\ucla{\hat\beta_1}-b}{\hat\sigma_{\beta_1}/\sqrt{n}}\right)
+	.\]}
+	\onslide<1->
+
+	This probability is called the \red{p-value} and we reject our null hypothesis if the \red{p-value}, \(p\), is less than  \(\alpha\).
+\end{frame}
+\begin{frame}{Linear Regression: How to Hypothesis Test} 
+	\label{frame:hyp8}
+	In summary, the test above can be conducted as follows. Suppose \(\green{H_0}: \ucla\beta \leq b\), \(\green{H_0}: \ucla\beta \geq b\), or \(\green{H_0}: \ucla\beta = b\)
+
+	\begin{enumerate}
+		\item<1|only@1> Compute the test statistic 
+		\[
+			t^* = \frac{\hat\beta-b}{\hat\sigma_{\beta}/\sqrt{n}}  
+		.\] 
+		\item<2|only@2> Compute the \underline{p-value}, the probability that we would obtain our observed value of \(\hat\beta\), or something even further from the null hypothesis, if the null hypothesis was correct
+		\begin{itemize}
+			\item If \(\green{H_0}:\ucla\beta = b\) and \(\red{H_1}:\ucla\beta\neq b\) compute
+			\[
+				p = \Pr(|Z| > |t^*|) = 2\Pr(Z > |t^*|)
+			.\] 
+			\item If \(\green{H_0}:\ucla\beta \leq b\) and \(\red{H_1}:\ucla\beta > b\) compute
+			 \[
+				 p = \Pr(Z > t^*)
+			.\]
+			\item If \(\green{H_0}:\ucla\beta \geq b\) and \(\red{H_1}:\ucla\beta < b\) compute
+			 \[
+				 p = \Pr(Z < t^*)
+			.\]
+		\end{itemize}
+		\item<3|only@3> \red{Reject} the null hypothesis in favor of the alternative hypothesis if \(p > \alpha\). Otherwise \green{fail to reject} the null hypothesis.
+	\end{enumerate}
+\end{frame}
+\begin{frame}{Linear Regression: Hypothesis Testing Example} 
+	\label{frame:hyp9}
+	Let's see this work in practice. Our close personal friend Jason Derulo claims that there is a negative association between a car's miles per gallon, \(X\), and it's sales price in thousands of dollars, \(Y\). 
+	
+	\onslide<2->
+	We want to use data to test this claim. We collect a random (i.i.d) sample of size 64, \(\{Y_i,X_i\}_{i=1}^{64}\) of cars and find 
+	\begin{align*}
+		\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X) &= 4 \\
+		\frac{1}{n}\sum_{i=1}^n (X_i - \bar X) ^2 &= 16\\
+		\frac{1}{n}\sum_{i=1}^n  \hat\eps_i^2 &= 36
+	\end{align*}
+	\onslide<3->
+	We will this data to test Derulo's claim, \(\green{H_0}:\ucla{\beta_1} \leq 0\), against an alternate hypothesis, \(\red{H_1}:\ucla{\beta_1} > 0\).
+\end{frame}
+\begin{frame}{Linear Regression: Hypothesis Testing Example} 
+	\label{frame:hyp9.5}
+	In order to test this null hypothesis (against it's alternative) we need to calculate the test statistic \(t^* = \frac{\ucla{\hat\beta_1}-0}{\hat\sigma_{\beta_1}/\sqrt{n}}\).
+	\onslide<2->
+	\begin{align*}
+		\ucla{\hat\beta_1} &= \frac{\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X)}{\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2}  = \frac{4}{16} =  0.25 \\
+		\hat\sigma_{\beta_1} &= \frac{\frac{1}{n}\sum_{i=1}^n \hat\eps_i^2}{\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2}  = \frac{36}{16}
+	\end{align*}
+	\onslide<3->
+	Using this, we compute the test statistic \[t^* = \frac{0.25}{\sqrt{36/16}/\sqrt{64}} \approx 1.333.\]
+\end{frame}
+\begin{frame}{Linear Regression: Hypothesis Testing Example} 
+	\label{frame:hyp9.75}
+	Using this test statistic, \(t^* \approx 1.333\), let's conduct the following test at level \(\alpha = 0.1\)
+	\[
+		\green{H_0}: \ucla{\beta_1} \leq 0\andbox \red{H_1}:\ucla{\beta_1} >0
+	.\]
+	\onslide<2->
+	Compute the p-value 
+	\[
+		p = \Pr(Z > 1.333) = 1 - \Pr(Z \leq 1.333) = 1 - 0.908 = 0.092 
+	.\] 
+	\onslide<3->
+	Because the \(p\)-value, \(0.092\) is less than  \(\alpha = 0.1\), we \red{reject} the null hypothesis that there is a negative association between miles per gallon and sales price in favor of the alternative that there is a positive relationship between the two.
+\end{frame}
+\begin{frame}{Linear Regression: Hypothesis Testing Example} 
+	\label{frame:hyp9.8}
+	Now given \(t^* \approx 1.333\), suppose that we wanted to conduct a two sided test at level \(\alpha = 0.1\). That is, suppose we wanted to test 
+	\[
+		\green{H_0}:\ucla{\beta_1} = 0 \andbox \red{H_1}:\ucla{\beta_1} \neq 0
+	.\] 
+	\onslide<2->
+	Compute the \(p\) value for a two-sided test
+	 \[
+		 p = \Pr(|Z| > |t^*|) = 2\Pr(Z > |t^*|) = 2(1-\Pr(X \leq  1.333)) = 2\cdot 0.092 \approx 0.194
+	.\] 
+	\onslide<3->
+	Given that \(p = 0.194 > 0.1\) we \green{fail to reject} the null hypothesis that there is no relationship between miles per gallon and sales price.
+
+\end{frame}
+\begin{frame}{Linear Regression: Hypothesis Testing Example} 
+	\label{frame:hyp9.9}
+	Notice that the p-value for a two-sided test was twice the p-value for the one-sided test! The reverse is not necessarily true however. 
+
+	\ucla{Why?}
+	\begin{itemize}
+		\item Suppose \(t^* = 1.64\) so that the p-value for a two sided test is 
+		\[
+			\Pr(|Z|> 1.64) = 2\Pr(Z > 1.64) = 0.1
+		.\] 
+		\item What is the p-value for the test \(\green{H_0}:\ucla{\beta_1} \leq 0\) gainst \(\red{H_1}: \ucla{\beta_1} > 0\)?
+		\item What is the p-value for the test \(\green{H_0}:\ucla{\beta_1} \geq 0\) against \(\red{H_1}:\ucla{\beta_1}<0\)?
+	\end{itemize}
+\end{frame}
+\begin{frame}{Hypothesis Testing: Questions}
+	\centering
+	\red{\Large Questions?}
+\end{frame} 
+
+\begin{frame}{Linear Regression: How to Hypothesis Test} 
+	\label{frame:hyp10}
+	Conducting the test above can also follow another standard procedure. Suppose \(H_0: \beta \leq b\), \(H_0: \beta \geq b\), or \(H_0: \beta = b\)
+	\begin{enumerate}
+		\item<1|only@1> Compute the test statistic or ``t-statistic''
+		\[
+		    t^* = \frac{\hat\beta - b}{\hat\sigma_\beta/\sqrt{n}} 
+		.\] 
+		\item<2|only@2> For a given level \(\alpha\) compute  \(z_{1-\alpha}\) for a one sided alternative or  \(z_{1-\alpha/2}\) for a 2 sided alternative, where \(z_{1-\alpha}\) and  \(z_{1-\alpha/2}\) are such that
+		 \[
+			 \Pr(Z > z_{1-\alpha}) = \alpha \andbox \Pr(Z > z_{1-\alpha/2}) = \frac{\alpha}{2}
+		.\]
+		These are called the \(1-\alpha\) and  \(1-\alpha/2\) \red{quantiles} of the standard normal distribution, respectively.
+		\begin{itemize}
+			\item \(z_{0.9} \approx 1.28 \)
+			\item \(z_{0.95} \approx 1.64\)
+			\item \(z_{0.975} \approx 1.96\)
+			\item \(z_{0.99} \approx 2.32\)
+			\item \(z_{0.995} \approx 2.57\)
+		\end{itemize}
+		\item<3|only@3 > Compare the test statistic \(t^*\) to the quantile  \(z_{1-\alpha}\) or  \(z_{1-\alpha/2}\).
+		\begin{itemize}
+			\item If \(\green{H_0}: \ucla{\beta} = b\) and \(\red{H_1}:\ucla{\beta} \neq b\), \red{reject} if \(|t^*| > z_{1-\alpha/2}\)
+			\item If \(\green{H_0}: \ucla\beta \geq b\) and \(\red{H_1}:\ucla\beta < b\), \red{reject} if  \(t^* < -z_{1-\alpha}\) 
+			\item If \(\green{H_0}:\ucla\beta \leq b\) and \(\red{H_1}:\ucla\beta > b\), \red{reject} if  \(t^* > z_{1-\alpha}\)
+		\end{itemize}
+		Otherwise, \green{fail to reject} the null hypothesis.
+	\end{enumerate}
+\end{frame}
+\begin{frame}{Linear Regression: Hypothesis Testing Example} 
+	\label{frame:hyp11}
+	Let's return to the hypothesis testing example from earlier to verify that this procedure gives the same results as comparing p-values.
+
+	Recall that in this example our friend Jason Derulo has claimed that there is a negative association between miles per gallon of a car and sales price of a car. That is we want to test at level \(\alpha = 0.1\)
+	\[
+		\green{H_0}:\ucla{\beta_1} \leq 0\hbox{ }\text{ vs. }\hbox{ }\red{H_1}:\ucla{\beta_1} > 0
+	.\] 
+	\onslide<2->
+	After collecting data, we find that \(t^* \approx 1.333\). To test this hypothesis, we will compare this value to \(z_{1-0.1} = z_{0.9} = 1.28\). We are conducting a one sided alternative (\(>\) sign) so we look to see if \(t^* > z_{0.9}\).
+
+	\onslide<3->
+	Since \(t^* \approx 1.3333 > z_{0.9} = 1.28\) we \red{reject} the null hypothesis that there is a negative association between miles per gallon of a car and sales price of a car in favor of the alternative hypothesis that there is a positive relationship.
+	\begin{itemize}
+		\item Same result as when using the p-value
+	\end{itemize}
+\end{frame}
+\begin{frame}{Linear Regression: Hypothesis Testing Example} 
+	\label{frame:hyp12}
+	Now let's use this procedure to test at level \(\alpha = 0.1\) 
+	\[
+		\green{H_0}:\ucla{\beta_1} = 0\hbox{ }\text{ vs. }\hbox{ }\red{H_1}:\ucla{\beta_1} \neq 0
+	.\] 
+	Because we are dealing with a two sided alternative (\(\neq\) sign) we have to compare  \(|t^*|\) to \(z_{1-\alpha/2} = z_{1-0.1/2} = z_{0.95}\). 
+	\vspace{0.2cm}	
+
+	\onslide<2->
+	Since \(t^* \approx 1.333 <  z_{0.95}= 1.64\) we \green{fail to reject} the null hypothesis against a two-sided.
+\end{frame}
+\begin{frame}{Hypothesis Testing: Questions}
+	\centering
+	\red{\Large Questions?}
+\end{frame} 
+
+\begin{frame}{Linear Regression: Confidence Intervals} 
+	\label{frame:ci1}
+	Given our data \(\{Y_i,X_i\}_{i=1}^n\) we now know how to construct estimates, \( \ucla{\hat\beta_0},\ucla{\hat\beta_1}\) of the linear model parameters \(\ucla{\beta_0},\ucla{\beta_1}\) where
+	\[
+		\ucla{\beta_0},\ucla{\beta_1} = \arg\min_{\tilde\beta_0,\tilde\beta_1} \E\left[\left(Y-\tilde\beta_0 - \tilde\beta_1\cdot X\right)^2\right]
+	.\] 
+	\onslide<2->
+	As a reminder, these parameters \(\ucla{\beta_0},\ucla{\beta_1}\) can equivalently be described as coming from a linear model 
+	\[
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}\cdot X + \eps
+	.\] 
+	where \(\E[\eps] = \E[\eps X] = 0\). The term  \(\eps\) is called the  ``linear regression error''.
+\end{frame}
+\begin{frame}{Linear Regression: Confidence Intervals} 
+	\label{frame:ci2}
+	Also given our data \(\{Y_i,X_i\}_{i=1}^n\) we know how to test hypothesis about the linear regression parameters \( \ucla{\beta_0}\) and \( \ucla{\beta_1}\) such as 
+	\[
+		\green{H_0}:\ucla{\beta_1} \geq 6\hbox{ }\text{ vs. }\hbox{ }\red{H_1}:\ucla{\beta_1} < 6
+	.\] 
+	or
+	\[
+		\green{H_0}:\ucla{\beta_0} = 0\vsbox\red{H_1}:\ucla{\beta_0}\neq 0
+	.\] 
+\end{frame}
+\begin{frame}{Linear Regression: Confidence Intervals} 
+	\label{frame:ci3}
+	Now, given our data \(\{Y_i,X_i\}_{i=1}^n\) we want to do is construct a \underline{range} of values that we are ``confident'' that the true parameter, \(\ucla{\beta_0}\) or \(\ucla{\beta_1}\) lies in.
+	\vspace{0.3cm}
+	\onslide<2->
+
+	We call this range of values a \(\red{100\cdot(1-\alpha)\%}\) \red{Confidence Interval}. 
+	\begin{itemize}
+		\item e.j if \(\alpha = 0.05\) we would want to construct a 95\% confidence interval.
+	\end{itemize}
+	\vspace{0.3cm}
+	\onslide<3->
+
+	What values should we include in a \(100\cdot(1-\alpha)\%\) Confidence Interval? 
+	\begin{itemize}
+		\item Any value \(b\) for which we would not reject  \(\green{H_0}:\ucla\beta = b\) against a  two sided alternative  \(\red{H_1}:\ucla\beta \neq b\) at level \(\alpha\).
+	\end{itemize}
+\end{frame}
+\begin{frame}{Linear Regression: Confidence Intervals} 
+	\label{frame:ci4}
+	What values should we include in a \(100\cdot(1-\alpha)\%\) Confidence Interval? 
+	\begin{itemize}
+		\item Any value \(b\) for which we would not reject  \(\green{H_0}:\ucla\beta = b\) against a  two sided alternative  \(\red{H_1}:\ucla\beta \neq b\) at level \(\alpha\).
+	\end{itemize}
+	\onslide<2->
+
+	Recall that we reject \(\green{H_0}:\beta = b\) in favor of  \(\red{H_1}:\beta \neq b\) if 
+	 \[
+		 |t^*| = \left|\frac{\hat\beta - b}{\hat\sigma_\beta/\sqrt{n}}\right| > z_{1-\alpha/2}
+	.\] 
+	\onslide<3->
+	We fail to reject \(\green{H_0}:\beta=b\) in favor of  \(\red{H_1}:\beta \neq b\) if
+	\begin{align*}
+		\left|\frac{\hat\beta-b}{\hat\sigma_\beta/\sqrt{n}} \right| \leq  z_{1-\alpha/2} 
+	.\end{align*} 
+\end{frame}
+\begin{frame}{Linear Regression: Confidence Intervals} 
+	\label{frame:ci5}
+	Equivalently we can say that we fail to reject \(\green{H_0}:\beta = b\) in favor of  \(\red{H_1}:\beta\neq b\) if
+	 \[
+	    \hat\beta - z_{1-\alpha/2}\cdot \left(\hat\sigma_{\beta}/\sqrt{n}\right) \leq b \leq \hat\beta + z_{1-\alpha/2}\cdot\left(\hat\sigma_{\beta}/\sqrt{n}\right)
+	.\] 
+	\onslide<2->
+	Thus our \(100\cdot(1-\alpha)\%\) confidence interval is given
+	\[
+		\left[\hat\beta - z_{1-\alpha/2}\cdot\left(\hat\sigma_\beta/\sqrt{n}\right), \hat\beta + z_{1-\alpha/2}\cdot\left(\hat\sigma_\beta/\sqrt{n}\right)\right]
+	.\] 
+	\onslide<3->
+	This is interpreted as: we are \(100\cdot(1-\alpha)\%\) confident that the true value of  \(\beta\) lies in the interval
+	\[
+		\left[\hat\beta - z_{1-\alpha/2}\cdot\left(\hat\sigma_\beta/\sqrt{n}\right), \hat\beta + z_{1-\alpha/2}\cdot\left(\hat\sigma_\beta/\sqrt{n}\right)\right]
+	.\] 
+\end{frame}
+\begin{frame}{Linear Regression: Confidence Interval Example} 
+	\label{frame:ci6}
+	Let's see this in practice. Suppose the government wants to know what the effect is of offering cash incentives to people to get vaccinated on their vaccination status. 
+
+	\onslide<2->
+	To study this policy we randomly select 100 (unvaccinated) people from the population and offer them a random cash incentive (from \(\$0\) to  \(\$100\)) and then observe whether or not they get vaccinated. 
+
+	\onslide<3->
+	Our data then looks like \(\{Y_i,X_i\}_{i=1}^{100}\) where \(Y_i \in \{0,1\}\) denotes a person's vaccination status and \(X_i \in [0,100]\) denotes the cash incentive offered to people. We want to preform construct a confidence interval for the parameter \( \ucla{\beta_1}\) from the linear model
+	\[
+		Y = \ucla{\beta_0} + \ucla{\beta_1}\cdot X_i + \eps_i,\;\;\; \E[\eps] = \E[\eps X] = 0
+	.\] 
+	\onslide<4->
+	\begin{itemize}
+		\item<4|only@4> As a reminder we can think of this model as generated by the line of best fit parameters
+			\[
+				\ucla{\beta_0},\ucla{\beta_1} = \arg\min_{\tilde\beta_0,\tilde\beta_1}\E\left[(Y-\tilde\beta_0-\tilde\beta_1X)^2\right]
+			.\]
+		\item<5|only@5> Important for the government, when considering a policy, to not only have a point estimate of the effect but also a measure of how confident we are in the point estimate.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Linear Regression: Confidence Interval Example} 
+	\label{frame:ci7}
+	After collecting our data \(\{Y_i,X_i\}_{i=1}^{100}\) we find that
+	\begin{align*}
+		\frac{1}{n}\sum_{i=1}^n X_i^2 &= 6 \\
+		\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2 &= 4 \\
+		\frac{1}{n}\sum_{i=1}^n \hat\eps_i^2 &= 0.25 \\
+		\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X) &= 0.1
+	\end{align*}
+\end{frame}
+\begin{frame}{Linear Regression: Confidence Interval Example} 
+	\label{frame:ci8}
+	Using this data we compute
+	\begin{align*}
+		\ucla{\hat\beta_1} &= \frac{\frac{1}{n}\sum_{i=1}^n (Y_i -\bar Y)(X_i - \bar X)}{\frac{1}{n}\sum_{i=1}^n (X_i-\bar X)^2} = \frac{0.1}{4} = 0.025  \\
+		\hat\sigma_{\beta_1}^2 &= \frac{\hat\sigma_\eps^2}{\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2} = \frac{0.25}{4} = 0.0625   
+	\end{align*}
+	\onslide<2->
+	\ucla{Question:} Given that \(Y \in \{0,1\}\), how do we interpret \(\ucla{\hat\beta_1}\) in this context? 
+	\onslide<3-> How would we interpret \( \ucla{\hat\beta_0}\) in this context?
+\end{frame}
+\begin{frame}{Linear Regression: Confidence Interval Example} 
+	\label{frame:ci9}
+	Now let's construct a \(95\%\) confidence interval for \( \ucla{\beta_1}\). 
+	\onslide<2->
+	Recall that a \(100\cdot(1-\alpha)\%\) confidence interval for  \(\ucla{\beta_1}\) is given by
+	\[
+		\ucla{\hat\beta_1} \pm z_{1-\alpha/2}\cdot\frac{\hat\sigma_{\beta_1}}{\sqrt{n}} 
+	.\] 
+	\onslide<3->
+	In this case \(\alpha = 0.05\). From above we have that \(z_{0.975} \approx 1.96\). Plugging in our values from above the \(95\%\) confidence interval for  \(\ucla{\beta_1}\) is given
+	\[
+	    0.025 \pm 1.96\cdot\frac{\sqrt{0.0625}}{\sqrt{100}} = 0.025 \pm 1.96\cdot\frac{0.25}{10}  
+	.\] 
+\end{frame}
+
+%TODO: Homework question about conditional expectation beta and binary X
+%TODO: Homework question about sampling (relevant population, is i.i.d violated)
+%TODO: Homework question about computing a t-statistic
+%TODO: Homework question about overlap between testing procedures (p-value vs. z-score)
+%TODO: Homework question about probability of CI coverage
+%TODO: Homework question testing hypothesis using CI
 
 \end{document}
 
