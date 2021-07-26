@@ -32,6 +32,7 @@
 	\end{itemize}
 	\ucla{Evaluating our Model}
 	\begin{itemize}
+		\item Prediction
 		\item \(R^2\) and goodness of fit
 	\end{itemize}
 	\ucla{Modeling Choices}
@@ -61,7 +62,7 @@
 	\end{align*}
 	where \(\sigma_{\beta_0}^2 = \E[X^2]\sigma_{\eps^2}/\sigma_X^2\) and \(\sigma_{\beta_1}^2 = \sigma_\eps^2/\sigma_X^2\).
 	 \begin{itemize}
-		\item<3-> Also went over how to estiamte these variances
+		\item<3-> Also went over how to estimate these variances
 	\end{itemize}
 	
 \end{frame}
@@ -153,7 +154,7 @@
 	    t^* = \frac{\hat\lambda - \ell}{\hat\sigma_\lambda/\sqrt{n}} 
 	.\]
 	\onslide<2->
-	As before, we want to reject our null hypothesis if the probability of obtaining our test statistic (or something even further from the null hypothesis) under the null hyptohesis is less than or equal to some pre-specified value \(\lambda\).
+	As before, we want to reject our null hypothesis if the probability of obtaining our test statistic (or something even further from the null hypothesis) under the null hypothesis is less than or equal to some pre-specified value \(\lambda\).
 	\onslide<3->
 	\begin{itemize}
 		 \item Recall that by the distributional result, under the null \(t^* \sim N(0,1)\)
@@ -314,16 +315,288 @@
 		\item<4-> What about testing this hypothesis at level \(\alpha = 0.01\)?
 	\end{itemize}
 \end{frame}
-\begin{frame}{Inference: Heteroskedasticitt} 
+\begin{frame}{Inference: Heteroskedasticity} 
 	\label{frame:h1}
+	Recall that in order to conduct inference and derive an asymptotic distribution for \(\ucla{\hat\beta_0}\) and \(\ucla{\hat\beta_1}\) we made the following assumptions about the underlying distribution of \((Y,X)\):
+	\begin{itemize}
+		\item \darkucla{Random Sampling:} Assume that \(\{Y_i,X_i\}\) are independently and identically distributed; \((Y_i,X_i) \overset{\text{i.i.d}}{\sim} (Y,X)\)
+		\item \darkucla{Homoskedasticity:} Assume that \(\Var(\eps\mid X=x) = \sigma_\eps^2 \) for all possible values of \(x\).
+		\item \darkucla{Rank Condition:} There must be at least two distinct values of \(X\) that appear in the population.
+	\end{itemize}
+	\onslide<2->
+	In the last set of slides we mentioned that Homoskedasticity was a strong assumption that we will want to relax. Let's look more into why this is the case and how to relax the assumption.
+\end{frame}
+\begin{frame}{Inference: Heteroskedasticity} 
+	\label{frame:h2}
+	Since our linear model relates \(Y\) and  \(X\) via the following equation
+	 \[
+	    Y= \ucla{\beta_0} + \ucla{\beta_1}X + \eps
+	\]
+	the requirement that \(\Var(\eps|X=x) = \sigma_\eps^2\) for all  \(x \in \supp(X)\) is implicitly requiring that \(\Var(Y|X=x) = \Var(\eps|X=x) = \sigma_\eps^2\) for all  \(x\in \supp(X)\).
+	\onslide<2->
+	\begin{itemize}
+		\item Intuitively this means that \(X\) has no information about the spread of \(Y\). 
+		\item The variance of \(Y\) is the same for all values of  \(X\).
+	\end{itemize}
+	\onslide<3->
+	To see why homoskedasticity is a restrictive assumption, let's turn to some examples. 
+	\begin{itemize}
+		\item If homoskedasticity is violated we say that the errors \(\eps\) exhibit \red{heteroskedasticity} 
+	\end{itemize}
+\end{frame}
+\begin{frame}{Inference: Heteroskedasticity} 
+	\label{frame:h3}
+	\ucla{Example 1}: Let \(Y\) be food expenditure and  \(X\) be household income and suppose we want to estimate the linear model.
+	\[
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}X +\eps
+	.\] 
+	Homoskedasticity requires that the variance of food expenditures is the same for all levels of income.
+	\only<1>{
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.5\linewidth]{food_homoskedasticity.png}
+		\label{fig:food_homoskedasticity}
+	\end{figure}}
+	\onslide<2->
+
+	Is this a reasonable assumption?
+	\begin{itemize}
+		\item<3-> Low income individuals don't have much choice on how much to spend on food 
+		\item<4-> High income individuals may have high variance reflecting variance in taste
+	\end{itemize}
+	
+\end{frame}
+\begin{frame}{Inference: Heteroskedasticity} 
+	\label{frame:h4}
+	\ucla{Example 1}: Let \(Y\) be food expenditure and  \(X\) be household income and suppose we want to estimate the linear model.
+	\[
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}X +\eps
+	.\] 
+	Homoskedasticity requires that the variance of food expenditures is the same for all levels of income. Instead we may expect the spread of food expenditure to depend on income
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.5\linewidth]{food_heteroskedasticity.png}
+	\end{figure}
+\end{frame}
+\begin{frame}{Inference: Heteroskedasticity} 
+	\label{frame:h5}
+	\ucla{Example 1}: Let \(Y\) be food expenditure and  \(X\) be household income and suppose we want to estimate the linear model.
+	\[
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}X +\eps
+	.\] 
+	After estimating \(\ucla{\hat\beta_0}\) and \(\ucla{\hat\beta_1}\) we can check for heteroskedasticity by plotting the estimated residuals againt \(X\). \onslide<2-> In this case that looks like
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.45\linewidth]{food_scatter.png}
+	\end{figure}
+	\onslide<3->
+	\begin{itemize}
+		\item Residuals look more spread out for higher income levels, suggests homoskedasticity is violated
+		\item Not a formal test (using \(\hat\eps\) instead of  \(\eps\)), but suggestive
+	\end{itemize}
+\end{frame}
+\begin{frame}{Inference: Heteroskedasticity} 
+	\label{frame:h6}
+	\ucla{Example 2}: Let \(Y\) be wages and  \(X\) be years of education and consider the model 
+	 \[
+	    Y = \ucla{\beta_1} + \ucla{\beta_2}X + \eps
+	.\] 
+	In this context homoskedasticity requires that the variance in wages is the same for all levels of education.
+	\only<2>{
+	Is this a reasonable assumption?
+	\begin{itemize}
+		\item High school graduates may not have access to as many career paths
+		\item College graduates can range from English PhDs to engineers at Google
+	\end{itemize}}
+	\only<3>{
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.8\linewidth]{edu_heteroskedasticity.png}
+	\end{figure}
+	\begin{itemize}
+		\item Looking at the data we see that variance in wages increases increases after high school
+	\end{itemize}
+	}
+\end{frame}
+\begin{frame}{Heteroskedasticity: Questions}
+	\centering
+	\red{\Large Questions?}
+\end{frame} 
+%TODO: Add a homework question about binary X and heteroskedasticity in this context
+%TODO: Maybe a good time to add a homework question about binary X and a linear model
+\begin{frame}{Inference: Heteroskedasticity} 
+	\label{frame:h7}
+	So, suppose we look at our data and suspect homoskedasticity is violated. What do we do now?
+	\begin{itemize}
+		\item<1|only@1> Won't need to adjust our estimator 
+	\end{itemize}
+	\onslide<2->
+	Recall that when were deriving the asymptotic distribution of our estimator \(\ucla{\hat\beta_1}\) (the approximate distribution for \(n\) large) we applied \red{law of large numbers} and found that approximately for large  \(n\):
+	 \[
+	 \sqrt{n}\left(\ucla{\hat\beta_1}-\ucla{\beta_1}\right) \approx \frac{\frac{1}{\sqrt{n}}\sum_{i=1}^n \eps_i(X_i-\mu_X)}{\sigma_X^2} 
+	.\] 
+	\onslide<3-> 
+	We then applied the \red{central limit theorem} to \(\frac{1}{\sqrt{n}}\sum_{i=1}^n \eps_i(X_i-\mu_X)\): approximately for large \(n\),
+	\[
+		\frac{1}{\sqrt{n}}\sum_{i=1}^n \eps_i(X_i-\mu_X) \sim N\left(0,\Var(\eps(X-\mu_X))\right)
+	.\] 
+	\onslide<4->
+	\begin{itemize}
+		\item The only time we used homoskedasticity was to decompose \(\Var(\eps(X-\mu_X)) = \sigma_\eps^2\sigma_X^2\). This simplified estimation but is not necessary.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Inference: Heteroskedasticity} 
+	\label{frame:h8}
+	Without heteroskedasticity we can use the same logic as before without decomposing \(\Var(\eps(X-\mu_X)) = \sigma_\eps^2\sigma_X^2\) to get
+	\[
+		\sqrt{n}(\ucla{\hat\beta_1}-\ucla{\beta_1}) \sim N\left(0,\frac{\Var(\eps(X-\mu_X))}{(\sigma_X^2)^2}\right) \implies  \ucla{\hat\beta_1} \sim N\left(\ucla{\beta_1},\frac{\Var(\eps(X-\mu_X))}{n(\sigma_X^2)^2}\right)
+	.\]
+	\begin{itemize}
+		\item<3-> Note that the variance still goes to \(0\) as  \(n\to\infty\) so that \( \ucla{\hat\beta_1}\to \ucla{\beta_1}\) as \(n\to\infty\).
+		\item<4-> Asymptotic variance is different now however, and will require a different estimator.
+		\item<5-> Using the wrong variance renders our inference useless as we will not be accurately computing objects like
+			\[
+				\Pr(|\ucla{\hat\beta_1}| > 5 | \ucla{\beta_1} = 0)
+			.\] 
+	\end{itemize}
+\end{frame}
+\begin{frame}{Inference: Heteroskedasticity} 
+	\label{frame:h9}
+	As mentioned above, all that needs to be done to relax homoskedasticity is find a way to estimate the asymptotic variance of \(\ucla{\hat\beta_1}\):
+	\[
+		\frac{\Var(\eps(X-\mu_X))}{(\sigma_X^2)^2} 
+	.\] 
+	\begin{itemize}
+		\item<2-> Already know how to estimate \(\sigma_X^2\) 
+		\item<3-> To estimate \(\Var(\eps(X-\mu_X))\) let  \(\hat W_i = \hat\eps_i(X_i - \bar X)\).
+		\begin{itemize}
+			\item<4-> Note that \(\frac{1}{n}\sum_{i=1}^n \hat\eps_i X_i = \bar X \frac{1}{n}\sum_{i=1}^n \hat\eps_i = 0\) by the first order conditions for \(\ucla{\hat\beta_1}\) and \( \ucla{\hat\beta_0}\), respectively. So \(\overline{\widehat W_i}  = \frac{1}{n}\sum_{i=1}^n \hat W_i = 0\).
+			\item<5-> Can then estimate \(\Var(\eps(X -\mu_X))\) via
+			 \[
+				 \frac{1}{n}\sum_{i=1}^n \hat W_i^2
+			.\]
+		\item<6-> Since \(\hat\eps_i \to \eps_i\) and  \(\bar X \to \mu_X\),  \(\hat W_i \to \eps_i(X-\mu_X)\) and so we have a consistent estimator for \(\Var(\eps(X-\mu_X))\) by \red{law of large numbers}.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}{Inference: Heteroskedasticity} 
+	\label{frame:h10}
+	To summarize under heteroskedasticity we have that (approximately for large \(n\))
+	\[
+		\sqrt{n}(\ucla{\hat\beta_1} - \ucla{\beta_1}) \sim N(0,\sigma_{\beta_1}^2) \implies \ucla{\hat\beta_1}\sim N(\ucla{\beta_1},\sigma_{\beta_1}^2/n)
+	,\] 
+	where \(\sigma_{\beta_1}^2 = \Var(\eps(X-\mu_X))/(\sigma_X^2)^2\).
+	 \begin{itemize}
+		 \item<2-> This is a different expression for \(\sigma_{\beta_1}^2\) than under homoskedasticity and involves a somewhat more complicated estimation procedure.
+		 \item<3-> From now on we will generally assume heteroskedasticity. It is easy to let the computer handle estimation of the variance \(\sigma_{\beta_1}^2\) and the standard error \(\sigma_{\beta_1}/\sqrt{n}\).
+		\item<4-> Formulas for variance of \(\ucla{\hat\beta_0}\) and the covariance between \( \ucla{\hat\beta_1}\) and \( \ucla{\hat\beta_0}\) will also be different. Again computer can handle these easily.
+		\item<5-> Once the heteroskedastic-consistent variances/standard errors/covariances are computed inference and confidence intervals are computed the same as before.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Heteroskedasticity: Questions}
+	\centering
+	\red{\Large Questions?}
+\end{frame} 
+
+%TODO: Homework question, give some error plots and ask to detect heteroskedasticity
+%TODO: Homework question; inference with heteroskedasticity
+%TODO: If we have too much time cover white test 
+
+\section{Evaluating our Model}
+\begin{frame}{Evaluating our Model: Prediction} 
+	\label{frame:g1}
+	Let's switch tacks a bit and turn from inference to evaluating our model. Recall that we chose to model the relationship between  \(Y\) and  \(X\) by estimating the line of best fit between  \(Y\) and  \(X\):
+	 \[
+		 \ucla{\beta_0},\ucla{\beta_1} = \arg\min_{\tilde\beta_0,\tilde\beta_1}\E\left[(Y-\tilde\beta_0-\tilde\beta_1X)^2\right]
+	.\]
+	We then spent the next few days conducting inference on the parameters of interest \( \ucla{\beta_0}\) and \( \ucla{\beta_1}\).
+	\onslide<2->
+
+	Now, however, let's consider a different question. Is this even a good model? 
+\end{frame}
+\begin{frame}{Evaluating our Model: Prediction} 
+	\label{frame:g2}
+	When we are answering this question we are essentially interested in how our model does as a tool to \red{predict} \(Y\) using \(X\).
+	\onslide<2->
+
+
+	This is a somewhat different goal than in \red{inference} when we are interested in \green{interpreting} the parameters  \( \ucla{\beta_0}\) and \(\ucla{\beta_1}\) to learn about the underlying relationship between \(Y\) and  \(X\).
+	\begin{itemize}
+		\item Inference tends to be useful when thinking about policies to implement, want to know about average effects
+	\end{itemize}
+\end{frame}
+\begin{frame}{Evaluating our Model: Prediction} 
+	\label{frame:g3}
+	Prediction can also be very useful though. Let's consider some examples.
+
+	\only<2>{\ucla{Example}: How can Amazon do two day delivery?
+	\begin{itemize}
+		\item In order to deliver an item within two days, an item has to be in stock in a warehouse nearby
+		\item If too many people buy the item at once in a certain area the warehouse will run out of stock
+		\item Amazon has to be able to accurately \red{forecast/predict} demand in certain areas.
+	\end{itemize}}
+	\only<3>{\ucla{Example}: How much power should the energy grid generate?
+	\begin{itemize}
+		\item Energy grid must have enough supply to meet demand
+		\item But it is costly and takes time to adjust production levels
+		\item Energy suppliers must have good forecasts of demand
+	\end{itemize}}
+	\onslide<4->{\ucla{Example}: How much should a pension fund keep in liquid funds?
+	\begin{itemize}
+		\item Fund must be able to pay all it's obligations
+		\item Some portion of funds are invested and returns are random. People also retire/die at random times.
+		\item Pension fund must forecast both obligations and returns.
+	\end{itemize}}	
+	\onslide<5->
+	Note that in these examples we are not per-se interested in interpreting the parameters of our linear regression model. We are just interested in using our linear regression model to predict \(Y\) using  \(X\).
+\end{frame}
+\begin{frame}{Evaluating our Model: Prediction} 
+	\label{frame:f4}
+	Suppose we had no information on \(X\). What is the best we can do in terms of predicting  \(Y\)?
+	\begin{itemize}
+		\item If we just have information on income and we are given a random name, what should we predict their income to be?
+	\end{itemize}
+	\onslide<2->
+
+	Since we have no additional information, we will make the same prediction for all new observations. Want to choose a value \(a*\) that minimizes 
+	\[
+		a^* = \arg\min_a\E[(Y-a)^2]
+	.\] 
+	That is \(a^*\) is  ``closest'' to \(Y\) on average.
+\end{frame}
+\begin{frame}{Evaluating our Model: Prediction} 
+	\label{frame:f5}
+	Taking first order conditions, we see that \(a^*\) solves
+	\[
+		-2\E[(Y-a^*)] = 0 \implies a^* = \E[Y]
+	.\] 
+	\onslide<2-> 
+	The best predictor of \(Y\) with no additional information is just  \(\E[Y]\)! 
+	\begin{itemize}
+		\item This is intuitive enough
+	\end{itemize}
+\end{frame}
+\begin{frame}{Evaluating our Model: Prediction} 
+	\label{frame:f6}
+	Now that we have information on \(X\) we have tried to use this information to predict \(Y\) by estimating a line of best fit (linear model) between  \(Y\) and  \(X\):
+	 \[
+		 \ucla{\beta_0},\ucla{\beta_1} = \arg\min_{\tilde\beta_0,\tilde\beta_1}\E\left[(Y-\tilde\beta_0-\tilde\beta_1X)^2\right]
+	.\]
+	\onslide<2->
+	\red{Question}: How much better is this linear model at predicting \(Y\) than just using  \(\E[Y]\)?
+	\begin{itemize}
+		\item<3-> Obviously cannot evaluate this directly since we don't know \( \ucla{\beta_0},\ucla{\beta_1}\) and \(\E[Y]\)
+		\item<4-> Instead we will see how much closer \(\hat Y_i = \ucla{\hat\beta_1} + \ucla{\hat\beta_1} X_i\) is to \(Y_i\) on average than \(\bar Y\).
+	\end{itemize}
+\end{frame}
+\begin{frame}{Evaluating our Model: \(R^2\) and Goodness of Fit} 
+	\label{frame:f7}
 	
 \end{frame}
 
-\section{Evaluating our Model}
-%NOTE: R^2 
 
 \section{Modeling Choices}%
-%NOTE: Stability under linear transformations, nonlinear trasformations/elasticity
+%NOTE: Stability under linear transformations, nonlinear transformations/elasticity
 
 
 \end{document}

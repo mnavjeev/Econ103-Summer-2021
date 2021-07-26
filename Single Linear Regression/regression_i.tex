@@ -1403,6 +1403,27 @@
 		\item These sorts of inferential results are important for policy analysis and separate the econometrics/statistics approaches from machine learning 
 	\end{itemize}
 \end{frame}
+\begin{frame}{Linear Regression: Final Notes} 
+	\label{frame:final-notes5}
+	As a quick aside, in the above we used a lot of ``approximations'' to get the asymptotic distributions and then conduct inference:
+	\begin{itemize}
+		\item<1-> In the derivation of the asymptotic distribution of \(\ucla{\hat\beta_1}\) used \(\bar Y \approx \mu_Y\) and  \(\bar X \approx \mu_X\) 
+		\item<2-> When we conduct inference on the parameters \(\ucla{\beta_0}\) and \(\ucla{\beta_1}\) used the fact that \underline{approximately} for large \(n\)
+		 \[
+			 \ucla{\hat\beta_1}\sim N(\ucla{\beta_1}, \frac{\sigma_\eps^2}{\sigma_X^2} )
+		.\] 
+		\item<3-> When estimating \(\sigma_\eps^2\) used the fact that, since \(\ucla{\hat\beta_1}\to \ucla{\beta_1}\) and \( \ucla{\hat\beta_0}\to \ucla{\beta_0}\), \(\hat\eps_i\approx \eps_i\)	
+	\end{itemize}
+\end{frame}
+\begin{frame}{Linear Regression: Final Notes} 
+	\label{frame:final-notes6}
+	It is natural to wonder, is this too much approximation?
+	\begin{itemize}
+		\item<1-> In general in this class we will ignore these approximation errors
+		\item<2-> They tend to be second order and go away rather quickly with \(n\) (and get arbitrarily small as \(n\) increases)
+		\item<3-> In practice, usually ok so long as \(n \geq 50\). Otherwise have to rely on strong additional assumptions that are generally violated.
+	\end{itemize}
+\end{frame}
 
 %TODO: Homework question comparing rejection from a two sided test to rejection from a one sided test with half the level
 %TODO: Homework question about conditional expectation beta and binary X
