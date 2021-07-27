@@ -591,13 +591,304 @@
 \end{frame}
 \begin{frame}{Evaluating our Model: \(R^2\) and Goodness of Fit} 
 	\label{frame:f7}
+	Let's recall the following equalities implied by the first order conditions of our estimating equations
+	\[
+		\ucla{\hat\beta_0}, \ucla{\hat\beta_1} = \arg\min_{b_0,b_1}\frac{1}{n}\sum_{i=1}^n (Y_i-b_0-b_1X_i)^2
+	.\]
+	\onslide<2->
+	From the first order condition for \(\ucla{\hat\beta_0}\):
+	\[
+		\frac{1}{n}\sum_{i=1}^n (Y_i - \ucla{\hat\beta_0}-\ucla{\hat\beta_1}X_i)^2 =  \frac{1}{n}\sum_{i=1}^n \hat\eps_i = 0
+	.\] 
+	From the first order condition for \(\ucla{\hat\beta_1}\):
+	\[
+		\frac{1}{n}\sum_{i=1}^n  (Y_i - \ucla{\hat\beta_0}-\ucla{\hat\beta_1}X_i)X_i = \frac{1}{n}\sum_{i=1}^n \hat\eps_i X_i = 0
+	.\]
+	
+\end{frame}
+\begin{frame}{Evaluating our Model: \(R^2\) and Goodness of Fit} 
+	\label{frame:f8}	
+	Recall that, by definition of \(\hat\eps_i = Y_i - \ucla{\hat\beta_0} -\ucla{\hat\beta_1} X_i\)
+	\[
+	    Y_i = \ucla{\hat\beta_0} + \ucla{\hat\beta_1}X_i + \hat\eps_i  = \hat Y_i + \hat\eps_i
+	.\] 	
+	and that after solving for \( \ucla{\hat\beta_0}\) we get
+	\[
+	    \ucla{\hat\beta_0} = \bar Y - \ucla{\hat\beta_1}\bar X \implies \bar Y = \ucla{\hat\beta_0} + \ucla{\hat\beta_1}\bar X
+	.\] 	
+	\onslide<2->
+	Using these we get that
+	\begin{align*}
+		Y_i - \bar Y &= (\hat Y_i - \bar Y)  + \hat\eps_i \\
+					 &= \ucla{\hat\beta_1}(X_i - \bar X) + \hat\eps_i
+	\end{align*}
+\end{frame}
+\begin{frame}{Evaluating our Model: \(R^2\) and Goodness of Fit} 
+	\label{frame:f9}
+	Now let's use these and decompose the sum:
+	\begin{align*}
+		\overbrace{\sum_{i=1}^n (Y_i - \bar Y)^2}^{\text{Total variance in \(Y\)}} &= \sum_{i=1}^n (\hat Y_i - \bar Y)^2 + \frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)\eps_i +  \frac{1}{n}\sum_{i=1}^n \hat\eps_i^2 \\
+		\onslide<2->{
+		&= \frac{1}{n}\sum_{i=1}^n (\hat Y_i - \bar Y)^2 + \ucla{\hat\beta_1}\overbrace{\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)\hat\eps_i}^{=0\text{ by FOCs}} + \frac{1}{n}\sum_{i=1}^n \hat\eps_i^2 \\}
+		\onslide<3->{
+		&= \underbrace{\frac{1}{n}\sum_{i=1}^n  (\hat Y_i - \bar Y)^2}_{\text{Explained by model with \(X\)}} + \underbrace{\frac{1}{n}\sum_{i=1}^n \hat\eps_i^2}_{\text{unexplained by model}}}
+	\end{align*}	
+\end{frame}
+\begin{frame}{Evaluating our Model: \(R^2\) and Goodness of Fit} 
+	\label{frame:f10}
+	Often we multiply both sides of the last equation by \(n\) and label the resulting components:
+	\[
+		\sum_{i=1}^n (Y_i - \bar Y)^2 = \sum_{i=1}^n  (\hat Y_i - \bar Y)^2 +\sum_{i=1}^n \hat\eps_i^2
+	.\] 
+	\begin{enumerate}
+		\item<1-> \ucla{\(\sum_{i=1}^n (Y_i - \bar Y)^2\)}: \red{SST (Total Sum Of Squares)}
+		\begin{itemize}
+			\item Captures how much total variation there is in \(Y\).
+			\item Can think of this as the sum of squared errors from just using \(\bar Y\) to predict  \(Y\).
+			\item Note that this is just the sample variance of \(Y\) multiplied by \(n\)
+		\end{itemize}
+		\item<2-> \ucla{\(\sum_{i=1}^n (\hat Y_i - \bar Y)^2\)}: \red{SSR (Sum of Squares due to Regression)}
+		\begin{itemize}
+			\item Captures variation that can be attributed to variation in our predictions
+			\item This is the sample variance of \(\hat Y_i\) multiplied by \(n\) 
+		\end{itemize}
+		\item<3-> \ucla{\(\sum_{i=1}^n \hat\eps_i^2\)}: \red{SSE (Sum of Squared Errors)}
+		\begin{itemize}
+			\item Variation that is ``left over'' after using the linear model
+			\item Note that this is just  \(\hat\sigma_\eps^2\) times  \(n\)
+		\end{itemize}
+	\end{enumerate}
+\end{frame}
+\begin{frame}{Evaluating our Model: \(R^2\) and Goodness of Fit} 
+	\label{frame:f11}
+	Using the decomposition
+	\[
+		\underbrace{\sum_{i=1}^n (Y_i - \bar Y)^2}_{\text{SST}} = \underbrace{\sum_{i=1}^n  (\hat Y_i - \bar Y)^2}_{\text{SSR}} +\underbrace{\sum_{i=1}^n \hat\eps_i^2}_{\text{SSE}}
+	.\] 
+	we define the coefficient of determination, \(R^2\), as
+	\[
+		R^2 = \frac{\text{SSR}}{\text{SST}} = 1 - \frac{\text{SSE}}{\text{SST}}  
+	.\]
+	\onslide<2->
+	\begin{itemize}
+		\item<2-> Intuitively \(R^2\) reports what proportion of the total variance in  \(Y\) can be explained by our linear model with  \(X\). 
+		\item<3-> \(R^2\) is generally reported when running a regression by almost any statistical software.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Evaluating our Model: \(R^2\) and Goodness of Fit} 
+	\label{frame:f12}
+	Let's see how this looks with an example from two different datasets
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.8\linewidth]{R2.png}
+	\end{figure}
+	\begin{itemize}
+		\item<2-> In which dataset does the regression line look closer to the data?
+		\item<3-> Does homoskedasticity look to be violated here?
+	\end{itemize}
+\end{frame}
+
+\section{Modeling Choices}%
+%NOTE: Stability under linear transformations, nonlinear transformations/elasticity
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m1}
+	Suppose we fit our linear model and find a low \(R^2\). There are two main reasons this could be happening.
+	\begin{enumerate}
+		\item<1-> Knowing \(X\) simply does not give us much information about  \(Y\)
+		 \begin{itemize}
+			\item<2-> For example, suppose we were trying to predict log wages, \(Y\), using a persons favorite color,  \(X\).
+		\end{itemize}
+		\item<3-> The true relationship between \(X\) and  \(Y\) is non-linear and we are trying to fit a linear model.
+	\end{enumerate}
+	\onslide<4->
+	The first problem we can't do much to address, other than trying to collect more right hand side variables. The second problem however we can try and address by \ucla{transforming our data}.
+\end{frame}
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m2}
+	Let's see an example of this. Suppose we collect our data and it looks like below
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.8\linewidth]{nonlinear1.png}
+	\end{figure}
+	\onslide<2-> 
+	The relationship between \(X\) and  \(Y\) is clearly non-linear, but we are trying to fit a line through it. This hurts our model preformance.
+\end{frame}
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m3}
+	Other reasons that we may think that the relationship between \(Y\) and  \(X\) is non-linear
+	\begin{itemize}
+		\item \(Y\) is bounded and \(X\) has a large support.
+		\begin{itemize}
+			\item<3-> For example, suppose \(Y\in\{0,1\}\) denotes treatment uptake and \(X\) denotes income.
+			\item<4-> A linear model of the form \( \ucla{\beta_0} + \ucla{\beta_1}\cdot X\) would give \(\hat Y > 1\) for a sufficiently large value of  \(X\).
+		\end{itemize}
+		\item<5-> We believe that the derivative of \(Y\) with respect to  \(X\) is not constant.
+		 \begin{itemize}
+			\item<6-> Suppose \(Y\) is amount spent on groceries and \(X\) is income.
+			\item<7-> We expect that as income rises people may start shopping at Whole Foods or spending more on nicer ingredients.
+			\item<8-> But this will probably level off for high levels of income. A linear model imposes that \(\frac{d}{dx}\hat{Y}(x) = \frac{d}{dx}(\ucla{\beta_0} + \ucla{\beta_1}x) = \ucla{\beta_1}\) for all \(x\).
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}{Modeling Choices: Transforing our Data} 
+	\label{frame:m4}
+	So, given that we believe the relationship between \(Y\) and  \(X\) to be nonlinear, what can we do about this?
+	\onslide<2->
+
+	Before we move on to something fancier, let's try just transforming our data and running a linear regression:
+	\[
+		f(Y) = \ucla{\beta_0} + \ucla{\beta_1}g(X) + \eps
+	.\]
+
+	\onslide<3->
+	Common functions to be used here are \(\ln(z)\),  \( \sqrt{z}\), and various polynomials; \(z^2, z^3\), etc.
+\end{frame}
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m5}
+	Let's return to our data from before and see how this would work. 
+	\only<1>{
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.75\linewidth]{nonlinear1.png}
+	\end{figure}
+	}
+	\only<2>{
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.75\linewidth]{nonlinear2.png}
+	\end{figure}
+	}
+	Instead of fitting the model \(Y = \ucla{\beta_0} + \ucla{\beta_1}X +\eps\) let's try fitting the model \(Y = \ucla{\beta_0} + \ucla{\beta_1}\ln(X) + \eps\)
+	\begin{itemize}
+		\item<1|only@1> How is this done? Choose our estimates
+			\[
+				\ucla{\hat\beta_0},\ucla{\hat\beta_1} = \arg\min_{b_0,b_1} \frac{1}{n}\sum_{i=1}^n \left(Y_i - b_0 - b_1\cdot\ln(X_i)\right)^2
+			.\] 
+		\item<2|only@2> We can see that the blue regression line is much closer to the data on average (\(R^2 = 0.988\) vs  \(R^2 = 0.6536\))
+	\end{itemize}	
+\end{frame}
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m6}
+	Let's see another example. Suppose our data looks like the below.
+	\only<1>{
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.8\linewidth]{nonlinearPoints2.png}
+	\end{figure}
+	First, let's try fitting a non-transformed linear regression: \(Y = \ucla{\beta_0} + \ucla{\beta_1}X+\eps\)}
+	\only<2>{
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.8\linewidth]{nonlinear3.png}
+	\end{figure}
+	We see that this line does not appear to be fitting the data so well (\(R^2 = 0.692\)). Because \(Y\) apears to grow exponentially with  \(X\), we may want to try transforming  \(Y\).}
+	\only<3>{
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=0.8\linewidth]{nonlinear4.png}
+	\end{figure}
+	The blue curve is our estimate of the model \(\ln(Y) = \ucla{\beta_0} + \ucla{\beta_1}X + \eps\). This fits the data much better and gives \(R^2 = 0.8553\). We estimate the parameters via
+	\[
+		\ucla{\hat\beta_0},\ucla{\hat\beta_1} = \arg\min_{b_0,b_1}\frac{1}{n}\sum_{i=1}^n (\ln(Y_i) - b_0 - b_1X_i)^2
+	.\] 
+	}	
+\end{frame}
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m7}
+	In all of the above, notice that from an estimation and inference perspective, nothing much has changed. We can estimate our parameters and conduct inference just as before, but while treating our data as \(\{f(Y_i),g(X_i)\}\) as opposed to \(\{Y_i,X_i\}\).
+\end{frame}
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m8}
+	Let's see an example of this. Suppose that we want to estimate the following model:
+	\[
+		\ln(Y) = \ucla{\beta_0} + \ucla{\beta_1}\cdot \ln(X) + \eps
+	.\] 
+	\onslide<2->
+	Using our data \(\{Y_i,X_i\}\) we estimate \( \ucla{\hat\beta_0},\ucla{\hat\beta_1}\) via
+	\[
+		\ucla{\hat\beta_0},\ucla{\hat\beta_1} = \arg\min_{b_0,b_1}\frac{1}{n}\sum_{i=1}^n (\ln(Y_i) - b_0 - b_1X_i)^2
+	.\]
+	we find that, with \(n = 49\), \(\ucla{\hat\beta_1} = 0.5\), \(\sigma_{\ln(X)}^2 = \frac{1}{n}\sum_{i=1}^n (\ln(X_i) - \overline{\ln(X)})^2 = 4\) and \(\hat \sigma_\eps^2 = \frac{1}{n}\sum_{i=1}^n (\ln(Y_i) - \ucla{\hat\beta_0} - \ucla{\hat\beta_1}\ln(X_i))^2 = 4\). 
+
+\end{frame}
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m9}
+	Assuming homoskedasticity, let's use this information to construct a \(95\%\) confidence interval for  \(\ucla{\hat\beta_1}\).
+	\onslide<2->
+
+	We use the same formula from before to calculate \(\hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{\hat\sigma_{\ln(X)}^2} =\frac{4}{4}=  1\).
+	
+	Then, using \(z_{0.975} = 1.96\), a \(95\%\) confidence interval is contructed
+	\[
+		\ucla{\hat\beta_1} \pm 1.96\frac{\hat\sigma_{\beta_1}}{\sqrt{n}} = 0.5 \pm 1.96\frac{1}{7}  = [0.22,0.78]  
+	.\]
+	\onslide<3->
+	\begin{itemize}
+		\item<4-> Notice that everything is the same as before
+		\item<5-> Using this, would we reject \(\green{H_0}:\ucla{\beta_1} \leq 0\) against \(\red{H_1}:\ucla{\beta_1} > 0\) at level \(\alpha = 0.5\)?
+		\begin{itemize}
+			\item<6-> Recall that we would reject \(\green{H_0}:\ucla{\beta_1}= 0\) against \(\red{H_1}:\ucla{\beta_1} \neq 0\) at level \(\alpha = 0.5\).
+		\end{itemize}
+	\end{itemize}	
+\end{frame}
+\begin{frame}{Transforming our Data: Questions}
+	\centering
+	\red{\Large Questions?}
+\end{frame} 
+
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m10}
+	What changes, however, is our interpretation of our parameters. Before we interpreted:
+	\begin{itemize}
+		\item \(\ucla{\beta_0}\): Expected value of \(Y\) when  \(X = 0\).
+		\item \(\ucla{\beta_1}\): Expected change in \(Y\) when  \(X\) increases by one unit
+	\end{itemize}
+	\onslide<2->
+	\vspace{0.3cm}
+
+	In the model \(f(Y) = \ucla{\beta_0} + \ucla{\beta_1}g(X) + \eps\), we have the following interpretations of \( \ucla{\beta_0}\) and \(\ucla{\beta_1}\).
+	\begin{itemize}
+		\item \(\ucla{\beta_0}\): Expected value of \(f(Y)\) when \(g(X) = 0\) 
+		\item \(\ucla{\beta_1}g'(x)\): Expected change in \(f(Y)\) at \(X=x\) when \(X\) increases by one unit.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m11}
+	\ucla{Example}: Suppose \(X\) represents the square footage of a house and  \(Y\) represents is final sales price (in tens of thousands of dollars). We estimate the following model
+	 \[
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}X^2 + \eps
+	\] 
+	and find that \(\ucla{\hat\beta_0} = 50\) and \(\ucla{\hat\beta_1} = 2\).
+	\onslide<2->
+
+	\red{How do we interpret these parameter estimates?}
+	\begin{itemize}
+		\item \(\ucla{\hat\beta_0} = 50\): The expected sales price of an empty lot (\(X^2 = 0 \iff X=0\)) is \$50,000.
+		\item<3-> \( \ucla{\hat\beta_1} = 2\): Taking derivatives gives that \(\frac{d}{dx}\hat Y = 2\ucla{\hat\beta_1}X\). We expect that a one square foot increase in home size at square footage \(x\) will be associated with a \$40,000\(\cdot\)x increase in sales price.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Modeling Choices: Transforming our Data} 
+	\label{frame:m12}
+	A useful approximation that we use here is that a one unit increase in \(\ln(Z)\) is about a  \(100\%\) increase in \(Z\) and vice versa, a \(1\%\) increase in  \(Z\) is associated with a  \(1/100\) unit increase in \(\ln(Z)\). 
+
+	This is useful for interpreting the parameters of various models.
+	\begin{itemize}
+		\item Suppose we model \(Y = \ucla{\beta_0} + \ucla{\beta_1}\ln(X) + \eps \implies\) a \(1\%\) increase in  \(X\) is associated with a  \(\ucla{\beta_1}/100\) unit change in \(Y\).
+		\item<2-> Suppose we model \(\ln(Y) = \ucla{\beta_0} + \ucla{\beta_1}X + \eps \implies\) a \(1\) unit increase in  \(X\) is associated with  \(100\cdot\ucla{\beta_1}\%\) increase in \(Y\)
+		\item<3-> Suppose we model \(\ln(Y) = \ucla{\beta_0} + \ucla{\beta_1}\ln(X) + \eps \implies\) a \(1\%\) increase is associated with a  \(\ucla{\beta_1}\%\) increase in \(Y\).
+	\end{itemize}
+\end{frame}
+\begin{frame}{Transforming our Data: Questions}
+	\centering
+	\red{\Large Questions?}
+\end{frame} 
+\begin{frame}{Modeling Choices: Linear Transformations} 
+	\label{frame:m13}
 	
 \end{frame}
 
 
-\section{Modeling Choices}%
-%NOTE: Stability under linear transformations, nonlinear transformations/elasticity
-
+%TODO: Assign linear transfomrations as a homework problem
 
 \end{document}
 

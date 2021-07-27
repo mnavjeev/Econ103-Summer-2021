@@ -159,3 +159,77 @@ abline(lm(ly1 ~ lx1), col = "darkred")
 abline(lm(ly2 ~ lx2), col = "darkblue")
 dev.off()
 
+
+
+
+
+# R^2 varies
+eps1 = rnorm(50, 0, 10)
+eps2 = rnorm(50, 0, 27)
+x1 = runif(50, 5, 20)
+x2 = runif(50, 5, 20)
+lw1 = 5 + 5*x1 + eps1 
+lw2 = 5 + 5*x2 + eps2
+reg1 <- lm(lw1 ~ x1)
+reg2 <- lm(lw2 ~ x2)
+print(r1 <- summary(reg1)$r.squared)
+print(r2 <- summary(reg2)$r.squared)
+png(file = "R2.png", width = 1200, height = 700, res = 150)
+par(mfrow = c(1,2))
+plot(x1, lw1, col = "darkred", xlab = "Year of Education", ylab = "Log Wages", main = paste("R^2 = ", toString(round(r1,3))), pch = 16, xlim = c(5,20))
+abline(reg1, col = "darkred")
+plot(x2, lw2, col = "darkblue", xlab = "Years of Education", ylab = "Log Wages", main = paste("R^2 = ",toString(round(r2,3))), pch = 16, xlim = c(5,20)) 
+abline(reg2, col = "darkblue")
+dev.off()
+
+# Nonlinear relationships
+#eps = rnorm(100, 0, 3)
+#x = rexp(100, 10)
+y = 2 + 20*log(x) + eps
+print(r2 <- summary(reg <- lm(y ~ x))$r.squared)
+png(file = "nonlinear1.png", width = 1200, height = 700, res = 150)
+par(mfrow = c(1,1))
+plot(x, y, col = "darkred", xlab = "X", ylab = "Y", main = "E[Y|X=x] = 2 + 20*log(X)",pch = 16)
+abline(reg, col = "darkred", lwd = 2)
+dev.off()
+
+
+library(pracma)
+print(r3 <- summary(reg2 <- lm(y ~ I(log(x))))$r.squared)
+xpred = linspace(min(x),min(y),1000)
+ypred = reg2$coefficients[1] + reg2$coefficients[2]*log(xpred)
+
+png(file = "nonlinear2.png", width = 1200, height = 700, res = 150)
+par(mfrow = c(1,1))
+plot(x, y, col = "darkred", xlab = "X", ylab = "Y", main = "E[Y|X=x] = 2 + 20*log(X)",pch = 16)
+abline(reg, col = "darkred", lwd = 2)
+lines(xpred,ypred, col = "darkblue", lwd = 2)
+dev.off()
+
+# Transformation of Y
+y2 = exp(4 + 10*x) + 10*eps
+logy2 = log(y2) 
+print(r3 <- summary(reg3 <- lm(y2 ~ x))$r.squared)
+print(r4 <- summary(reg4 <- lm(logy2 ~ x))$r.squared)
+ypred2 = exp(reg4$coefficients[1] + reg4$coefficients[2]*xpred)
+
+
+png(file = "nonlinearPoints2.png", width = 1200, height = 700, res = 150)
+par(mfrow = c(1,1))
+plot(x, y2, col = "darkred", xlab = "X", ylab = "Y", main = "E[Y|X=x] = ln(4 + 10x)",pch = 16)
+dev.off()
+
+png(file = "nonlinear3.png", width = 1200, height = 700, res = 150)
+par(mfrow = c(1,1))
+plot(x, y2, col = "darkred", xlab = "X", ylab = "Y", main = "E[Y|X=x] = ln(4 + 10x)",pch = 16)
+abline(reg3, col = "darkred", lwd = 2)
+dev.off()
+
+png(file = "nonlinear4.png", width = 1200, height = 700, res = 150)
+par(mfrow = c(1,1))
+plot(x, y2, col = "darkred", xlab = "X", ylab = "Y", main = "E[Y|X=x] = ln(4 + 10x)",pch = 16)
+abline(reg3, col = "darkred", lwd = 2)
+lines(xpred,ypred2, col = "darkblue", lwd = 2)
+dev.off()
+
+
