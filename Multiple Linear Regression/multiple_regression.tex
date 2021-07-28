@@ -1,0 +1,179 @@
+\documentclass[notheorems,9pt]{beamer}
+
+% Packages with options
+\usepackage[english]{babel}
+\usepackage[mathscr]{euscript}
+\usepackage[utf8]{inputenc}
+
+% Primary Packages
+\usepackage{amsbsy, amsmath, amssymb, amsthm, bm, commath, chngcntr, dsfont, econometrics, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
+
+% Rest of the setup is in the "setup_beamer" package
+\usepackage{setup_beamer}
+
+% Title, Author, Institute
+\title{Econ 103: Multiple Linear Regression I}
+\author{Manu Navjeevan}
+\institute{UCLA}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}{Content Outline} 
+	\label{frame:content-outline}
+	\ucla{The Model}:
+	\begin{itemize}
+		\item Adding more covariates
+		\item Assumptions needed for inference
+	\end{itemize}
+	\ucla{The Estimator}:
+	\begin{itemize}
+		\item Relation to Single Linear Regression Estimator
+		\item Asymptotic Dsitribution
+	\end{itemize}
+	\ucla{Inference}:
+	\begin{itemize}
+		\item Hypothesis Tests and Linear Combinations
+		\item Confidence Inervals
+	\end{itemize}
+	\ucla{Modeling Choices}:
+	\begin{itemize}
+		\item Polynomial Equations, transformations, and interactions
+		\item \(R^2\) and goodness of fit
+	\end{itemize}
+\end{frame}
+\section{The Model}
+
+\begin{frame}{The Model: Introduction} 
+	\label{frame:model}
+	So far we have used the model \(Y = \ucla{\beta_0} + \ucla{\beta_1}X+\eps\) defined by the line of best fit parameters
+	\[
+		\ucla{\beta_0},\ucla{\beta_1} = \arg\min_{\tilde\beta_0,\tilde\beta_1} \E\left[\left(Y-\tilde\beta_0 - \tilde\beta_1X\right)^2\right]
+	.\] 
+	to learn about the relationship between a single random variable \(X\) and  \(Y\) and to use  \(X\) to predict  \(Y\).
+	\onslide<2->
+
+	\ucla{Examples:}
+	\begin{itemize}
+		\item Using education to predict income or interpreting the coeffecient \(\ucla{\hat\beta_1}\) to learn about the relationship between the two.
+		\item<3-> Learning about the relationship between smoking and heart disease.
+	\end{itemize}
+\end{frame}
+\begin{frame}{The Model: Introduction} 
+	\label{frame:model2}
+	However, what happens if we have access to multiple explanatory variables \(X_1,\dots,X_p\)?
+
+	\ucla{Examples:}
+	\begin{itemize}
+		\item Suppose we wanted to impact the joint effect of education \underline{and} experience on age?
+		\item Learn about the relationship between smoking, genetic risk, and heart disease
+	\end{itemize}
+\end{frame}
+\begin{frame}{The Model: Introduction} 
+	\label{frame:model3}
+	As before, we may be interested in the parameters of a ``line of best fit'' between \(Y\) and our explantory variables  \(X_1,\dots,X_p\):
+	\[
+		\ucla{\beta_0},\ucla{\beta_1},\dots, \ucla{\beta_p} = \arg\min_{b_0,\dots,b_p} \E\left[(Y - b_0 - b_1X_1 - b_2X_2 - \dots - b_pX_p)^2\right]
+	.\] 
+	\onslide<2->
+	Again defining \(\eps = Y - \ucla{\beta_0} - \ucla{\beta_1}X_1 - \dots - \ucla{\beta_p}X_p\) these parameters generate the linear model 
+	\[
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \dots + \ucla{\beta_p}X_p + \eps
+	\]
+	where, by the first order conditions for \(\ucla{\beta}\), \(\E[\eps] = \E[\eps X_j] = 0\) for all  \(j = 0,1,\dots,p\). 
+\end{frame}
+\begin{frame}{The Model: Introduction} 
+	\label{frame:model4}
+	\ucla{Example 1:} Let \(Y\) be log wages, \(EDU\) be years of college education, and \(EXP\) be years of experience. Prior to this we have estimated the equation
+	\begin{equation}
+		\label{eq:edu1}
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}EDU + \eps
+	.\end{equation}
+	Now, we will consider estimation and inference on the model
+	\begin{equation}
+		\label{eq:edu2}
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}EDU + \ucla{\beta_2}EXP + \eps
+	.\end{equation}
+	\onslide<2->
+	Note that \(\ucla{\beta_0},\ucla{\beta_1}\) in model \eqref{eq:edu1} will differ from \(\ucla{\beta_0},\ucla{\beta_1}\) in model \eqref{eq:edu2}.
+	\begin{itemize}
+		\item<3-> In \eqref{eq:edu1} \( \ucla{\beta_0}\) corresponds to the average log wage for someone with no college education
+		\item<4-> In \eqref{eq:edu2} \(\ucla{\beta_0}\) will correspond to the average log wage for someone with no college education and no experience
+		\item<5-> In \eqref{eq:edu1} \(\ucla{\beta_1}\) corresponds to the expected change in log wage for an additional year of college education
+		\item<6-> In \eqref{eq:edu2} \(\ucla{\beta_1}\) corresponds to the expected change in log wage for an additional year of college education \underline{after} controlling for years of experience
+ 	\end{itemize}
+\end{frame}
+
+\begin{frame}{The Model: Introduction} 
+	\label{frame:model5}
+	\ucla{Example 2:} Let \(Y\) be the (log) final sales price of a home, \(SQFT\) be the square footage of the house, and  \(DAYS\) be the number of days the house has been on the market. Before we estimated and interpreted the linear model:
+	\begin{equation}
+		\label{eq:house1}
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}SQFT + \eps
+	.\end{equation} 
+	Now, we will consider estimation and inference on the model
+	\begin{equation}
+		\label{eq:house2}
+		Y = \ucla{\beta_0} + \ucla{\beta_1}SQFT + \ucla{\beta_2}DAYS + \eps
+	\end{equation}
+	\begin{itemize}
+		\item<2-> In \eqref{eq:house1} \(\ucla{\beta_0}\) is interpreted as the average log sales price for a home with zero square feet (an empty lot) \underline{regardless} of how long it's been on the market.
+		\item<3-> In \eqref{eq:house2} \(\ucla{\beta_0}\) is interpreted as the average log sales price for a home with zero square feet that has just entered the market
+		\item<4-> In \eqref{eq:house2} \( \ucla{\beta_1}\) is interpreted as the average change in sales price for a one unit increase in square footage, holding the number of days on the market constant 
+	\end{itemize}
+\end{frame}
+\begin{frame}{The Model: Introduction} 
+	\label{frame:intro3}
+	\ucla{Example 3:} Finally, let's return to an example from Week 1. Let \(Y\) be a measure of anxiety levels,  \(ENG\) be the number of energy drinks consumed per day, and \(CLS\) be the number of courses being taken. Before we may have estimated the model:
+	\begin{equation}
+		\label{eq:energy1}
+		Y = \ucla{\beta_0} + \ucla{\beta_1}ENG + \eps
+	\end{equation}
+	Now, we may consider the model
+	\begin{equation}
+		\label{eq:energy2}
+		Y = \ucla{\beta_0} + \ucla{\beta_1}ENG + \ucla{\beta_2}CLS + \eps
+	\end{equation}
+	\begin{itemize}
+		\item<2-3|only@2-3> In \eqref{eq:energy1} we can interpret \(\ucla{\beta_0}\) as the average anxiety level for someone who drinks no energy drinks
+		\item<3|only@3> In \eqref{eq:energy2} we can interpret \(\ucla{\beta_0}\) as the average anxiety level for someone who drinks no energy drinks and takes no classes
+		\item<4-> In \eqref{eq:energy1} we can interpret \(\ucla{\beta_1}\) as the expected change in anxiety levels for someone who drinks one more energy drink per day
+		\item<5-> In \eqref{eq:energy2} we can interpret \(\ucla{\beta_1}\) as the expected change in anxiety levels for an additional energy drink \underline{holding the number of courses being taken constant.}
+	\end{itemize}
+	\only<6>{
+	\red{Question:} How may we expect the signs/magnitutes of the  parameters to change when going from model \eqref{eq:energy1} to model \eqref{eq:energy2}?
+ 	}	
+\end{frame}
+\begin{frame}{The Model: Questions}
+	\centering
+	\red{\Large Questions?}
+\end{frame} 
+\begin{frame}{Estimation: Introduction} 
+	\label{frame:est1}
+	Before, in single linear regression when we were interested in the population line of best fit parameters 
+	\[
+		\ucla{\beta_0},\ucla{\beta_1} = \arg\min_{b_0,b_1} \E\left[(Y-b_0-b_1X)^2\right],
+	\] 
+	we estimated them by finding the line of best fit through our sample \(\{Y_i,X_i\}_{i=1}^n\) :
+	\[
+		\ucla{\hat\beta_0},\ucla{\hat\beta_1} = \arg\min_{b_0,b_1} \frac{1}{n}\sum_{i=1}^n (Y_i - b_0 - b_1X_i)^2
+	.\]
+	\onslide<2->
+	\(\rightarrow\) Have to estimate these parameters using the sample because we don't know the population distribution of  \((Y,X)\)
+\end{frame}
+\begin{frame}{Estimation: Introduction} 
+	\label{frame:est2}
+	Now, we are interested in 
+\end{frame}
+
+\section{The Estimator}
+
+\section{Inference}
+
+\section{Modeling Choices}
+
+\end{document}
+
+
