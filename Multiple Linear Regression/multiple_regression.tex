@@ -150,6 +150,7 @@
 	\centering
 	\red{\Large Questions?}
 \end{frame} 
+\section{The Estimator}
 \begin{frame}{Estimation: Introduction} 
 	\label{frame:est1}
 	Before, in single linear regression when we were interested in the population line of best fit parameters 
@@ -165,12 +166,290 @@
 \end{frame}
 \begin{frame}{Estimation: Introduction} 
 	\label{frame:est2}
-	Now, we are interested in 
+	Now, we are interested in the population line of best fit parameters:
+	\[
+		\ucla{\beta_0},\ucla{\beta_1}, \dots, \ucla{\beta_p} = \arg\min_{b_0,b_1,\dots,b_p} \E\left[(Y-b_0-b_1X_1-\dots-b_pX_p)^2\right]
+	.\]
+	\green{Question:} How should we estimate these using our sample \(\{Y_i,X_{1,i},\dots,X_{p,i}\}_{i=1}^n\)?
+
+	\onslide<2->
+	Estimate \(\ucla{\beta_0},\dots,\ucla{\beta_p}\) by finding the line of best fit through our sample:
+	\[
+		\ucla{\hat\beta_0},\ucla{\hat\beta_1},\dots,\ucla{\hat\beta_p} = \arg\min_{b_0,b_1,\dots,b_p} \frac{1}{n}\sum_{i=1}^n (Y_i - b_0 - b_1X_{1,i} - \dots-b_pX_{p,i})^2
+	.\] 
+\end{frame}
+\begin{frame}{Estimation: Introduction} 
+	\label{frame:est3}
+	Taking first order conditions for \( \ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\) above gives us
+	\begin{align*}
+		\frac{\partial }{\partial b_0}: \frac{1}{n}\sum_{i=1}^n \overbrace{(Y_i - \ucla{\hat\beta_0} - \ucla{\hat\beta_1}X_{1,i} - \dots - \ucla{\hat\beta_p}X_{p,i})}^{\hat\eps_i} &= 0 \\
+		\frac{\partial }{\partial b_1}: \frac{1}{n}\sum_{i=1}^n (Y_i - \ucla{\hat\beta_0} - \ucla{\hat\beta_1}X_{1,i} - \dots - \ucla{\hat\beta_p}X_{p,i})X_{1,i} &= 0 \\
+		\vdots \\
+		\frac{\partial }{\partial b_p}: \frac{1}{n}\sum_{i=1}^n (Y_i - \ucla{\hat\beta_0} - \ucla{\hat\beta_1}X_{1,i} - \dots - \ucla{\hat\beta_p}X_{p,i})X_{p,i} &= 0
+	\end{align*}
+	\onslide<2->
+	This gives us \(p+1\) linear equations to solve for our \(p+1\) parameters. Computers can solve these very quickly, but the explicit formulas for \(\ucla{\hat\beta_0},\ucla{\hat\beta_1},\dots,\ucla{\hat\beta_p}\) become very cumbersome if we don't use linear algebra notation.
+\end{frame}
+\begin{frame}{Estimation: Aside} 
+	\label{frame:est-aside}
+	Quickly, it is useful to note the following implication from the first order conditions for \(\ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\). Define \(\hat\eps_i = Y_i - \ucla{\hat\beta_0} - \ucla{\hat\beta_1}X_{1,i} - \dots - \ucla{\hat\beta_p}X_{p,i}\). Then 
+	\begin{align*}
+		\frac{1}{n}\sum_{i=1}^n \hat\eps_i &= 0 \\
+		\frac{1}{n}\sum_{i=1}^n \hat\eps_iX_{1,i} &= 0 \\
+		\frac{1}{n}\sum_{i=1}^n \hat\eps_iX_{2,i} &= 0 \\
+												  &\vdots \\
+		\frac{1}{n}\sum_{i=1}^n \hat\eps_iX_{p,i} &= 0
+	\end{align*}
+\end{frame}
+\begin{frame}{Estimation: Asymptotic Distribution} 
+	\label{frame:est4}
+	Just as in single linear regression, however, the solutions for \( \ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\) depend on the data. That is \(\ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\) are functions of our sample \(\{Y_i,X_{1,i},\dots,X_{p,i}\}_{i=1}^n\).
+	\begin{itemize}
+		\item<2-> If we collected a different sample \(\{Y_i,X_{1,i},\dots,X_{2,i}\}_{i=1}^n\), we would get different values for our estimators \( \ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\).
+	\end{itemize}
+	\onslide<3->
+
+	For hypothesis testing we would still like to know the (approximate) distribution of our estimates \( \ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\). This will be useful later on as we'd like to calculate objects such as
+	\[
+		\Pr(|\ucla{\hat\beta_1}| > 5 | \ucla{\beta_1} = -2)
+	.\] 
+\end{frame}
+\begin{frame}{Estimation: Asymptotic Distribution} 
+	\label{frame:est5}
+	In order for the estimates \(\ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\) to have a stable asymptotic distribution and to converge to the true parameters \( \ucla{\beta_0},\dots,\ucla{\beta_p}\), we need to make some (light) assumptions about the underlying distribution of \((Y,X_1,\dots,X_p)\) from which our sample is drawn. 
 \end{frame}
 
-\section{The Estimator}
+\begin{frame}{Estimation: Asymptotic Distribution} 
+	\label{frame:est6}
+	Assumptions needed for valid inference:
+	\begin{itemize}
+		\item<1-> \darkucla{Random Sampling}: The data \(\{Y_i,X_{1,i},\dots,X_{p,i}\}\) is independently and identically sampled from the population distribution \((Y,X_1,\dots,X_p)\)
+		\begin{itemize}
+			\item<1|only@1> Needed to make sure that we are making inferences on the correct population
+			\item<2|only@2> \red{Question:} When would this be violated?
+		\end{itemize}
+		\item<3-> \darkucla{Rank Condition}: The right hand side variables \(X_1,\dots,X_p\) are not linearly dependent, i.e we cannot write
+		\[
+		    a_1X_1 + a_2X_2 + \dots + a_pX_p = 0
+		\]
+		for some constants \(a_1,\dots,a_p\) with at least one \(a_k \neq 0\).
+		\begin{itemize}
+			\item<4|only@4> If this is violated then we can write one random variable as a linear combination of the other ones. 
+			\item<5|only@5> To see why this is problematic, suppose that we could write \(X_1 = 2X_2\). Then these two linear models are equivalent
+			 \[
+				 Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2 + \eps \iff Y = \ucla{\beta_0} + (2\ucla{\beta_1} + \ucla{\beta_2})X_2 + \eps
+			.\] 
+			The ``line of best fit'' solution is then not unique. We can achieve the same fit by setting the coeffecient on \(X_1\) to be \( \ucla{\ beta_1}\) and the coeffecient on \(X_2\) to be \(\ucla{\beta_2}\) or by setting the coeffecient on \(X_1\) to be zero and the coeffecient on  \(X_2\) to be  \(2\ucla{\beta_1} + \ucla{\beta_2}\).
+		\end{itemize}
+		\onslide<6->
+		\noindent\ucla{\rule{2cm}{0.2mm}}	
+		\item<6-> \darkucla{Homoskedasticity}: \(\Var(\eps|X_1= x_1,X_2 = x_2,\dots,X_p = x_p) = \sigma_\eps^2\) for all possible \((x_1,\dots,x_p)\).
+		\begin{itemize}
+			\item<7|only@7> Like before we can and should relax this. It is not very important to our results but it makes some closed form equations simpler later one.
+		\end{itemize}
+	\end{itemize}
+	\onslide<8->
+	And that's it! Really only need \darkucla{Random Sampling} and \darkucla{Rank Condition}.
+\end{frame}
+\begin{frame}{Estimation: Asymptotic Distribution} 
+	\label{frame:asy1}
+	Under the assumptions \darkucla{Random Sampling} and \darkucla{Rank Condition} we get the following result for any  \( \ucla{\hat\beta_k}\), \(k = 0,1,\dots,p\).
+
+	Approximately, for large \(n\):
+	\[
+		\frac{\ucla{\hat\beta_k}-\ucla{\beta_k}}{\hat\sigma_{\beta_k}/\sqrt{n}} \sim N(0,1)\iff \ucla{\hat\beta_k}\sim N\bigg(\ucla{\beta_k}, \underbrace{\sigma_{\beta_k}^2/n}_{=\Var(\ucla{\hat\beta_k})}\bigg)  
+	.\]
+	\onslide<2->
+	\begin{itemize}
+		\item<2-> The assumption \darkucla{Homoskedasticity} simply changes the form of  \(\sigma_{\beta_k}^2\) and thus it's estimator  \(\hat\sigma_{\beta_k}^2\). 
+		\item<3-> Unlike in single linear regression we will not go over a general form for \(\hat\sigma_{\beta_k}\)
+		\begin{itemize}
+			\item Typically, all that you need to know is that  \(\hat\sigma_{\beta_k}\) (or the \red{standard error},  \(\hat\sigma_{\beta_k}/\sqrt{n}\) or the \red{variance} \(\hat\sigma_{\beta_k}^2/n\)) will either be given to us directly or found in \(R\) output.
+		\end{itemize}
+		\item<4->In addition, we will be able to estimate the asymptotic covariance between any two estimates \( \ucla{\hat\beta_j},\ucla{\hat\beta_k}\) for \(j,k = 0,1,\dots,p\).
+	\end{itemize}
+\end{frame}
+\begin{frame}{Estimation: Asymptotic Variance} 
+	\label{frame:var-mat}
+	To consolidate notation, the variances and covariances are often presented as a \red{Variance-Covariance matrix}. For example, when \(p = 2\) the variance covariance matrix looks like
+	\[
+		\Cov(\hat\beta) = \begin{pmatrix} \Var(\ucla{\hat\beta_0}) & \Cov(\ucla{\hat\beta_0},\ucla{\hat\beta_1}) & \Cov(\ucla{\hat\beta_0}, \ucla{\hat\beta_2}) \\
+		\Cov(\ucla{\hat\beta_1},\ucla{\hat\beta_0}) & \Var(\ucla{\hat\beta_1}) & \Cov(\ucla{\hat\beta_1},\ucla{\hat\beta_2}) \\
+		\Cov(\ucla{\hat\beta_2},\ucla{\hat\beta_0}) & \Cov(\ucla{\hat\beta_2},\ucla{\hat\beta_1}) & \Var(\ucla{\hat\beta_2})\end{pmatrix}
+	.\] 
+	\begin{itemize}
+		\item<2-> Note that \(\Cov(X,Y) = \Cov(Y,X)\) so this is a \green{symmetric} matrix 
+		\item<3-> Also note that \(\Var(X) = \Cov(X,X)\) which is why we sometimes just call this the \red{Covariance matrix}. 
+		\item<4-> In general the \red{Variance-Covariance} matrix will be a \((p+1)\times (p+1)\) matrix (one dimension for each of the slope coefficients and the intercept).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Estimation: Asymptotic Variance} 
+	\label{frame:asy3}
+	\green{Question:} What influences the asymptotic variance?
+
+	In order to get some intuition for this, we will go over a particular example when \(p = 2\). That is when we want to estimate the model 
+	\[
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2 + \eps
+	.\]
+	\onslide<2->
+	In this case, we will be able to get some simple closed form expressions for \(\sigma_{\beta_1}^2\) and  \(\sigma_{\beta_2}^2\).
+	\begin{itemize}
+		\item<3-> Will provide some insight into what drives the asymptotic variance
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Estimation: Asymptotic Variance} 
+	\label{frame:asy4}
+	Before doing so, let's review the \red{correlation coeffecient}. Recall that for two random variables \(X_1\) and  \(X_2\) the correlation coeffecient  \(\rho_{12}\) is defined
+	 \[
+		 \rho_{12} = \frac{\Cov(X_1,X_2)}{\sqrt{\Var(X_1)}\sqrt{\Var(X_2)}} 
+	.\]
+	\onslide<2->
+	The correlation coeffecient is a measure of the linear dependence between \(X_1\) and  \(X_2\)
+	\begin{itemize}
+		\item<2-> If \(\rho_{12} = 1\) then  \(X_1\) and  \(X_2\) are perfectly linearly dependent, that is  \(X_1 = cX_2\) for some constant  \(c\neq 0\)
+		\item<3-> If \(\rho_{12} = 0\) then  \(X_1\) and  \(X_2\) are have no linear dependence, that is  \(\Cov(X_1,X_2) = 0\).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Estimation: Asymptotic Variance} 
+	\label{frame:asy5}
+	With this in mind, the asymptotic variance (under homoskedasticity) \(\hat\sigma_{\beta_1}^2\) for  \(\ucla{\beta_1}\) in the linear model 
+	\[
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2 + \eps
+	,\] 
+	is given
+	\[
+		\sigma_{\beta_1}^2 = \frac{\sigma_\eps^2}{(1-\rho_{12}^2)\sigma_{X_1}^2} \iff \sqrt{n}(\ucla{\hat\beta_1} - \ucla{\beta_1}) \sim N(0,\sigma_{\beta_1}^2)
+	,\] 
+	where \(\rho_{12}\) is the correlation coeffecient between  \(X_1\) and  \(X_2\).
+
+	\green{Notice:}
+	\begin{itemize}
+		\item<2-> As before \(\Var(\hat\beta_1) = \sigma_{\beta_1}^2/n\) is decreasing with \(n\), \(\ucla{\hat\beta_1} \to \ucla{\beta_1}\) as \(n\to\infty\).
+		\item<3-> As before \(\sigma_{\beta_1}^2\) is decreasing with \(\sigma_{\eps^2}\) and increasing with  \(\sigma_{X_1}^2\)
+		\begin{itemize}
+			\item<3|only@3> \(\sigma_\eps^2:\) If points are closer to the line it is easier to make out the line
+			\item<3|only@3> \(\sigma_{X_1}^2:\) If points are more spread out, it is easier to make out the line 
+		\end{itemize}
+		\item<4-> However, now we see that the variance \(\sigma_{\beta_1}^2\) is increasing also as  \(\rho_{12}\uparrow 1\).
+		\begin{itemize}
+			\item<4|only@4> \red{Intuition:} If \(X_1\) and \(X_2\) are highly correlated, it is difficult to parse out the relationship of  \(X_1\) on  \(Y\) holding \(X_2\) constant. 
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}{Estimation: Asymptotic Variance} 
+	\label{frame:estimation}
+	To estimate \(\sigma_{\beta_1}^2\) we can estimate each of it's components.
+	\[
+		\hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{(1-\hat\rho_{12}^2)\hat\sigma_{X_1}^2} 
+	.\] 
+	\begin{itemize}
+		\item<2-> For \(\hat\sigma_\eps^2\) generate the estimated residuals  \(\hat\eps_i = Y_i - \ucla{\hat\beta_0} - \ucla{\hat\beta_1}X_{1,i} - \ucla{\hat\beta_2}X_{2,i}\) and calculate the sample variance of the estimated residuals:
+		\[
+			\hat\sigma_\eps^2 = \frac{1}{n}\sum_{i=1}^n \hat\eps_i^2
+		.\] 
+		\begin{itemize}
+			\item Recall that by the first order conditions for \(\ucla{\hat\beta_0}\), \(\frac{1}{n}\sum_{i=1}^n \hat\eps_i = 0\) so that \(\bar{\hat\eps} = 0\)
+		\end{itemize}
+		\item<3-> For \(\hat\sigma_{X_1}^2\) calculate the sample variance of \(X_1\)
+		\[
+			\hat\sigma_{X_1}^2 = \frac{1}{n}\sum_{i=1}^n (X_{1,i} - \bar X_1)^2
+		.\] 
+	\end{itemize}
+\end{frame}
+\begin{frame}{Estimation: Asymptotic Variance} 
+	\label{frame:estimation2}
+	To estimate \(\sigma_{\beta_1}^2\) we can estimate each of it's components.
+	\[
+		\hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{(1-\hat\rho_{12}^2)\hat\sigma_{X_1}^2} 
+	.\]
+	\begin{itemize}
+		\item To estimate \(\hat\rho_{12}^2\) recall that 
+		 \[
+			 \rho_{12} = \frac{\Cov(X_1,X_2)}{\sigma_{X_1}\sigma_{X_2}}\implies \hat\rho_{12} = \frac{\widehat\Cov(X_1,X_2)}{\hat\sigma_{X_1}\hat\sigma_{X_2}}  
+		.\]
+		\begin{itemize}
+			\item<2-> We have already covered how to estiamte \(\hat\sigma_{X_1}^2\). Estimating  \(\hat\sigma_{X_2}^2\) follows the same formula
+			 \[
+				 \hat\sigma_{X_2}^2 = \frac{1}{n}\sum_{i=1}^n (X_{2,i} - \bar X_2)^2
+			.\]
+			Then, take square roots \(\hat\sigma_{X_1} = \sqrt{\hat\sigma_{X_1}^2}\) and \(\hat\sigma_{X_2} =\sqrt{\hat\sigma_{X_2}^2}\).
+			\item<3-> To estimate the covariance note \(\Cov(X_1,X_2) = \E[(X_1 - \mu_{X_1})(X_2 - \mu_{X_2})]\) so 
+			\[
+				\widehat\Cov(X_1,X_2) = \frac{1}{n}\sum_{i=1}^n (X_{1,i} - \bar X_1)(X_{2,i} - \bar X_2)
+			.\] 
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+%TODO: Homework question showing that mean residuals is zero
+%TODO: Homework question about estiamting the variance
+
+\begin{frame}{Estimation: Asymptotic Variance} 
+	\label{frame:asymptotic-variance}
+	Let's see an example of this. Suppose we are interested in the joint effect of smoking heavily and drinking heavily on liver failure. 
+
+	That is let \(Y\in \{0,1\}\) denote liver failure, \(X_1 \in \{0,1\}\) denote being a heavy smoker, and \(X_2 \in \{0,1\}\) denote being a heavy drinker and suppose we want to estimate the model 
+	\[
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2
+	.\]
+\end{frame}
+\begin{frame}{Estimation: Asymptotic Variance} 
+	\label{frame:asymptotic-var}
+	After collecting a sample of size \(n= 64\) we estimate  \(\hat\sigma_\eps^2 = 0.25\), \(\hat\sigma_{X_1}^2 = 0.1\), and \(\hat\rho_{12} = 0.5\), where
+	\[
+	\hat\rho_{12} = \frac{\widehat\Cov(X_1,X_2)}{\hat\sigma_{X_1}\hat\sigma_{X_2}}
+	.\] 
+
+	\green{Question:} What is the \underline{standard error} of  \( \ucla{\hat\beta_1}\)?
+
+	\onslide<2->
+	\red{Answer:} 
+	Recall that the standard error is given \(\hat\sigma_{\beta_1}/\sqrt{n}\). Using the above we get that 
+	\[
+		\hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{(1-\hat\rho_{12})\hat\sigma_{X_1}^2} = \frac{0.25}{(1-0.25)0.1} = \frac{10}{3}  
+	.\]
+
+	The standard error is then \(\hat\sigma_{\beta_1}/\sqrt{n} = \sqrt{10/3}/\sqrt{64} \approx 0.228\)
+\end{frame}
+\begin{frame}{Estimation: Asymptotic Variance} 
+	\label{frame:var-corr-ex2}
+	Now suppose that after collecting a sample of size \(n= 100\) we estimate  \(\hat\sigma_\eps^2 = 0.25\), \(\hat\sigma_{X_1}^2 = 0.1\). This time however, we estimate \(\hat\rho_{12} = 0.75\), where
+	\[
+		\hat\rho_{12} = \frac{\widehat\Cov(X_1,X_2)}{\hat\sigma_{X_1}\hat\sigma_{X_2}}
+	.\] 
+
+	\green{Question:} In this case, what is the standard error  of \(\ucla{\hat\beta_1}\)?
+
+	\onslide<2->
+	\red{Answer:} Using the formula above
+	\[
+		\hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{(1-\hat\rho_{12})^2\hat\sigma_{X_1}^2} = \frac{0.25}{(1-0.5625)0.1} = \approx 5.714 
+	.\] 
+	The standard error is then \(\hat\sigma_{\beta_1}/\sqrt{n}\approx \sqrt{5.714}/\sqrt{100} = 0.239\).
+
+	\onslide<3->
+	\noindent\ucla{\rule{2cm}{0.2mm}}
+
+	Notice that the standard error is \underline{larger} now than it was when \(n = 64\), despite the fact that our sample size has grown by about 50\%!
+\end{frame}
+
+%TODO: Add a homework problem about estimating variance and how it changes with correlation between random variables
 
 \section{Inference}
+\begin{frame}{Inference: Introduction} 
+	\label{frame:inference-mhs}
+	Testing single hypothesis about the coeffecients of our regression or linear combinations of coeffecients follows the same procedure.
+
+	If we recall, this procedure consists of constructing a test statistic of the form 
+	\[
+		t^* = \frac{\text{Estimator} - \text{Null Hypothesis Value}}{\text{Standard Error of Estimator}} 
+	,\] 
+	and then either computing a p-value or comparing the test statistic directly to a quantile of the standard normal distribution.
+\end{frame}
+
 
 \section{Modeling Choices}
 
