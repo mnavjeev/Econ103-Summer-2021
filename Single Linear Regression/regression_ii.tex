@@ -154,7 +154,7 @@
 	    t^* = \frac{\hat\lambda - \ell}{\hat\sigma_\lambda/\sqrt{n}} 
 	.\]
 	\onslide<2->
-	As before, we want to reject our null hypothesis if the probability of obtaining our test statistic (or something even further from the null hypothesis) under the null hypothesis is less than or equal to some pre-specified value \(\lambda\).
+	As before, we want to reject our null hypothesis if the probability of obtaining our test statistic (or something even further from the null hypothesis) under the null hypothesis is less than or equal to some pre-specified value \(\alpha\).
 	\onslide<3->
 	\begin{itemize}
 		 \item Recall that by the distributional result, under the null \(t^* \sim N(0,1)\)
@@ -259,7 +259,7 @@
 	\onslide<2->
 	To test this claim we use our data (with \(n=49\)) to estimate
 	\begin{align*}
-		\ucla{\hat\beta_0} = 10,\;&\;\;\;  \ucla{\hat\beta_1} = 3 \\ \hat\sigma_{\beta_0}^2 = \hat\sigma_{\beta_0}^2 &= \hat\sigma_{\beta_{01}} = 1
+		\ucla{\hat\beta_0} = 10,\;&\;\;\;  \ucla{\hat\beta_1} = 3 \\ \hat\sigma_{\beta_0}^2 = \hat\sigma_{\beta_1}^2 &= \hat\sigma_{\beta_{01}} = 1
 	\end{align*}
 	\onslide<3->
 	Using these estimates we get
@@ -286,7 +286,7 @@
 	Since \(0.08 > 0.05\) we \green{fail to reject} Kuzma's claim.}
 	
 	\only<3>{
-	We'll run our test in two ways. Next, let's compare our test statistic to \(z_{1-\alpha/2}\). Since \(\alpha =2\) we get that  \(z_{1-\alpha/2} = z_{0.975}= 1.96\). Because
+	We'll run our test in two ways. Next, let's compare our test statistic to \(z_{1-\alpha/2}\). Since \(\alpha = 0.05\) we get that  \(z_{1-\alpha/2} = z_{0.975}= 1.96\). Because
 	\[
 		|t^*| = 1.75 < 1.96 = z_{0.975} 
 	\] 
@@ -306,15 +306,20 @@
 
 	From above we have that a \(95\%\) confidence interval for  \(\lambda\) can be constructed
 	 \[
-		 \hat\lambda \pm z_{0.975}\frac{\hat\sigma_\lambda}{\sqrt{n}} = 19 \pm 1.96\frac{7}{4}  
+		 \hat\lambda \pm z_{0.975}\frac{\hat\sigma_\lambda}{\sqrt{n}} = 19 \pm 1.96\frac{4}{7}  
 	.\]
-	So that we are \(95\%\) confident that the true value of  \(\lambda = \ucla{\beta_0} + 3\ucla{\beta_1}\) lies in the inteval \([15.57,22.43].\)
+	So that we are \(95\%\) confident that the true value of  \(\lambda = \ucla{\beta_0} + 3\ucla{\beta_1}\) lies in the inteval \([17.88,20.12].\)
 	\onslide<3->
 	\begin{itemize}
 		\item How could we use this interval to test the hypothesis \(\green{H_0}:\lambda = 20\) vs \(\red{H_1}:\lambda \neq 20\) at level  \(\alpha = 0.05\)?
 		\item<4-> What about testing this hypothesis at level \(\alpha = 0.01\)?
 	\end{itemize}
 \end{frame}
+\begin{frame}{Linear Combinations of Parameters: Questions}
+	\centering
+	\red{\Large Questions?}
+\end{frame} 
+
 \begin{frame}{Inference: Heteroskedasticity} 
 	\label{frame:h1}
 	Recall that in order to conduct inference and derive an asymptotic distribution for \(\ucla{\hat\beta_0}\) and \(\ucla{\hat\beta_1}\) we made the following assumptions about the underlying distribution of \((Y,X)\):
@@ -598,7 +603,7 @@
 	\onslide<2->
 	From the first order condition for \(\ucla{\hat\beta_0}\):
 	\[
-		\frac{1}{n}\sum_{i=1}^n (Y_i - \ucla{\hat\beta_0}-\ucla{\hat\beta_1}X_i)^2 =  \frac{1}{n}\sum_{i=1}^n \hat\eps_i = 0
+		\frac{1}{n}\sum_{i=1}^n (Y_i - \ucla{\hat\beta_0}-\ucla{\hat\beta_1}X_i) =  \frac{1}{n}\sum_{i=1}^n \hat\eps_i = 0
 	.\] 
 	From the first order condition for \(\ucla{\hat\beta_1}\):
 	\[
@@ -619,15 +624,15 @@
 	\onslide<2->
 	Using these we get that
 	\begin{align*}
-		Y_i - \bar Y &= (\hat Y_i - \bar Y)  + \hat\eps_i \\
-					 &= \ucla{\hat\beta_1}(X_i - \bar X) + \hat\eps_i
+		Y_i - \bar Y &= (\hat Y_i - \bar Y) + \hat\eps_i\\
+		\hat Y_i - \bar Y &= \ucla{\hat\beta_1}(X_i - \bar X) \\
 	\end{align*}
 \end{frame}
 \begin{frame}{Evaluating our Model: \(R^2\) and Goodness of Fit} 
 	\label{frame:f9}
 	Now let's use these and decompose the sum:
 	\begin{align*}
-		\overbrace{\sum_{i=1}^n (Y_i - \bar Y)^2}^{\text{Total variance in \(Y\)}} &= \sum_{i=1}^n (\hat Y_i - \bar Y)^2 + \frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)\eps_i +  \frac{1}{n}\sum_{i=1}^n \hat\eps_i^2 \\
+		\overbrace{\sum_{i=1}^n (Y_i - \bar Y)^2}^{\text{Total variance in \(Y\)}} &= \sum_{i=1}^n (\hat Y_i - \bar Y)^2 + \frac{1}{n}\sum_{i=1}^n (\hat Y_i - \bar Y)\hat\eps_i +  \frac{1}{n}\sum_{i=1}^n \hat\eps_i^2 \\
 		\onslide<2->{
 		&= \frac{1}{n}\sum_{i=1}^n (\hat Y_i - \bar Y)^2 + \ucla{\hat\beta_1}\overbrace{\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)\hat\eps_i}^{=0\text{ by FOCs}} + \frac{1}{n}\sum_{i=1}^n \hat\eps_i^2 \\}
 		\onslide<3->{
@@ -671,8 +676,9 @@
 	.\]
 	\onslide<2->
 	\begin{itemize}
-		\item<2-> Intuitively \(R^2\) reports what proportion of the total variance in  \(Y\) can be explained by our linear model with  \(X\). 
-		\item<3-> \(R^2\) is generally reported when running a regression by almost any statistical software.
+		\item<2-> Intuitively \(R^2\) reports what proportion of the total variance in  \(Y\) can be explained by our linear model with  \(X\).
+		\item<3-> If \(R^2=1\) then  \(\text{SSE} = 0\), indicating a perfect fit. If \(R^2=0\) then  \(\text{SSE} = \text{SST}\), indicating the model does no better than the sample mean.
+		\item<4-> \(R^2\) is generally reported when running a regression by almost any statistical software.
 	\end{itemize}
 \end{frame}
 \begin{frame}{Evaluating our Model: \(R^2\) and Goodness of Fit} 
@@ -720,13 +726,13 @@
 		\item \(Y\) is bounded and \(X\) has a large support.
 		\begin{itemize}
 			\item<3-> For example, suppose \(Y\in\{0,1\}\) denotes treatment uptake and \(X\) denotes income.
-			\item<4-> A linear model of the form \( \ucla{\beta_0} + \ucla{\beta_1}\cdot X\) would give \(\hat Y > 1\) for a sufficiently large value of  \(X\).
+			\item<4-> A linear model of the form \( \ucla{\hat\beta_0} + \ucla{\hat\beta_1}\cdot X\) would give \(\hat Y > 1\) for a sufficiently large value of  \(X\).
 		\end{itemize}
 		\item<5-> We believe that the derivative of \(Y\) with respect to  \(X\) is not constant.
 		 \begin{itemize}
 			\item<6-> Suppose \(Y\) is amount spent on groceries and \(X\) is income.
 			\item<7-> We expect that as income rises people may start shopping at Whole Foods or spending more on nicer ingredients.
-			\item<8-> But this will probably level off for high levels of income. A linear model imposes that \(\frac{d}{dx}\hat{Y}(x) = \frac{d}{dx}(\ucla{\beta_0} + \ucla{\beta_1}x) = \ucla{\beta_1}\) for all \(x\).
+			\item<8-> But this will probably level off for high levels of income. A linear model imposes that \(\frac{d}{dx}\hat{Y}(x) = \frac{d}{dx}(\ucla{\hat\beta_0} + \ucla{\hat\beta_1}x) = \ucla{\hat\beta_1}\) for all \(x\).
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -813,7 +819,7 @@
 \end{frame}
 \begin{frame}{Modeling Choices: Transforming our Data} 
 	\label{frame:m9}
-	Assuming homoskedasticity, let's use this information to construct a \(95\%\) confidence interval for  \(\ucla{\hat\beta_1}\).
+	Assuming homoskedasticity, let's use this information to construct a \(95\%\) confidence interval for  \(\ucla{\beta_1}\).
 	\onslide<2->
 
 	We use the same formula from before to calculate \(\hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{\hat\sigma_{\ln(X)}^2} =\frac{4}{4}=  1\).
@@ -883,12 +889,51 @@
 	\red{\Large Questions?}
 \end{frame} 
 \begin{frame}{Modeling Choices: Linear Transformations} 
-	\label{frame:m13}
-	
+	\label{frame:m14}
+	We may be tempted to try and improve the fit of our model by scaling \(Y\) or \(X\) up and down. In the below let's see what happens if we try and do so. 
+	\onslide<2->
+
+	First, let's see what happens if we replace  \(Y\) with  \(\tilde Y = cY\) for some  \(c\neq 0\). Let's consider esimating the model \(\tilde Y = \ucla{\beta_0^\circ} + \ucla{\beta_1^\circ}X + \eps\)
+	\onslide<3->
+
+	\begin{align*}
+		\ucla{\hat\beta_1^\circ} &= \frac{\frac{1}{n}\sum_{i=1}^n (\tilde Y - \bar{\tilde Y})(X_i - \bar X)}{\frac{1}{n}\sum_{i=1}^n  (X_i - \bar X)}  \\
+						   &= c \underbrace{\frac{\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X)}{\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2}}_{\text{estimated slope parameter from \(Y\) on \(X\)}}
+	\end{align*}
+	So we see that the slope parameter simply get's scaled up or down by \(c\): \(\ucla{\hat\beta_1^\circ} = c\ucla{\hat\beta_1}\). 
+
+	\onslide<4->
+	The intercept parameter also gets scaled by \(c\):
+	\[
+		\ucla{\hat\beta_0^\circ} = \bar{\tilde Y} - \ucla{\hat\beta_1^\circ}\bar X = c\bar Y - c\ucla{\hat\beta_1}\bar X = c(\bar Y - \ucla{\hat\beta_1}\bar X) = c\ucla{\hat\beta_0}
+	.\] 
 \end{frame}
+\begin{frame}{Modeling Choices: Linear Transformations} 
+	\label{frame:m15}
+	Now let's see what happens if we replace \(X\) with  \(\tilde X = cX\) for some  \(c\neq 0\). Let's consider estimating the model \(Y = \ucla{\beta_0^\circ} + \ucla{\beta_1^\circ}\tilde X + \eps\).
+	\begin{align*}
+		\ucla{\hat\beta_1^\circ} &= \frac{\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(\tilde X_i - \bar{\tilde X})}{\frac{1}{n}\sum_{i=1}^n (\tilde X_i - \bar{\tilde X})^2}  \\ 
+								 &= \frac{c\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X)}{c^2\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2}  \\
+								 &= \frac{1}{c}\ucla{\hat\beta_1}
+	\end{align*}
+	Here the slope parameter gets scaled by \(\frac{1}{c}\),  \(\ucla{\hat\beta_1^\circ} = \frac{1}{c}\ucla{\hat\beta_1}\). 
+
+	\onslide<2->
+	The intercept parameter in this case doesn't get scaled at all: 
+	\[
+		\ucla{\hat\beta_0^\circ} = \bar Y - \ucla{\hat\beta_1^\circ}\bar{\tilde X} = \bar Y - \frac{1}{c}\ucla{\hat\beta_1}(c\bar X) = \ucla{\beta_0}
+	.\]
+	\begin{itemize}
+		\item<3-> Average value of \(Y\) when  \(X = 0\) is the same as the average value of  \(Y\) when  \(cX = 0\), they are the same event.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Linear Transformations: Questions}
+	\centering
+	\red{\Large Questions?}
+\end{frame} 
 
 
-%TODO: Assign linear transfomrations as a homework problem
+%TODO: Assign linear transformations as a homework problem
 
 \end{document}
 

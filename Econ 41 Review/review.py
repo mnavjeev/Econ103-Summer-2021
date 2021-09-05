@@ -5,6 +5,7 @@ import math
 
 mu = 0
 variance = 1
+mu + variance
 sigma = math.sqrt(variance)
 x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
 x2 = np.linspace(mu+1 - 3*sigma, mu+1 + 3*sigma, 100)

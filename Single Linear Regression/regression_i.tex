@@ -528,14 +528,10 @@
 			\item<1|only@1> Essentially this means that our random sample is ``representative of the population'' 
 			\item<1|only@1> Would be violated if say, we only sampled cars made in Los Angeles and we were trying to make inferences about all cars produced in the US
 		\end{itemize}
-		\item<2-> \darkucla{Homoskedasticity:} Assume that \(\Var(\eps\mid X=x) = \sigma_\eps^2 \) for all possible values of \(x\).
+		\item<2-> \darkucla{Homoskedasticity:} Assume that \(\E[\eps^2|X=x]= \sigma_\eps^2 \) for all possible values of \(x\).
 		\begin{itemize}
-			\item<2|only@2> This means that \(Y\) is equally spread around the regression line for all values of \(X\).
+			\item<2|only@2> Since, \(\eps\) is mean zero, this means that \(Y\) is equally spread around the regression line for all values of \(X\).
 			\item<2|only@2> This is a fairly strong assumption to make and we will relax it later on, but it is helpful for now to provide insight.
-			\item<2|only@2> Conditional variance is similar to the conditional expectation that we went over in our Econ 41 review
-			\[
-				{\Var(\eps\mid X=x) = \E[\eps^2|X=x] - (\E[\eps|X=x])^2}
-			.\] 
 			\item<2->An important implication of this is that
 			\[
 				\Var(\eps(X-\mu_X)) = \Var(\eps)\Var(X) = \sigma_\eps^2\sigma_X^2
@@ -562,7 +558,7 @@
 	\onslide<2->
 	By definition of \(\eps = Y - \ucla{\beta_0} - \ucla{\beta_1}\cdot X\):
 	\begin{align*}
-		Y = \ucla{\beta_0} + \ucla{\beta_1}\cdot X;	
+		Y = \ucla{\beta_0} + \ucla{\beta_1}\cdot X + \eps;	
 	\end{align*}
 	and that by the first order conditions of \(\ucla{\beta_0}\) and \(\ucla{\beta_1}\): 
 	\begin{align*}
@@ -749,10 +745,10 @@
 	.\] 
 	where 
 	\[
-		\sigma_{\beta_1} = \frac{\sigma_\eps^2}{\sigma_X^2} 
+		\sigma_{\beta_1}^2 = \frac{\sigma_\eps^2}{\sigma_X^2} 
 	.\] 
 	\onslide<2->
-	\ucla{Problem:} What is \(\sigma_{\beta_1}\)? How can we estimate it?
+	\ucla{Problem:} What is \(\sigma_{\beta_1}^2\)? How can we estimate it?
 	\begin{itemize}
 		\item<3-> By \red{LLN} we know how to esimate \(\Var(X)\)
 		 \[
@@ -822,11 +818,15 @@
 	\label{frame:variance-estimation6}
 	The quantity \(\hat\sigma_{\beta_1}/\sqrt{n}\) is often referred to as the \red{standard error} of \(\ucla{\hat\beta_1}\). 
 
-	\onslide<4->
+	\onslide<2->
 	\vfill
 	In general, if we have a parameter \(\theta\) that we estimate with \(\hat\theta\), the quantity \(\hat\sigma_{\theta}/\sqrt{n}\) will be referred to as the \red{standard error} of \(\hat\theta\) where
 	 \[
-		 \hat\sigma_{\theta} = \sqrt{\Var(\hat\theta)}
+		 \hat\sigma_{\theta}/\sqrt{n} = \sqrt{\Var(\hat\theta)} = \sqrt{\frac{\hat\sigma_{\theta}^2}{n}}
+	\]
+	and \(\sigma_\theta^2\) is such that 
+	 \[
+		 \sqrt{n}(\hat\theta - \theta) \sim N(0,\sigma_\theta^2)
 	.\] 
 
 \end{frame}
@@ -890,11 +890,11 @@
 \end{frame}
 \begin{frame}{Linear Regression: Why Asymptotic Distribution?} 
 	\label{frame:useful4}
-	Given that if \( \ucla{\beta_0}=0\),  \(\ucla{\hat\beta_1}/0.125 \sim N(0,1)\), what is the probability of us observing \( |\ucla{\hat\beta_1}| \geq  0.5\)?
+	Given that if \( \ucla{\beta_1}=0\),  \(\ucla{\hat\beta_1}/0.125 \sim N(0,1)\), what is the probability of us observing \( |\ucla{\hat\beta_1}| \geq  0.5\)?
 	\begin{align*}
 		\onslide<2->{\Pr\left(|\ucla{\hat\beta_1}|\geq 0.5 \right) &= \Pr\left(|\ucla{\hat\beta_1}/0.125| \geq 0.5/0.125\right)\\}
 		\onslide<3->{&= \Pr(|Z| \geq 4)\intertext{where \(Z\sim N(0,1)\)}}
-		\onslide<4->{&= \Pr(Z \geq 4) + \Pr(Z \leq 4) \\ &= 2\Pr(Z \geq 4)\intertext{By symmetry of the normal distribution}}
+		\onslide<4->{&= \Pr(Z \geq 4) + \Pr(Z \leq -4) \\ &= 2\Pr(Z \geq 4)\intertext{By symmetry of the normal distribution}}
 		\onslide<5->{&\approx 0.00006 }
 	\end{align*}
 \end{frame}
@@ -1064,7 +1064,7 @@
 				 p = \Pr(Z < t^*)
 			.\]
 		\end{itemize}
-		\item<3|only@3> \red{Reject} the null hypothesis in favor of the alternative hypothesis if \(p > \alpha\). Otherwise \green{fail to reject} the null hypothesis.
+		\item<3|only@3> \red{Reject} the null hypothesis in favor of the alternative hypothesis if \(p < \alpha\). Otherwise \green{fail to reject} the null hypothesis.
 	\end{enumerate}
 \end{frame}
 \begin{frame}{Linear Regression: Hypothesis Testing Example} 
@@ -1115,7 +1115,7 @@
 	\onslide<2->
 	Compute the \(p\) value for a two-sided test
 	 \[
-		 p = \Pr(|Z| > |t^*|) = 2\Pr(Z > |t^*|) = 2(1-\Pr(X \leq  1.333)) = 2\cdot 0.092 \approx 0.194
+		 p = \Pr(|Z| > |t^*|) = 2\Pr(Z > |t^*|) = 2(1-\Pr(Z \leq  1.333)) = 2\cdot 0.092 \approx 0.194
 	.\] 
 	\onslide<3->
 	Given that \(p = 0.194 > 0.1\) we \green{fail to reject} the null hypothesis that there is no relationship between miles per gallon and sales price.
@@ -1131,7 +1131,7 @@
 		\[
 			\Pr(|Z|> 1.64) = 2\Pr(Z > 1.64) = 0.1
 		.\] 
-		\item What is the p-value for the test \(\green{H_0}:\ucla{\beta_1} \leq 0\) gainst \(\red{H_1}: \ucla{\beta_1} > 0\)?
+		\item What is the p-value for the test \(\green{H_0}:\ucla{\beta_1} \leq 0\) against \(\red{H_1}: \ucla{\beta_1} > 0\)?
 		\item What is the p-value for the test \(\green{H_0}:\ucla{\beta_1} \geq 0\) against \(\red{H_1}:\ucla{\beta_1}<0\)?
 	\end{itemize}
 \end{frame}
@@ -1196,7 +1196,7 @@
 	\vspace{0.2cm}	
 
 	\onslide<2->
-	Since \(t^* \approx 1.333 <  z_{0.95}= 1.64\) we \green{fail to reject} the null hypothesis against a two-sided.
+	Since \(t^* \approx 1.333 <  z_{0.95}= 1.64\) we \green{fail to reject} the null hypothesis against a two-sided alternative.
 \end{frame}
 \begin{frame}{Hypothesis Testing: Questions}
 	\centering
@@ -1288,7 +1288,7 @@
 	To study this policy we randomly select 100 (unvaccinated) people from the population and offer them a random cash incentive (from \(\$0\) to  \(\$100\)) and then observe whether or not they get vaccinated. 
 
 	\onslide<3->
-	Our data then looks like \(\{Y_i,X_i\}_{i=1}^{100}\) where \(Y_i \in \{0,1\}\) denotes a person's vaccination status and \(X_i \in [0,100]\) denotes the cash incentive offered to people. We want to preform construct a confidence interval for the parameter \( \ucla{\beta_1}\) from the linear model
+	Our data then looks like \(\{Y_i,X_i\}_{i=1}^{100}\) where \(Y_i \in \{0,1\}\) denotes a person's vaccination status and \(X_i \in [0,100]\) denotes the cash incentive offered to people. We want to construct a confidence interval for the parameter \( \ucla{\beta_1}\) from the linear model
 	\[
 		Y = \ucla{\beta_0} + \ucla{\beta_1}\cdot X_i + \eps_i,\;\;\; \E[\eps] = \E[\eps X] = 0
 	.\] 
@@ -1424,14 +1424,14 @@
 		\item<3-> In practice, usually ok so long as \(n \geq 50\). Otherwise have to rely on strong additional assumptions that are generally violated.
 	\end{itemize}
 \end{frame}
-
 %TODO: Homework question comparing rejection from a two sided test to rejection from a one sided test with half the level
 %TODO: Homework question about conditional expectation beta and binary X
 %TODO: Homework question about sampling (relevant population, is i.i.d violated)
 %TODO: Homework question about computing a t-statistic
-%TODO: Homework question about overlap between testing procedures (p-value vs. z-score)
-%TODO: Homework question about probability of CI coverage
+%TODO: Homework 2 question about overlap between testing procedures (p-value vs. z-score)
+%TODO: Homework 2 question about probability of CI coverage
 %TODO: Homework question testing hypothesis using CI
+%TODO: Test Question: What is the lowest value of \alpha for which you would reject a null hypothesis give p-value
 
 \end{document}
 

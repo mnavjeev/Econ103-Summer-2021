@@ -67,7 +67,7 @@
 
 	\ucla{Examples:}
 	\begin{itemize}
-		\item Suppose we wanted to impact the joint effect of education \underline{and} experience on age?
+		\item Suppose we wanted to impact the joint effect of education \underline{and} experience on income?
 		\item Learn about the relationship between smoking, genetic risk, and heart disease
 	\end{itemize}
 \end{frame}
@@ -121,7 +121,8 @@
 	\begin{itemize}
 		\item<2-> In \eqref{eq:house1} \(\ucla{\beta_0}\) is interpreted as the average log sales price for a home with zero square feet (an empty lot) \underline{regardless} of how long it's been on the market.
 		\item<3-> In \eqref{eq:house2} \(\ucla{\beta_0}\) is interpreted as the average log sales price for a home with zero square feet that has just entered the market
-		\item<4-> In \eqref{eq:house2} \( \ucla{\beta_1}\) is interpreted as the average change in sales price for a one unit increase in square footage, holding the number of days on the market constant 
+		\item<4-> In \eqref{eq:house1} \( \ucla{\beta_1}\) is interpeted as the average change in log sales price for a one unit increase in square footage
+		\item<5-> In \eqref{eq:house2} \( \ucla{\beta_1}\) is interpreted as the average change in log sales price for a one unit increase in square footage, holding the number of days on the market constant 
 	\end{itemize}
 \end{frame}
 \begin{frame}{The Model: Introduction} 
@@ -205,7 +206,7 @@
 	\label{frame:est4}
 	Just as in single linear regression, however, the solutions for \( \ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\) depend on the data. That is \(\ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\) are functions of our sample \(\{Y_i,X_{1,i},\dots,X_{p,i}\}_{i=1}^n\).
 	\begin{itemize}
-		\item<2-> If we collected a different sample \(\{Y_i,X_{1,i},\dots,X_{2,i}\}_{i=1}^n\), we would get different values for our estimators \( \ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\).
+		\item<2-> If we collected a different sample \(\{Y_i,X_{1,i},\dots,X_{p,i}\}_{i=1}^n\), we would get different values for our estimators \( \ucla{\hat\beta_0},\dots,\ucla{\hat\beta_p}\).
 	\end{itemize}
 	\onslide<3->
 
@@ -239,7 +240,7 @@
 			 \[
 				 Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2 + \eps \iff Y = \ucla{\beta_0} + (2\ucla{\beta_1} + \ucla{\beta_2})X_2 + \eps
 			.\] 
-			The ``line of best fit'' solution is then not unique. We can achieve the same fit by setting the coeffecient on \(X_1\) to be \( \ucla{\ beta_1}\) and the coeffecient on \(X_2\) to be \(\ucla{\beta_2}\) or by setting the coeffecient on \(X_1\) to be zero and the coeffecient on  \(X_2\) to be  \(2\ucla{\beta_1} + \ucla{\beta_2}\).
+			The ``line of best fit'' solution is then not unique. We can achieve the same fit by setting the coeffecient on \(X_1\) to be \( \ucla{\beta_1}\) and the coeffecient on \(X_2\) to be \(\ucla{\beta_2}\) or by setting the coeffecient on \(X_1\) to be zero and the coeffecient on  \(X_2\) to be  \(2\ucla{\beta_1} + \ucla{\beta_2}\).
 		\end{itemize}
 		\onslide<6->
 		\noindent\ucla{\rule{2cm}{0.2mm}}	
@@ -328,7 +329,7 @@
 	\green{Notice:}
 	\begin{itemize}
 		\item<2-> As before \(\Var(\hat\beta_1) = \sigma_{\beta_1}^2/n\) is decreasing with \(n\), \(\ucla{\hat\beta_1} \to \ucla{\beta_1}\) as \(n\to\infty\).
-		\item<3-> As before \(\sigma_{\beta_1}^2\) is decreasing with \(\sigma_{\eps^2}\) and increasing with  \(\sigma_{X_1}^2\)
+		\item<3-> As before \(\sigma_{\beta_1}^2\) is increase with \(\sigma_{\eps}^2\) and decreasing with  \(\sigma_{X_1}^2\)
 		\begin{itemize}
 			\item<3|only@3> \(\sigma_\eps^2:\) If points are closer to the line it is easier to make out the line
 			\item<3|only@3> \(\sigma_{X_1}^2:\) If points are more spread out, it is easier to make out the line 
@@ -393,7 +394,7 @@
 
 	That is let \(Y\in \{0,1\}\) denote liver failure, \(X_1 \in \{0,1\}\) denote being a heavy smoker, and \(X_2 \in \{0,1\}\) denote being a heavy drinker and suppose we want to estimate the model 
 	\[
-	    Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2 + \eps
 	.\]
 \end{frame}
 \begin{frame}{Estimation: Asymptotic Variance} 
@@ -409,7 +410,7 @@
 	\red{Answer:} 
 	Recall that the standard error is given \(\hat\sigma_{\beta_1}/\sqrt{n}\). Using the above we get that 
 	\[
-		\hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{(1-\hat\rho_{12})\hat\sigma_{X_1}^2} = \frac{0.25}{(1-0.25)0.1} = \frac{10}{3}  
+		\hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{(1-\hat\rho_{12}^2)\hat\sigma_{X_1}^2} = \frac{0.25}{(1-0.25)0.1} = \frac{10}{3}  
 	.\]
 
 	The standard error is then \(\hat\sigma_{\beta_1}/\sqrt{n} = \sqrt{10/3}/\sqrt{64} \approx 0.228\)
@@ -426,7 +427,7 @@
 	\onslide<2->
 	\red{Answer:} Using the formula above
 	\[
-		\hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{(1-\hat\rho_{12})^2\hat\sigma_{X_1}^2} = \frac{0.25}{(1-0.5625)0.1} = \approx 5.714 
+		\hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{(1-\hat\rho_{12}^2)\hat\sigma_{X_1}^2} = \frac{0.25}{(1-0.5625)0.1} = \approx 5.714 
 	.\] 
 	The standard error is then \(\hat\sigma_{\beta_1}/\sqrt{n}\approx \sqrt{5.714}/\sqrt{100} = 0.239\).
 
@@ -473,7 +474,7 @@
 \end{frame}
 \begin{frame}{Inference: Single Coefficient Testing} 
 	\label{frame:inference}
-	Let \(Z \sim N(0,1)\). After collecting a sample of size \(n = 100\) we estimate that  \(\ucla{\hat\beta_1} = 0.04\) and that \(\hat\sigma_{\beta_1}^2 = 4\). Given this we want to compute the \red{p-value}:
+	Let \(Z \sim N(0,1)\). After collecting a sample of size \(n = 100\) we estimate that  \(\ucla{\hat\beta_1} = 0.03\) and that \(\hat\sigma_{\beta_1}^2 = 4\). Given this we want to compute the \red{p-value}:
 	\begin{align*}
 		\Pr(\ucla{\hat\beta_1} > 0.03 | \ucla{\beta_1} = 0) &= \Pr(\ucla{\hat\beta_1} - \ucla{\beta_1} > 0.03 - \overbrace{\ucla{\beta_1}}^{=0})\\ &= \Pr\bigg(\frac{\ucla{\hat\beta_1} - \ucla{\beta_1}}{\hat\sigma_{\beta_1}/\sqrt{n}} > \underbrace{\frac{0.03 - 0}{\sqrt{4}/\sqrt{100}}}_{=t^*}  \bigg)\\ 
 															&= \Pr(Z > 0.2)\text{\underline{ or, equivalently }}\Pr(Z > t^*) 
@@ -521,7 +522,7 @@
 		\[
 			t^* = \frac{\hat\theta - b}{\hat\sigma_{\theta}/\sqrt{n}}  
 		.\] 
-		\item<2|only@2> Compute the \underline{p-value}, the probability that we would obtain our observed value of \(\hat\beta\), or something even further from the null hypothesis, if the null hypothesis was correct
+		\item<2|only@2> Compute the \underline{p-value}, the probability that we would obtain our observed value of \(\hat\theta\), or something even further from the null hypothesis, if the null hypothesis was correct
 		\begin{itemize}
 			\item If \(\green{H_0}:\theta = b\) and \(\red{H_1}:\theta\neq b\) compute
 			\[
@@ -536,17 +537,17 @@
 				 p = \Pr(Z < t^*)
 			.\]
 		\end{itemize}
-		\item<3|only@3> \red{Reject} the null hypothesis in favor of the alternative hypothesis if \(p > \alpha\). Otherwise \green{fail to reject} the null hypothesis.
+		\item<3|only@3> \red{Reject} the null hypothesis in favor of the alternative hypothesis if \(p < \alpha\). Otherwise \green{fail to reject} the null hypothesis.
 		\end{enumerate}
 \end{frame}
 
 \begin{frame}{Inference: Single Coeffecient Testing} 
 	\label{frame:inference4}
-		As before this gives us two standard procedure for testing the null hypotheses: \(\green{H_0}: \ucla{\beta_k} \leq b\), \(\green{H_0}: \ucla{\beta_k} \geq b\), or \(\green{H_0}: \ucla{\beta_k} = b\). The second one involves comparing the test statistic to quantiles of the standard normal distribution:
+		As before this gives us two standard procedure for testing the null hypotheses: \(\green{H_0}: \theta \leq b\), \(\green{H_0}: \theta \geq b\), or \(\green{H_0}: \theta = b\). The second one involves comparing the test statistic to quantiles of the standard normal distribution:
 		\begin{enumerate}
 		\item<1|only@1> Compute the test statistic or ``t-statistic''
 		\[
-			t^* = \frac{\ucla{\hat\beta_k} - b}{\hat\sigma_\beta/\sqrt{n}} 
+			t^* = \frac{\hat\theta - b}{\hat\sigma_\theta/\sqrt{n}} 
 		.\] 
 		\item<2|only@2> For a given level \(\alpha\) compute  \(z_{1-\alpha}\) for a one sided alternative or  \(z_{1-\alpha/2}\) for a 2 sided alternative, where \(z_{1-\alpha}\) and  \(z_{1-\alpha/2}\) are such that
 		 \[
@@ -562,9 +563,9 @@
 		\end{itemize}
 		\item<3|only@3 > Compare the test statistic \(t^*\) to the quantile  \(z_{1-\alpha}\) or  \(z_{1-\alpha/2}\).
 		\begin{itemize}
-			\item If \(\green{H_0}: \ucla{\beta_k} = b\) and \(\red{H_1}:\ucla{\beta_k} \neq b\), \red{reject} if \(|t^*| > z_{1-\alpha/2}\)
-			\item If \(\green{H_0}: \ucla{\beta_k} \geq b\) and \(\red{H_1}:\ucla{\beta_k} < b\), \red{reject} if  \(t^* < -z_{1-\alpha}\) 
-			\item If \(\green{H_0}:\ucla{\beta_k} \leq b\) and \(\red{H_1}:\ucla{\beta_k} > b\), \red{reject} if  \(t^* > z_{1-\alpha}\)
+			\item If \(\green{H_0}: \theta = b\) and \(\red{H_1}:\theta \neq b\), \red{reject} if \(|t^*| > z_{1-\alpha/2}\)
+			\item If \(\green{H_0}: \theta \geq b\) and \(\red{H_1}:\theta < b\), \red{reject} if  \(t^* < -z_{1-\alpha}\) 
+			\item If \(\green{H_0}:\theta \leq b\) and \(\red{H_1}:\theta > b\), \red{reject} if  \(t^* > z_{1-\alpha}\)
 		\end{itemize}
 		Otherwise, \green{fail to reject} the null hypothesis.
 	\end{enumerate}
@@ -579,13 +580,13 @@
 	\label{frame:single-hyp-linear-combination}
 	Let's see how this works when testing a linear combination of parameters. Returning to our example let \(Y\in \{0,1\}\) denote having liver disease, \(X_1 \in \{0,1\}\) denote being a heavy smoker, and \(X_2 \in \{0,1\}\)  denote being a heavy drinker. We estimate the following linear model
 	\[
-	    Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2
+	    Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2 +\eps
 	.\]
 	\onslide<2->
 \end{frame}
 \begin{frame}{Inference: Single Hypothesis Testing} 
 	\label{frame:lincomb2}
-	We want to test at level \(\alpha = 0.1\) the null hypothesis that being a heavy smoker or heavy drinker makes you at most 10\% more likely to develop heart disease compared to someone who is neither a heavy smoker nor a heavy drinker. Using our linear model \(Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2\) we approximate
+	We want to test at level \(\alpha = 0.1\) the null hypothesis that being a heavy smoker and a heavy drinker makes you at most 10\% more likely to develop heart disease compared to someone who is neither a heavy smoker nor a heavy drinker. Using our linear model \(Y = \ucla{\beta_0} + \ucla{\beta_1}X_1 + \ucla{\beta_2}X_2\) we approximate
 	\begin{align*}
 		\;\E[Y | X_1 = 1, X_2 = 1] &= \ucla{\beta_0} + \ucla{\beta_1} + \ucla{\beta_2}  \\
 		-\;\E[Y| X_1 = 0, X_2 = 0] &= \ucla{\beta_0}\\
@@ -638,7 +639,7 @@
 	\onslide<3-> 
 	Recall that \(\Var(X+Y) = \Var(X) + \Var(Y) + 2\Cov(X,Y)\). Using this we calculate 
 	\begin{align*}
-		\Var(\hat\lambda) &= \Var(\ucla{\beta_1}) + \Var(\ucla{\beta_2}) + 2\Cov(\ucla{\hat\beta_1},\ucla{\hat\beta_2})\\
+		\Var(\hat\lambda) &= \Var(\ucla{\hat\beta_1}) + \Var(\ucla{\hat\beta_2}) + 2\Cov(\ucla{\hat\beta_1},\ucla{\hat\beta_2})\\
 						  &= 0.08 + 0.36 + 2\cdot 0.1 = \underline{0.64}
 	\end{align*}
 	The standard error is then \(\hat\sigma_\lambda/\sqrt{n} = \sqrt{\Var(\hat\lambda)} = 0.8\).
@@ -693,27 +694,27 @@
 %TODO: homework question for interpretation of a null hypothesis test
 \begin{frame}{Inference: Confidence Intervals} 
 	\label{frame:confidene2}
-	Recall from the discussion above that we fail to reject reject \(\green{H_0}: \theta = b\) in favor of the alternative hypothesis \(\red{H_1}:\theta\neq b\) if the absolute value of the test statistic is less than \(z_{1-\alpha/2}\)
+	Recall from the discussion above that we fail to reject \(\green{H_0}: \theta = b\) in favor of the alternative hypothesis \(\red{H_1}:\theta\neq b\) if the absolute value of the test statistic is less than \(z_{1-\alpha/2}\)
 	 \[
-		 \bigg|\frac{\hat\theta - b}{\hat\sigma_\theta/\sqrt{n}} \bigg| \leq z_{1-\alpha/2} \implies b \in \left[\hat\theta - z_{1-\alpha/2}\hat\sigma/\sqrt{n},\hat\theta + z_{1-\alpha/2}\hat\sigma/\sqrt{n}\right]
+		 \bigg|\frac{\hat\theta - b}{\hat\sigma_\theta/\sqrt{n}} \bigg| \leq z_{1-\alpha/2} \implies b \in \left[\hat\theta - z_{1-\alpha/2}\hat\sigma_\theta/\sqrt{n},\hat\theta + z_{1-\alpha/2}\hat\sigma_\theta/\sqrt{n}\right]
 	.\] 
 \end{frame}
 \begin{frame}{Inference: Confidence Intervals} 
 	\label{frame:confidence3}
 	So, our \(100(1-\alpha)\%\) confidence interval for \(\theta\) is given
 	 \[
-		 \hat\theta \pm z_{1-\alpha/2}\hat\sigma/\sqrt{n}
+		 \hat\theta \pm z_{1-\alpha/2}\hat\sigma_\theta/\sqrt{n}
 	.\]
 	We interpret this as being \green{\(100(1-\alpha)\%\) confident} that the true value of \(\theta\) lies in the interval
 	 \[
-		 \left[\hat\theta - z_{1-\alpha/2}\hat\sigma/\sqrt{n}, \hat\theta + z_{1-\alpha/2}\hat\sigma/\sqrt{n}\right]
+		 \left[\hat\theta - z_{1-\alpha/2}\hat\sigma_\theta/\sqrt{n}, \hat\theta + z_{1-\alpha/2}\hat\sigma_\theta/\sqrt{n}\right]
 	.\] 
 \end{frame}
 \begin{frame}{Inference: Confidence Intervals} 
 	\label{frame:confidence4}
 	Let's see an example of this. Suppose we are trying to examine the relationship between log home sales price, square footage, and days on the market. To do so we estimate the following regression equation
 	\[
-	    SALES = \ucla{\beta_0} + \ucla{\beta_1}SQFT + \ucla{\beta_2}DAYS
+	    SALES = \ucla{\beta_0} + \ucla{\beta_1}SQFT + \ucla{\beta_2}DAYS + \eps
 	.\] 
 \end{frame}
 \begin{frame}{Inference: Confidence Intervals} 
@@ -744,12 +745,12 @@
 	To create a \(99\%\) confidence interval we first need to compute  \(z_{1-\alpha/2} = z_{0.995}\). To do so, we use \(z_{0.995} = \text{\bf qnorm(0.995)} = 2.57\).
 
 	\onslide<2->
-	Next, we need to compute the standard error \(\hat\sigma_{\beta_1}/\sqrt{n} = \sqrt{\hat\sigma_{\beta_1}^2/n}=\sqrt{\widehat\Var(\ucla{\hat\beta_1})}\). From the covariance matrix we know that \(\widehat\Var(\ucla{\hat\beta_1}) = 1.96\) so that the standard error is given \( \sqrt{1.96} = 1.4\).
+	Next, we need to compute the standard error \(\hat\sigma_{\beta_1}/\sqrt{n} = \sqrt{\hat\sigma_{\beta_1}^2/n}=\sqrt{\Var(\ucla{\hat\beta_1})}\). From the covariance matrix we know that \(\Var(\ucla{\hat\beta_1}) = 1.96\) so that the standard error is given \( \sqrt{1.96} = 1.4\).
 
 	\onslide<3->
 	Finally, we put these together to construct our confidence interval
 	\[
-		\ucla{\hat\beta_1} \pm z_{1-\alpha/2}\hat\sigma_{\beta_1}/\sqrt{n} = 5\pm 2.57\cdot 1.96 = [-0.0372,10.0372] 
+		\ucla{\hat\beta_1} \pm z_{1-\alpha/2}\hat\sigma_{\beta_1}/\sqrt{n} = 5\pm 2.57\cdot 1.4 = [1.402,8.598] 
 	.\]
 	\onslide<4->
 	\vfill
@@ -856,16 +857,16 @@
 	  \end{blockarray}
   \end{equation*}
   \only<1>{
-  Recall that the standard error is given \(\hat\sigma_{\beta_1}/\sqrt{n} =\sqrt{\widehat\Var(\ucla{\hat\beta_k})}\)!}
+  Recall that the standard error is given \(\hat\sigma_{\beta_1}/\sqrt{n} =\sqrt{\Var(\ucla{\hat\beta_k})}\)!}
   \onslide<2->
-  Let's use this information to test the null hypothesis \(\green{H_0}: \ucla{\beta_3} > 0\) against the alternative hypothesis \(\red{H_1}: \ucla{\beta_3} \leq 0\) at level \(\alpha = 0.95\). 
+  Let's use this information to test the null hypothesis \(\green{H_0}: \ucla{\beta_3} \geq 0\) against the alternative hypothesis \(\red{H_1}: \ucla{\beta_3} < 0\) at level \(\alpha = 0.05\). 
   \onslide<3->
   Our test statistic is given
    \[
-	   t^* = \frac{\ucla{\hat\beta_3}-0}{\sqrt{\widehat\Var(\ucla{\hat\beta_3})}} = \frac{-0.1}{\sqrt{0.16}} = -2.5  
+	   t^* = \frac{\ucla{\hat\beta_3}-0}{\sqrt{\Var(\ucla{\hat\beta_3})}} = \frac{-0.1}{\sqrt{0.16}} = -2.5  
   .\]
   \onslide<3->
-  Since \(-2.5 < -z_{1-\alpha/2}\) we are further from the null than would be reasonably expected if  \(\ucla{\hat\beta_3} > 0\), so we reject in favor of \(\red{H_1}: \ucla{\beta_3} \leq 0\).
+  Since \(-2.5 < -z_{1-\alpha/2} = -z_{0.975} = - 1.96\) we are further from the null than would be reasonably expected if  \(\ucla{\hat\beta_3} \geq  0\), so we reject in favor of \(\red{H_1}: \ucla{\beta_3} < 0\).
 \end{frame}
 %TODO: homework question about interpretation
 
@@ -873,7 +874,7 @@
 	\label{frame:interaction1}
 	Let's see an example of interaction modeling. Suppose we are interested in the effect of \(EDU\), years of education, and  \(EXP\), years of experience, on  \(INC\), log income.
 
-	We suspect that the returns to experience differ based on people's level of education, so we include and interaction term and estimate the following model?
+	We suspect that the returns to experience differ based on people's level of education, so we include and interaction term and estimate the following model:
 	\[
 	    INC  = \ucla{\beta_0} + \ucla{\beta_1}EXP + \ucla{\beta_2}EDU + \ucla{\beta_3}EDU\cdot EXP + \eps
 	.\] 
@@ -882,7 +883,7 @@
 	\begin{itemize}
 		\item<2-> Given estimates \(\ucla{\hat\beta_0}, \ucla{\hat\beta_1}, \ucla{\hat\beta_2},\) and \(\ucla{\hat\beta_3}\), what is the estimated marginal return to experience for a given level of education?
 		\item<3-> How does this model allow for returns to experience to differ based on one's education level?
-		\item<4-> What does the sign of \( \ucla{\beta_3}\) tell us about the relationship between returns to experience and level of education? 
+		\item<4-> What does the sign of \( \ucla{\hat\beta_3}\) tell us about the estimated relationship between returns to experience and level of education? 
 	\end{itemize}
 \end{frame}
 \begin{frame}{Modeling Choices: Interaction Modeling} 
@@ -903,16 +904,16 @@
   We want to test whether returns to experience differs based on education level, that is test \(\green{H_0}: \ucla{\beta_3} = 0\) against \(\red{H_1}: \ucla{\beta_3}\neq 0\) at level \(\alpha = 0.1\). To do so, let's construct our test statistic
   \onslide<2->
   \[
-	  t^* = \frac{\ucla{\hat\beta_3}-0}{\sqrt{\widehat\Var(\ucla{\hat\beta_3})}} = \frac{0.07}{0.05} = 1.4  
+	  t^* = \frac{\ucla{\hat\beta_3}-0}{\sqrt{\Var(\ucla{\hat\beta_3})}} = \frac{0.07}{0.5} = 9,14  
   .\]
 \end{frame}
 \begin{frame}{Modeling Choices: Interaction Modeling} 
 	\label{frame:interaction3}
-	Now, given \(t^* = 1.4\) let's construct a p-value. For a two sided test, the p-value is given 
+	Now, given \(t^* = 0.14\) let's construct a p-value. For a two sided test, the p-value is given 
 	\begin{align*}
-		\Pr(|Z| \geq |t^*|) = 2\Pr(Z \geq 1.4) &= 2\left(1 - \Pr(Z\leq 1.4)\right) \\
-											   &= 2\left(1 - \textbf{pnorm}(1.4)\right) \\
-											   &= 0.1615
+		\Pr(|Z| \geq |t^*|) = 2\Pr(Z \geq 0.14) &= 2\left(1 - \Pr(Z\leq .14)\right) \\
+											   &= 2\left(1 - \textbf{pnorm}(0.14)\right) \\
+											   &= 0.88866
 	\end{align*} 
 	\onslide<2->
 	Since this p-value is larger than \(\alpha = 0.1\) we \green{fail to reject} this null hypothesis and conclude that there is no evidence that returns to experience differ based on education levels.
@@ -1005,7 +1006,7 @@
 	\[
 		R^2 = 1 - \frac{\text{SSE}}{\text{SST}} 
 	,\] 
-	this means that \(R^2\) also must fall as we add more terms.
+	this means that \(R^2\) also must increase as we add more terms.
 \end{frame}
 
 \begin{frame}{Modling Choices: Managing Model Complexity} 
