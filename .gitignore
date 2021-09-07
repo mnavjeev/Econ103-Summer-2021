@@ -1,0 +1,44 @@
+# Ignore Andres' Notes
+Andres\ Slides/
+
+# Ignore Bibtex files
+*.bib
+Bitex/
+
+# Ignore build files 
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+*.nav
+*.snm
+*.vrb
+
+# Intermediate documents:
+*.dvi
+*.xdv
+*-converted-to.*
+
+# Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+# Ignore vimfiles
+*.vimrc
+*.nvimrc
+*.vim 
+
+# Ignore .DS_Store
+.DS_Store

@@ -1,0 +1,149 @@
+\documentclass[10pt]{article}
+
+% Packages with options
+\usepackage[english]{babel}
+\usepackage[mathscr]{euscript}
+\usepackage[margin=1in]{geometry} 
+\usepackage[utf8]{inputenc}
+\usepackage[small]{titlesec}
+
+% Primary Packages
+\usepackage{adjustbox, amsbsy, amsmath, amssymb, amsthm, bm, commath, chngcntr, dsfont, econometrics, fancyhdr, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
+
+% Hyperref Setup
+\usepackage[pdfauthor={Manu Navjeevan},
+			bookmarks=false,%
+			pdftitle={Econ 103: Homework 2},%
+			pdftoolbar=false,%
+			pdfmenubar=true]{hyperref} 
+
+% Rest of the setup is in the "setup/setup_long" package
+\usepackage{cleveref, setup} % cleverref should be last
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Econ 103: Homework 2} %Title
+\author{Manu Navjeevan}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Single Linear Regression Theory Review}%
+
+\begin{enumerate}
+	\item Recall that we define our parameters of interest \(\beta_0\) and  \(\beta_1\) as the parameters governing the  ``line of best fit'' between \(Y\) and  \(X\):
+	 \begin{equation}
+		 \label{eq:argmin}
+		 \beta_0,\beta_1 = \arg\min_{b_0,b_1} \E[(Y - b_0 - b_1X)^2]
+	.\end{equation} 
+	Once we define these parameters we define the regression error term \(\eps = Y - \beta_0 - \beta_1X\) which then generates the linear model
+	 \[
+	    Y = \beta_0 + \beta_1X + \eps
+	.\] 
+	\begin{enumerate}
+		\item Using the first order conditions for \(\beta_0\) and  \(\beta_1\) (set the derivatives of the right hand side of \eqref{eq:argmin} with respect to \(b_0\) and  \(b_1\) equal to zero at) show why \(\E[\eps] = \E[\eps X]=0\).
+		\item Using the definition of \(\beta_0\) and  \(\beta_1\) as line of best fit parameters, give an intuitive explanation for why  \(\E[\eps] = 0\).
+	\end{enumerate}
+	%\item In the case that \(X\) is binary, (\(X \in \{0,1\}\)), the parameters  \(\beta_0\) and  \(\beta_1\) from the linear model
+	%\[
+		%Y = \beta_0 + \beta_1X + \eps,\;\;\E[\eps] = \E[\eps X] = 0
+	%.\] 
+	%take on a special meaning.
+	%\begin{enumerate}
+		%\item Use the following equalities, true for a random variable \(X\) that takes values  \(X\in \{0,1\}\), to get an expression for \(\Cov(X,Y).\)
+		%\begin{align*}
+			%\E[Y] &= \E[Y|X=0]\Pr(X=0) + \E[Y|X=1]\Pr(X=1)\\
+			%\E[X] &= \Pr(X=1) \\
+			%\E[XY] &= \E[Y|X=1]\Pr(X=1)
+		%\end{align*}
+		%\item Use the following expression, true for a random variable \(X\) that takes values  \(X\in \{0,1\}\), to get a simplified expression for \(\beta_1 = \frac{\Cov(X,Y)}{\Var(X)}\):
+		%\[
+			%\Var(X) = \Pr(X=1)\Pr(X=0) 
+	 	%.\] 
+		%\item Use the expressions for \(\E[Y]\) and \(\E[X]\) above, as well as the expression for \(\beta_1\) that you derived in (b) to get a simplified expression for 
+		%\[
+			%\beta_0 = \E[Y] - \beta_1\E[X]
+		%.\] 
+		%\item Use the expressions for \(\beta_0\) and  \(\beta_1\) from above as well as the linear model
+			 %\[
+				 %Y = \beta_0 + \beta_1X + \eps
+			 %.\] 
+			 %What is the predicted value of \(Y\) when  \(X=0\)? What about when  \(X=1\)?
+	%\end{enumerate}
+\end{enumerate}
+
+\section*{Hypothesis Testing and Confidence Intervals}%
+
+In the following questions, whenver running a hypothesis test, please state the null and alternative hypotheses, show some work, and state the conclusion of the test.
+
+\begin{enumerate}
+	\item In an estimated simple regression model based on \(n = 64\), the estimated slope parameter, \(\hat\beta_1\), is  \(0.310\) and the standard error of \(\hat\beta_1\) is 0.082.
+	\begin{enumerate}
+		\item What is \(\hat\sigma_{\beta_1}^2\)? Recall \(\sigma_{\beta_1}\) is the terms such that, approximately for large  \(n\),
+		\[
+			\sqrt{n}(\hat\beta_1 - \beta_1)\sim N(0,\sigma_{\beta_1})
+		.\] 
+		\item Test the hypothesis that the slope is zero against the alternative that it is not at the \(1\%\) level of significance (\(\alpha = 0.01\)).	
+		\item Test the hypothesis that the slope is negative against the alternative that it is positive at the \(1\%\) level of significance (\(\alpha = 0.01)\). 
+		\item Test the hypothesis that the slope is positive against the alternative that it is negative at the \(5\%\) level of significance. What is the p-value?
+		\item Generate a \(99\%\) confidence interval for  \(\beta_1\). How can we use this interval to run the hypothesis test in part (b)?
+	\end{enumerate}
+	\item Consider a simple regression of log-income (income is measured thousands of dollars), \(Y\), against years of education,  \(X\). After collecting a sample of size \(n=50\) we estimate the following regression equation. 
+	 \[
+		 \widehat Y = \hat\beta_0 + 0.0180 X
+	.\]
+	\begin{enumerate}
+		\item Using the following information to solve for \(\hat\beta_0\) as well as the estimated variance \(\widehat\Var(\hat\beta_0)\), which is the square of the standard error. 
+		\begin{itemize}
+			\item The standard error of \(\hat\beta_0\) is  \(2.174\)
+			\item The test statistic, \(t^*\), associated with the hypothesis test for
+			 \[
+				 H_0:\beta_0 = 0\hbox{ }\text{ vs. }\hbox{ }H_1:\beta_0 \neq 0
+			,\]
+			is equal to 1.257. 
+		\end{itemize}
+		\item Use the following information to solve for the standard error \(\hat\beta_1\) as well as the estimated variance \(\widehat\Var(\hat\beta_1)\), which is the square of the standard error.
+		\begin{itemize}
+			\item The test statistic, \(t^*\), associated with the hypothesis test for
+			 \[
+				 H_0:\beta_1 = 0\hbox{ }\text{ vs. }\hbox{ }H_1:\beta_1 \neq 0
+			,\]
+			is equal to \(5.754\)
+		\end{itemize}
+		\item Given that \(Y\) is a logged variable,  \(Y = \log(\text{income})\), how do we interpret  \(\hat\beta_1\)?
+		\item Suppose that we are interested in the average value of log-income for someone with \(16\) years of education. We want to use the model above to test the hypothesis that the average value of log-income for someone with 16 years of education is less than or equal to 1.85. That is we want to test
+		\[
+			H_0: \lambda = \beta_0 + 16\beta_1 \leq 1.85 \hbox{ }\text{ vs. }\hbox{ }H_1: \lambda = \beta_0 + 16\beta_1 > 1.85
+		.\]
+		Use the fact that \(\widehat\Cov(\hat\beta_0,\hat\beta_1) = 2.84\) to test this hypothesis at level \(\alpha = 0.1\).
+		\item Use the above to generate a \(90\%\) confidence interval for \(\lambda\).
+	\end{enumerate}
+	\item (\red{Challenge}) Suppose we find that \(\hat\beta_1 > 0\). If we reject the null hypothesis that  \(\beta_1 = 0\) in favor of an alternative hypothesis that  \(\beta_1 \neq 0\) at level \(\alpha\), up to what level can we be sure that would we reject the null hypothesis that \(\beta_1 \leq 0\) against an alternative that \(\beta_1 > 0\)? (Please give some explanation here as well as your answer, which will be some multiple of \(\alpha\)).
+\end{enumerate}
+
+\section*{\(R^2\) and Goodness of Fit}%
+\begin{enumerate}
+	\item Consider the following estimated regression equation.
+	\[
+	    \widehat Y = 6.83 + 0.869 X 
+	.\]
+	Write the estimated regression equation that would result if
+	\begin{enumerate}
+		\item All values of \(X\) were divided by 20 before estimation.
+		\item All values of \(Y\) were divided by 20 before estimation. 
+		\item All values of \(X\) and  \(Y\) were divided by 20 before estimation.
+	\end{enumerate}
+	\item Given the quantities in the questions below, calculate and interpret \(R^2\):
+	 \begin{enumerate}
+		 \item \( \sum_{i=1}^n (Y_i - \bar Y)^2 = 631.63\) and \( \sum_{i=1}^n \hat\eps_i^2 = 182.85\).
+		 \item \( \sum_{i=1}^n Y_i^2 = 5930.94\), \(\bar Y = 16.035\),  \(n = 20\), and  \(\text{SSR} = 666.72\).
+	\end{enumerate}
+	\item Suppose \(R^2 = 0.7911\),  \(\text{SST}=552.36\), and \(n=20\). Find \(\hat\sigma_\eps^2\).
+\end{enumerate}
+
+
+
+
+\end{document}
+

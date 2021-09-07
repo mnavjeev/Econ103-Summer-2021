@@ -1,0 +1,174 @@
+\documentclass[10pt]{article}
+
+% Packages with options
+\usepackage[english]{babel}
+\usepackage[mathscr]{euscript}
+\usepackage[margin=1in]{geometry} 
+\usepackage[utf8]{inputenc}
+\usepackage[small]{titlesec}
+
+% Primary Packages
+\usepackage{adjustbox, amsbsy, amsmath, amssymb, amsthm, bm, commath, chngcntr, dsfont, econometrics, fancyhdr, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
+
+% Hyperref Setup
+\usepackage[pdfauthor={Manu Navjeevan},
+			bookmarks=false,%
+			pdftitle={Econ 103: Homework 1},%
+			pdftoolbar=false,%
+			pdfmenubar=true]{hyperref} 
+
+% Rest of the setup is in the "setup/setup_long" package
+\usepackage{cleveref, setup_long} % cleverref should be last
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Econ 103: Homework 1} %Title
+\author{Manu Navjeevan}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Econ 41 Review}%
+\label{sec:econ41review}
+
+\begin{enumerate}
+	\item \underline{Discrete Random Variables.} Suppose that we are interested in the number of cups of coffee drank by a (randomly selected) student at UCLA. This quantity can be represented as a random variable \(Y\) with probability mass function:
+	 \[
+		 p_Y(a) = \begin{cases}
+		 	\frac{1}{4}  & \text{if } a\in \{0,1,2\} \\
+			\frac{1}{8}  & \text{if } a = 3 \\
+			\frac{3}{32}  &\text{if } a = 4 \\
+			c &\text{if } a = 5 \\
+			0 &\text{otherwise}
+		 \end{cases}
+	,\]
+	where \(c\) is an unknown constant.
+	\begin{enumerate}
+		\item Explain why the number of cups of coffee drank in a day by a randomly selected student at UCLA is a random variable. 
+		\item What is the relevant outcome space of the random variable \(Y\)? 
+		\item Explain what the distribution of this random variable represents. In other words distribution of \(Y\) assigns a probability to any subset of the outcome space. How do we interpret this probability?
+		\item Solve for \(c\). (\emph{Hint:} Recall that \(\P_Y(\calO_Y) = 1\) so that  \(\sum_{a\in\calO_Y} p_Y(a)\) must equal one).
+		\item What is the probability that a randomly selected student at UCLA drinks at least 3 cups of coffee a day, \(\P_Y(Y\geq 3)\)?
+		\item What is the expected number of cups of coffee drank per day for a randomly selected student at UCLA?
+	\end{enumerate}
+	\item \underline{Continuous Random Variables.} Suppose that we are interested in the income of a randomly selected Angeleno. The distribution of incomes (in tens of thousands of dollars) for residents of Los Angeles can be described as a random variable, \(X\), with the following pdf.
+	\[
+		f_X(a) = \begin{cases}
+		    0.11- ca & \text{if } 0 \leq a \leq 10 \\
+			0 &\text{otherwise }
+		\end{cases}
+	,\] 
+	where \(c\) is an unkown constant.
+	\begin{enumerate}
+		\item What is the outcome space of \(X\), \(\calO_X\)? 
+		\item Using the relationship 
+		\[
+			\P_X(l \leq X \leq m) = \int_l^m f_X(a)\;da
+		,\]
+		explain why the pdf must always be weakly positive, \(f_X(a) \geq 0\), for any \(a\in\SR\).
+		\item Because \(\P_X(\calO_X)=1\) we must have that 
+		\(
+			\int_0^{10} f_X(a)\;da = 1
+		.\)
+		Using this fact, solve for \(c\).
+	\item What is the expected value of \(X\), \(\E[X]\)?
+	\item What is the variance of \(X\), \(\Var(X)\)?
+	\end{enumerate}
+	\item \underline{Variance and Covariance.} Let \(Y\) be a random variable representing income (in tens of thousands of dollars) and \(X\) be a random variable representing years of education. Suppose that the marginal distribution of \(X\) is described by its probability mass function
+	\[
+		p_X(x) = \begin{cases}
+			0.05 & \text{if }x\in \{1,2,\dots,12\}  \\
+			0.09 &\text{if }x \in \{13,14,15,16\}  \\
+			0.04 &\text{if }x \in \{17\} \\
+			0 &\text{otherwise }
+		\end{cases}
+	.\]
+	The marginal distribution of \(Y\) is described by its probability density function
+	\[
+		f_Y(y) = \begin{cases}
+			0.1	 & \text{if } 0\leq y\leq 10 \\
+			0 &\text{otherwise }
+		\end{cases}
+	.\]	
+	\begin{enumerate}
+		\item What is the expectation of \(Y\),  \(\E[Y]\)? What is its variance,  \(\Var(Y)\)?
+		\item What is the expectation of \(X\),  \(\E[X]\)? What is its variance, \(\Var(X)\)?
+		\item Using \(\E[YX] = 60\) compute the covariance between  \(Y\) and  \(X\),  \(\Cov(X,Y)\).
+		\item Calculate the correlation coefficient between \(X\) and  \(Y\).
+		 \[
+			 \rho_{YX} = \frac{\Cov(X,Y)}{\sigma_X\sigma_Y} 
+		.\] 
+		\item What does this covariance tell us about the relationship between education levels and income? Is there a positive or negative association?
+		\item Should we interpret this result as a \emph{causal} relationship between education and income? What are some reasons we may want to refrain from this interpretation?
+		\item (\red{Challenge}) A common inequality used in econometrics is the \emph{Cauchy-Schwarz} inequality. It states that, for any random variables \(X\) and  \(Y\), and any functions  \(g(\cdot)\) and  \(h(\cdot)\), 
+		 \[
+			 \left|\E[g(X)h(Y)]\right| \leq \sqrt{\E[g^2(X)]}\sqrt{\E[h^2(Y)]}
+		.\] 
+		Use this inequality to show why the correlation coefficient is bounded between negative one and one, \(-1 \leq \rho_{XY} \leq 1\). (\emph{Hint}: Try \(g(x) = x - \mu_X\) and \(h(y) = y - \mu_Y\)).
+	\end{enumerate}
+\end{enumerate}
+\section*{Introduction to Single Linear Regression}%
+\begin{enumerate}
+	\item \underline{Useful Equalities.}  Recall that in deriving the form of \(\hat\beta_1\) we used the following equalities
+	\[
+		\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X) = \frac{1}{n}\sum_{i=1}^n Y_iX_i - \bar Y \bar X \andbox \frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2 = \frac{1}{n}\sum_{i=1}^n  X_i^2 - (\bar X)^2
+	.\] 
+	Show either one of these equalities (only have to show one or the other).
+	\item \underline{Assumptions for Inference.} Suppose we are interested in the relationship between the size of the average American's social circle, \(X\), and whether or not they are unemployed, \(Y\). To investigate this relationship we want to estimate the following regression equation\footnote{Recall that this regression specification corresponds to finding the line of best fit parameters \(\beta_0, \beta_1 = \arg\min_{b_0,b_1}\E[(Y-b_0-b_1X)^2]\) and defining \(\eps = Y -\beta_0 - \beta_1X\)}
+	\[
+		Y = \beta_0 + \beta_1X + \eps,\;\;\; \E[\eps] = \E[\eps X] = 0
+	.\] 
+	To estimate the regression coefficient parameters we collect a sample of size \(n\), \(\{Y_i,X_i\}_{i=1}^{n}\). Recall that for valid asymptotic inference on our estimates \(\hat\beta_0\) and \(\hat\beta_1\) we require the following assumptions: Random Sampling, Homoskedasticity, and Rank condition.
+	\begin{itemize}
+		\item Random Sampling: Assume that \(\{Y_,X_i\}\) are independently and identically distributed from the population of interest, \((Y_i,X_i) \overset{\text{i.i.d}}{\sim} (Y,X)\).
+		\item Homoskedasticity: Assume that \(\Var(\eps|X=x)=\sigma_\eps^2\) for all possible values of  \(x\).
+		 \item Rank Condition: There must be at least two distinct values of \(X\) that appear in the population.
+	 \end{itemize}
+	\begin{enumerate}
+		\item Suppose we collect our sample by only randomly surveying people on UCLA campus. Which assumption would be violated?
+		\item Suppose we collect our sample and find that everyone appears to have exactly one friend. Which assumption would be violated? Why is this a problem when computing the line of best fit through our sample?
+		\item Suppose random sampling, homoskedasticity, and the rank condition are all satisfied, but \(n = 10\). Why might inferences based on the approximation 
+		\[
+			\frac{\hat\beta_1 - \beta_1}{\hat\sigma_{\beta_1}/\sqrt{n}} \sim N(0,1) 
+		\]
+		not be valid?
+	\end{enumerate}
+	\item \underline{Hypothesis Testing.} Suppose now that we are interested in investigating the relationship between the size of someone's social circle, \(X\), and their income (in tens of thousands of dollars), \(Y\). We want to estimate the following linear regression model
+	\[
+		Y = \beta_0 + \beta_1X + \eps,\;\;\; \E[\eps] = \E[\eps X] = 0
+	.\] 
+	To do so we collect a random sample of size \(n = 64\),  \(\{Y_i,X_i\}_{i=1}^{64}\) and find that \(\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2 = 100\), \(\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X) = 225\), \(\bar Y = 5.5\), and  \(\bar X = 1.5\).
+	\begin{enumerate}
+		\item Using this information find and interpret \(\hat\beta_1\) and \(\hat\beta_0\).
+		\item After finding \(\hat\beta_1\) and  \(\hat\beta_1\) describe how you would construct the estimated residuals  \(\hat\eps_i\).
+		\item We find that \(\frac{1}{n}\sum_{i=1}^n \hat\eps_i^2 = 36\). Use this and the result that, for \(n\) large, 
+		\[
+			\frac{\hat\beta_1 - \beta_1}{\hat\sigma_{\beta_1}/\sqrt{n}}\sim N(0,1) 
+		,\]
+		to compute the (approximate) probability that, if the true value was given \(\beta_1 = 0\), we would see a value of \(|\hat\beta_1|\) equal to or larger than the one that we observed.
+		\item Use this result to test, at level \(\alpha = 0.1\), the hypotheses
+		\[
+			H_0: \beta_1 = 0\hbox{ }\text{ vs. }H_1:\beta_1 \neq 0
+		\]
+		\item Conduct this test in another fashion by constructing the test statistic \(t^*\) and comparing to either  \(z_{0.95} = 1.64\) or  \(z_{0.9} = 1.24\) (indicate which value you are comparing the test statistic to).
+		\item Construct a \(90\%\) confidence interval for  \(\beta_1\). How could we use this to conduct the hypothesis test in part (d)?
+		\item Suppose that we find we made an error in our calculation and actually \(\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2 = 1\). If all other values stayed the same, how would this change the result of the hypothesis test in part (d)?
+	\end{enumerate}
+	%\item \underline{Confidence Intervals (\red{Challenge}).} We motivated the \(100(1-\alpha)\%\) confidence interval by saying that we would include any value \(b\) for which we would not reject the null hypothesis \(H_0: \beta_1 = b\) in favor of the alternative hypothesis  \(H_1: \beta_1 \neq b\) at level \(\alpha\). This led us to the confidence interval 
+	%\[
+		%(\hat\beta_1 - z_{1-\alpha/2}\hat\sigma_{\beta_1}/\sqrt{n}, \hat\beta_1 + z_{1-\alpha/2}\hat\sigma_{\beta_1}/\sqrt{n})
+	%.\]
+	%We can also view this as an interval with random endpoints. Suppose that \(n\) is large so that we can say that (approximately)
+	%\[
+		%\frac{\hat\beta_1 - \beta_1}{\hat\sigma_{\beta_1}/\sqrt{n}}\sim N(0,1) 
+	%,\]
+	%what is the probability that the \(100(1-\alpha)\%\) confidence interval contains the true value  \(\beta_1\)?
+
+\end{enumerate}
+
+
+
+
+\end{document}
+

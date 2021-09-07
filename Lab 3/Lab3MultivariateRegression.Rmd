@@ -1,0 +1,300 @@
+---
+title: "Multivariate Linear Regression I"
+author: "Manu Navjeevan"
+date: "8/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lecture's Objective
+
+The goal for this lecture is to familiarize ourselves with multivariate regression in R.
+As we'll see, the basic code structure is very similar to that of single regression.
+We will be using some of the results and formulas that we covered in the main lecture of Econ 103 along the way.
+Much of our discussion is based on "*Principles of Econometrics with R" by Constantin Colonescu (available for free at https://bookdown.org/ccolonescu/RPoE4/)
+
+## Some Basics
+
+We have so far seen how to run a regression in R with a constant and a single variable. 
+We would like to extend our analysis to the richer model
+$$Y = \beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k + \epsilon$$
+To illustrate how to analyze this model in R we will work with the CPS data (this is the dataset containing information on income, education, and experience).
+Let's begin by loading the relevant data into our workspace so that we can analyze it.
+
+```{r start1}
+
+# Clear the workspace
+rm(list = ls())
+
+# Our data set is store as part of the PoEData library, so let's tell R we need access to it
+library(PoEdata)
+
+# Remember that if we are not sure about the data set name, we can use data() to learn what is available
+data()
+
+# Looking at the output, there are multiple datasets called CPS. We'll use cps.
+data(cps)
+
+```
+
+If you look at the Environment tab on the upper right hand corner you should see that a new dataset `cps` is now available in the workspace.
+Let's begin by running a single regression of log-income on education to refresh our memory.
+Remember you can always see what the variables names are by using the `attributes` function.
+
+```{r start2}
+
+# Let's begin by seeing what the variable names are
+#attributes(cps)
+
+# Looking at the variable names we see `wage` is earnings per hour, `educ` education, and `exper` experience
+# Transform wages into logs for our regression
+logwage <- log(cps$wage)
+
+# Next regress logwages on education and save output
+sregout <- lm(logwage ~ educ, data = cps)
+
+# And create a summary of this output to
+sregsum <- summary(sregout)
+
+sregsum
+```
+
+Note that there we do not necessarily need to create a `logwages` variable to run the regression. We can also directly transform the variable in our call of the function `lm` by typing `lm(log(wage) ~ educ, data = cps)`.
+This code will also run, but in general I find it helpful to always use the `I` function when doing transformations inside an `lm` call to avoid the possibility of the code getting confused.
+
+```{r start3}
+# Try calling lm transforming wage inside the lm function call
+lm(log(wage) ~ educ, data = cps)
+
+# Use the `I` function instead
+lm(I(log(wage)) ~ educ, data = cps)
+
+# Compare to the output we had
+sregout
+
+```
+
+Suppose now we want to estimate a richer model in which we regress log wages on both education and experience. 
+The syntax of the code is exactly the same, except not we simply add the variable experience to our function call
+
+```{r start4}
+# Call the lm function to run a regression on both education and experience
+mregout <- lm(logwage ~ educ + exper, data = cps)
+
+# Display the output
+mregout
+
+```
+
+A couple of things worth pointing out.
+First, note that the `lm` function automatically added a constant.
+Second, note that as in simple regression, the `lm` function "hides" some of the output stored in the variable `mregout`.
+The summary function again works as a convenient way to process many of the statistics we care about.
+
+```{r start5}
+# Call the summary function to process output from lm
+mregsum <- summary(mregout)
+
+# Display the output
+mregsum
+```
+
+Notice that the `summary` function again tells us the standard errors for each estimate, as well as the p-value for the null hypothesis that the coefficient is equal to zero. In this regression we see that all variables are significantly different from zero.
+
+## Richer Models
+
+The linear regression of log income on education and experience requires that the marginal effect on log-wages of each additional year of experience is the same. 
+This seems somewhat counter-intuitive, and we may want to run a richer regression that allows for more flexibility by considering
+$$\log(\text{wages}) = \beta_0 + \beta_1 \text{edu} + \beta_2 \text{exper} + \beta_3 \text{exper}^2 + \epsilon$$
+How do we estimate this model in R?
+Basically, we just need to feed the function call `lm` an additional variable that include the transformation of the variable `exper`.
+
+```{r start6}
+
+# Call the function lm for the richer model
+exp2regout <- lm(logwage ~ educ + exper + I(exper^2), data = cps)
+
+# And process the output again
+exp2regsum <- summary(exp2regout)
+
+# Display the ouput
+exp2regsum
+
+```
+
+Note that in this function call it is important to use `I(exper^2)` instead of just `exper^2` (you should try the function call `lm(logwage ~ educ+ exper + exper^2, data = cps)` to see what happens).
+Interpreting the output of a regression with multiple transformations of a variable can be hard because clearly one cannot change `exper` without changing `exper^2`.
+Graphs can be helpful for gaining intuition into our results.
+Remeber that `plot` and `curve` are two basic function for making graphs in R (and as usual, if in doubt you can always type `?plot` and `?curve` to ask R for help).
+Let's begin by plotting the estimate of the marginal effect of experience in the model
+$$\log(\text{wages}) = \beta_0 + \beta_1 \text{edu} + \beta_2 \text{exper} + \beta_3 \text{exper}^2 + \epsilon.$$
+To compute it, recall that in this model the predicted value of Y given education and experience mean is given by
+$$\widehat{Y}(\text{edu},\text{exper}) = \hat\beta_0 + \hat\beta_1 \text{edu} + \hat\beta_2\text{exper} + \hat\beta_3 \text{exper}^2$$
+and hence taking the derivative with respect to experience gives us the marginal return 
+$$\frac{\partial}{\partial \text{exper}} \widehat{Y}(\text{edu},\text{exper}) = \hat\beta_2 + 2\hat\beta_3 \text{exper}.$$ 
+
+Our estimate is simply $\hat\beta_1 + 2\hat\beta_3 \text{exper}$, which we want to plot as a function (of $\text{exper}$).
+
+```{r start7}
+
+# We first need access to the estimates b3 and b4.
+# These are both in the output of lm and of summary. We'll get them from summary output
+# If in doubt, we can see what the attributes of exp2regsum are
+attributes(exp2regsum)
+
+# The variable `coefficients` seems like an obvious candidate. Let's check
+exp2regsum$coefficients
+
+# Notice there is a lot more information here, but we can get what we need from the first column
+b2 <- exp2regsum$coefficients[3,1]
+b3 <- exp2regsum$coefficients[4,1]
+
+# We can now plot the marginal effects
+curve(b2 + 2*b3*x)
+
+```
+
+The above graph could be improved upon quite a bit.
+First, note that the label for the axis is not very informative.
+Second, note that the range of experience (0 to 1) is a bit odd in the sense that most people in our sample will have a much larger number of years of experience. 
+Let's fix these two issues.
+
+```{r start8}
+
+# To know what is the appropriate range of experience, we should look at the data
+# The summary function is also helpful for this -> just need to assign it the data we want analyzed
+summary(cps$exper)
+
+# From the output, we see in our data years of experience goes from 0 to 52. Let's graph from 0 to 30 as a typical career.
+curve(b2 + 2*b3*x, from = 0, to = 30)
+
+# And to add labels, we just need the xlab and ylab arguments
+curve(b2 + 2*b3*x, from = 0, to = 30, xlab = "Years of Experience", ylab = "Marginal Return")
+
+```
+
+The graph makes it very clear that the marginal returns to additional years of experience is decreasing.
+However, marginal returns are also positive and it would be helpful to plot the returns as a function of experience (rather than its derivative). 
+One challenge is that the function
+$$\beta_0+ \beta_1\text{edu} + \beta_2 \text{exper} + \beta_3 \text{exper}^2$$
+depends on both experience and education.
+To plot how the function changes with experience, it is therefore customary to fix education at some level.
+Let's try this by plotting how expected wages change with experience for some one with twelve years of education (the equivalent of a high-school degree)
+
+```{r start9}
+
+# To graph the above function at edu = 12, we will need also beta hat 0 and beta hat 1
+b0 <- exp2regsum$coefficients[1,1]
+b1 <- exp2regsum$coefficients[2,1]
+
+# Next we can graph this function
+curve(b0 + b1*12 + b2*x + b3*x^2, from = 0, to = 30, xlab = "Years of Experience", ylab ="Expected log wages")
+
+
+```
+
+To test your understanding you should try to estimate the following model, which interacts education with experience:
+$$\log(\text{wages}) = \beta_0 + \beta_1 \text{edu} + \beta_2 \text{exper} + \beta_3 \text{exper}\times \text{edu}.$$
+
+* Plot marginal returns to experience for someone with 12 years of education
+* Plot returns to experience for someone with 12 years of education
+
+## Some Inference
+
+To conclude we will see how to construct confidence intervals and do a hypothesis test on the coefficients of a linear regression.
+We will be brief because the analysis is virtually identical to what we did in the simple regression case.
+
+Let's start with building a confidence interval for a coefficient in a multiple regression model.
+Remember that the basic formula is given by
+$$\hat{\beta}_j \pm z_{1-\frac{\alpha}{2}}\sqrt{\widehat{\text{Var}}(\hat{\beta}_j)}$$
+Superficially, these formulas are exactly the same as in the single regression case.
+The main difference is in how $\widehat{\text{Var}}(b_j)$ is calculated, but that part is done in the background by R.
+Going back to the model
+$$\log(\text{wages}) = \beta_0 + \beta_1 \text{edu} + \beta_2 \text{exper} + \beta_3 \text{exper}^2 + \epsilon$$
+let's obtain a confidence interval for $\beta_1$ (the coefficient in front of education).
+We'll first clean the workspace and run the regression -- here we are cleaning the workspace just because we have a lot of leftover variables from before.
+
+```{r start10}
+
+# We've done quite a bit, so let's start fresh and reload the data
+# Clear the workspace
+rm(list = ls())
+
+# Our data set is store as part of the PoEData library, so let's tell R we need access to it
+library(PoEdata)
+
+# Looking at the output, there are multiple datasets called CPS. We'll use cps.
+data(cps)
+
+# Estimate the regression we want
+regout <- lm(log(wage) ~ educ + exper + I(exper^2), data = cps)
+
+# And the summary analysis
+regsum <- summary(regout)
+
+```
+
+Next, we'll build a 95$\%$ confidence region using a normal approximation.
+From our formulas, the main things we need to build the confidence intervals are the estimate, the standard error, and the quantile $z_{1-\frac{\alpha}{2}}$.
+
+```{r start11}
+
+# Recall a lot of the information we need is in regsum$coefficients
+regsum$coefficients
+
+# Looking at the output, note the estimate b1 is in row 2, column 1
+b1 <- regsum$coefficients[2,1]
+
+# Similarly the standard error is in row 2, column 2
+se1 <- regsum$coefficients[2,2]
+
+# Now for the normal approximation all we need is z_{1-alpha/2}
+# For a 95% confidence interval, alpha = 0.05 so we want the 1-0.05/2 quantile of a standard normal
+za <- qnorm(1-0.05/2)
+
+# For the CI just apply out formula
+zlb <- b1 - se1*za
+zub <- b1 + se1*za
+
+# Print out
+zlb
+zub
+
+```
+
+
+Finally, it is also helpful to note that we can use the function `confint` to build confidence intervals. 
+Simply apply it to the `lm` output to get an answer
+
+```{r start12}
+
+# Call the function confint to get a confidence interval
+confint(regout, level = 0.95)
+```
+
+To conclude we will do a simple example of a hypothesis test.
+Again, the code is in essence the same as for the simple linear regression case.
+Suppose we are interested in testing the hypothesis
+$$H_0: \beta_1 \leq 0.12 \hspace{0.5 in} H_1: \beta_1 > 0.12$$
+Since $b_1 = 0.102$, recall that the p-value for this problem was given by the following formulas
+$$P(Z \geq \frac{0.102-0.12}{\sqrt{\widehat{\text{Var}}(b_2)}})$$
+As we saw in the construction of confidence intervals, the normal and t approximation yield practically the same answer due to the large number of observations.
+Therefore, below we obtain a p-value using only a normal approximation
+
+```{r start13}
+
+# We already have all the elements we need. Just recall the function for P(Z <= a) is pnorm
+pval <- 1 - pnorm((b1-0.12)/se1)
+
+# Print answer
+pval
+```
+
+Notice that the p-value is very large so that we would fail to reject at most conventional levels.
+To test your understanding, try the following problems: 
+
+* Obtain a pvalue using a normal approximation for the null hypothesis that $\beta_2 = 0.12$ against $\beta_2 > 0.12$.
+* Obtain a pvalue using a normal approximation for the null hypothesis that $\beta_2 = 0.12$ against $\beta_2 < 0.12$.

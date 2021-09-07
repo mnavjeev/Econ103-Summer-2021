@@ -1,0 +1,747 @@
+\documentclass[notheorems, 9pt]{beamer}
+
+% Packages with options
+\usepackage[english]{babel}
+\usepackage[mathscr]{euscript}
+\usepackage[utf8]{inputenc}
+
+% Primary Packages
+\usepackage{amsbsy, amsmath, amssymb, amsthm, bookmark, bm, commath, chngcntr, dsfont, econometrics, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
+
+% Rest of the setup is in the "setup_beamer" package
+\usepackage{setup_beamer}
+
+% Title, Author, Institute
+\title{Econ 103: Multiple Linear Regression II}
+\author{Manu Navjeevan}
+\institute{UCLA}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}{Content Outline} 
+	\label{frame:content-outline}
+	\ucla{Advanced Inference}
+	\begin{itemize}
+		\item Multiple Hypothesis Testing
+		\item The F-Test
+	\end{itemize}
+	\ucla{Model Specification}
+	\begin{itemize}
+		\item Indicator Variables
+		\item Omitted Variables Bias
+	\end{itemize}
+\end{frame}
+
+\section{Advanced Inference}
+\begin{frame}{Advanced Inference: Multiple Hypothesis Testing} 
+	\label{frame:multiple-hyp-test}
+	So far, we have gone over mainly what we call ``single hypothesis testing.'' That is, our hypotheses have usually involve a \underline{single parameter} that is being tested. 
+	
+	\onslide<2->
+	\ucla{Examples:}
+	\begin{itemize}
+		\item Testing the null hypothesis \(\green{H_0}:\beta_3 = 0\) against an alternative  \(\red{H_1}:\beta_3 \neq 0\).
+		\item Testing the null hypothesis \(\green{H_0}:\lambda \leq 0\) against an alternative \(\red{H_1}:\lambda > 0\), where \(\lambda = \beta_2 + 3\beta_3\).
+		\begin{itemize}
+			\item<3-> Notice that while \(\lambda\) is a linear combination of parameters, we are still only testing the linear combination, not the individual components.
+			\item<4-> Testing \(\lambda = 0\) is different than testing that both  \(\beta_2 = 0\) and \(\beta_3 = 0\). 
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}{Advanced Inference: Multiple Hypothesis Testing} %Title
+	\label{frame:multiple-hyp-test2} %Label 
+	However, often in multiple hypothesis testing we would like to test multiple hypotheses at the same time. Consider the multiple linear regression model
+	\[
+	    Y = \beta_0 + \beta_1 X_1 + \dots + \beta_pX_p + \eps
+	.\] 
+	Now, we will consider testing multiple conjectures about the coefficients.
+	\begin{itemize}
+		\item Will limit ourselves to ``two-sided'' alternatives, that is we will only test equality restrictions.
+	\end{itemize}
+	\onslide<2->
+	\ucla{Before:}
+	\[
+		\green{H_0}:\beta_1 = 0\vsbox \red{H_1}:\beta_1\neq 0
+	.\]
+	\only<3>{
+
+	\ucla{Now:}
+	\[
+		\green{H_0}:\beta_1 = \beta_2, \beta_3 = 0\vsbox\red{H_1}:\text{At least one of these is false}
+	.\]}
+	\only<4->{
+
+	\ucla{Now:}
+	\[
+		\green{H_0}:\beta_1 = \beta_2\text{ and }\beta_3 = 0\vsbox\red{H_1}:\beta_1 \neq \beta_2\text{ or }\beta_3\neq 0
+	.\]
+	}
+	\onslide<5->
+	\begin{itemize}
+		\item<5-> Since null hypothesis involves multiple restrictions, this is called a \darkucla{joint hypothesis test}
+		\item<6-> Alternative is always two sided. Won't consider test something like
+		\[
+			\green{H_0}: \beta_1 \leq \beta_2\text{ and }\beta_3 \geq 0\vsbox\red{H_1}:\beta_1 > \beta_2\text{ or }\beta_3 < 0
+		.\] 
+	\end{itemize}
+\end{frame}
+\begin{frame}{Advanced Inference: Examples} %Title
+	\label{frame:mht3} %Label 
+	\begin{example*}[Demand Estimation]	
+		A hamburger restaurant considers the following model for sales:
+		\[
+			\text{Sales} = \beta_0 + \beta_1\text{Price} + \beta_3\text{Advert} + \beta_4\text{Advert}^2 + \eps
+		.\] 
+		We want to test whether advertising has any effect on sales. In this context, this means testing the joint hypothesis:
+		\[
+			\green{H_0}:\beta_3 = \beta_4 = 0\vsbox \red{H_1}:\beta_3\neq 0\text{ or }\beta_3 \neq 0
+		.\] 
+		\onslide<2->
+			Notice the difference between running this test and testing something like
+			\[
+				\green{H_0}:\beta_3 + 2\beta_4 = 0\vsbox \red{H_1}:\beta_3 + 2\beta_4 \neq 0
+			.\] 
+	\end{example*}	
+\end{frame}
+\begin{frame}{Advanced Inference: Examples} %Title
+	\label{frame:mht4} %Label 
+	\begin{example*}[Returns to Education and Experience]
+		Suppose we estimate the model:
+		\[
+			\ln(\text{Wage}) = \beta_0 + \beta_1\text{Edu} + \beta_2\text{Exper} + \beta_3\text{Exper}^2 + \beta_4\text{Exper}\cdot\text{Edu}  +\eps
+		.\] 
+		We want to test whether experience has any effect on wages, which is equivalent to testing
+		\[
+			\green{H_0}: \beta_2 = \beta_3 = \beta_4 = 0 \vsbox \red{H_1}:\beta_2\neq\text{ or }\beta_3 \neq 0\text{ or }\beta_4 \neq 0
+		.\] 
+		Alternatively, if we wanted to test whether education has any effect on wages we would test:
+		\[
+			\green{H_0}: \beta_1 = \beta_4 = 0 \vsbox\red{H_1}:\beta_1 \neq 0\text{ or }\beta_4\neq 0 
+		.\] 
+	\end{example*}
+\end{frame}
+\begin{frame}{Advanced Inference: Examples} %Title
+	\label{frame:mht5} %Label 
+	\begin{example*}[Infrastructure]
+		Suppose LA metro wants to understand whether the number of subway rides is affected by the price of alternative modes of transportation. They estimate the model:
+		\[
+			\text{No. of Subway Rides} = \beta_0 + \beta_1\text{Price}_{\text{bus}} + \beta_2\text{Price}_{\text{gas}} + \beta_3\text{Price}_{\text{uber}} + \eps
+		.\] 
+		The null and alternative hypotheses for whether the prices of substitutes matter are given:
+		\[
+			\green{H_0}:\beta_2 = \beta_3 = \beta_4 = 0\vsbox\red{H_1}:\beta_2\neq 0\text{ or }\beta_3\neq 0 \text{ or }\beta_4\neq 0
+		.\] 
+	\end{example*}
+\end{frame}
+\begin{frame}{Advance Inference: Examples} %Title
+	\label{frame:mht6} %Label 
+	\begin{example*}[Model Selection]
+		Suppose we have estimated the model
+		\[
+			\text{Anxiety} = \beta_0 + \beta_1\text{Classes}  + \eps
+		.\]
+		We are considering adding information on number of energy drinks and the number of hours of sleep one gets to this model. That is, we are considering estimating the model
+		\[
+			\text{Anxiety} = \beta_0 + \beta_1\text{Classes} + \beta_2\text{Energy Drinks} + \beta_3\text{Sleep} +\eps
+		.\] 
+		We want to know if adding these new covariates adds any explanatory power to our model. This is equivalent to testing
+		\[
+			\green{H_0}:\beta_2 =\beta_3 = 0\vsbox \red{H_1}:\beta_2 \neq 0\text{ or }\beta_3 \neq 0
+		.\] 
+	\end{example*}
+\end{frame}
+\begin{frame}{Advanced Inference: Testing Procedure} %Title
+	\label{frame:mht7} %Label 
+	Notice that in all of these we want to test \red{multiple} equality restrictions. How do we go about this?
+
+	\onslide<2->
+	Our general approach for hypothesis testing has been as follows:
+	\begin{enumerate}
+		\item \ucla{Step 1}: Formally state the null and the alternative hypothesis
+		\begin{itemize}
+			\item Steps that follow depend on what the alternative is
+		\end{itemize}
+		\item \ucla{Step 2}: Look at the data and see whether there is evidence against the null hypothesis
+		\begin{itemize}
+			\item Compute the p-value. Does the data look unusual under the assumption that \(\green{H_0}\) holds?
+		\end{itemize}
+		\item \ucla{Step 3}: Based on the evidence, decide whether or not to reject \(\green{H_0}\).
+		 \begin{itemize}
+			\item Reject if the p-value is less than \(\alpha\).
+		\end{itemize}
+	\end{enumerate}
+\end{frame}
+\begin{frame}{Advanced Inference: Testing Procedure} %Title
+	\label{frame:mht8} %Label 
+	We have now set up our null and alternative hypothesis. We need to now think about what we would expect the distribution of our data to look like under our null hypothesis. To do so, we will define the \green{restricted} and the \red{unrestricted} models.
+	\onslide<2->
+	\begin{itemize}
+		\item \green{Restricted Model}: Incorporates the \underline{null hypothesis} restrictions on the model.
+		\item \red{Unrestricted Model}: More general model specified by the \underline{alternative hypothesis}.
+	\end{itemize}
+	\vspace{0.4cm}
+	\onslide<3->
+	\ucla{Key Idea}: If the null hypothesis is true the unrestricted model shouldn't give a large improvement over the restricted model.
+	\begin{itemize}
+		\item In any finite sample, the unrestricted model will always give at least a slightly better fit than the restricted model. Under the null hypothesis this improvement shouldn't be very large.
+	\end{itemize}
+	\onslide<4->
+	Let's go over some examples of restricted and unrestricted models.
+\end{frame}
+\begin{frame}{Advanced Inference: Testing Procedure} %Title
+	\label{frame:mht9} %Label 
+	\begin{example*}[Demand Estimation]
+		A hamburger restaurant considers the following model to forecast sales:
+		\[
+			\text{Sales} = \beta_0 + \beta_1\text{Price} + \beta_2\text{Advert} + \beta_3\text{Advert}^2 + \eps
+		.\] 
+		As before we want to test the null hypothesis that advertising has no effect on sales (\(\green{H_0}:\beta_2 = \beta_3 = 0\)). The \green{restricted model} is 
+		\[
+			\text{Sales} = \beta_0 + \beta_1\text{Price} + \eps
+		.\] 
+		The \red{unrestricted model} is the full model:
+		\[
+			\text{Sales} = \beta_0 + \beta_1\text{Price} + \beta_2\text{Advert} + \beta_3\text{Advert}^2 + \eps
+		.\] 
+	\end{example*}
+\end{frame}
+\begin{frame}{Advanced Inference: Testing Procedure} %Title
+	\label{frame:mht10} %Label 
+     \begin{example*}[Returns to Education and Experience]
+		Suppose we are considering the model:
+		\[
+			\ln(\text{Wage}) = \beta_0 + \beta_1\text{Edu} + \beta_2\text{Exper} + \beta_3\text{Exper}^2 + \beta_4\text{Exper}\cdot\text{Edu}  +\eps
+		.\] 
+		The null hypothesis is that experience has no effect on wages (\(\green{H_0}:\beta_2 = \beta_3=\beta_4 = 0\)). The \green{restricted model} is: 
+		\[
+			\ln(\text{Wage}) = \beta_0 + \beta_1\text{Edu} + \eps
+		.\] 
+		In constrast, the \red{unrestricted model} is the full model:
+		\[
+			\ln(\text{Wage}) = \beta_0 + \beta_1\text{Edu} + \beta_3\text{Exper} + \beta_4\text{Exper}^2 + \beta_4\text{Exper}\cdot\text{Edu}  +\eps
+		.\]
+	\end{example*}
+\end{frame}
+
+\begin{frame}{Advanced Inference: Testing Procedure} %Title
+	\label{frame:mht11} %Label 
+	\begin{example*}[Returns to education and experience]
+	Suppose we are considering the model:
+	\[
+		\ln(\text{Wage}) = \beta_0 + \beta_1\text{Edu} + \beta_2\text{Exper} + \eps
+	.\] 
+	We want to test the null hypothesis that returns to experience are the same as returns to education (\(\green{h_0}:\beta_1 = \beta_2\)). The \green{restricted model} in this case would be
+	\[
+		\ln(\text{Wage}) = \beta_0 + \beta_1(\text{Edu} + \text{Exper}) + \eps
+	.\] 
+	Whereas the \red{unrestricted model} would be
+	\[
+		\ln(\text{Wage}) = \beta_0 + \beta_1\text{Edu} + \beta_2\text{Exper} + \eps
+	.\] 
+	\end{example*}
+\end{frame}
+\begin{frame}{Advanced Inference: Testing Procedure} %Title
+	\label{frame:mht12} %Label 
+	We estimate the parameters of the restricted model and the unrestricted model just as before. The \green{restricted model} is estimated
+	\[
+		\hat\beta_0^R,\dots,\hat\beta_p^R = \arg\min_{b_0,\dots,b_p\text{ satisfy }\green{H_0}} \frac{1}{n} \sum_{i=1}^n (Y_i - b_0 - b_1 X_{1,i} - \dots -b_pX_{p,i})^2
+	.\] 
+	The \red{unrestricted model} is estimated
+	\[
+		\hat\beta_0^R,\dots,\hat\beta_p^R = \arg\min_{b_0,\dots,b_p} \frac{1}{n} \sum_{i=1}^n (Y_i - b_0 - b_1 X_{1,i} - \dots -b_pX_{p,i})^2
+	.\] 
+\end{frame}
+\begin{frame}{Advanced Inference: Testing Procedure} %Title
+	\label{frame:mht13} %Label 
+	\begin{example*}[Returns to Education and Experience]
+		Suppose we are considering the model:
+		\[
+			\ln(\text{Wage}) = \beta_0 + \beta_1\text{Edu} + \beta_2\text{Exper} + \beta_3\text{Exper}^2 + \eps
+		.\] 
+		The null hypothesis is that experience has no effect on wages (\(\green{H_0}:\beta_2 = \beta_3 = 0\)). The \green{restricted model} is: 
+		\[
+			\ln(\text{Wage}) = \beta_0 + \beta_1\text{Edu} + \eps
+		.\]
+		This can be estimated by finding
+		\begin{align*}
+			\hat\beta_0^R, \hat\beta_1^R &= \arg\min_{b_0,b_1, b_2 = b_3 = 0} \frac{1}{n} \sum_{i=1}^n \left(Y_i - b_0 - b_1\text{Edu}_i - b_2\text{Exper}_i - b_3\text{Exper}_i^2\right)^2 \\
+										 &= \arg\min_{b_0,b_1} \frac{1}{n} \sum_{i=1}^n \left(Y_i - b_0 - b_1\text{Edu}_i\right)^2
+		.\end{align*} 
+		\ucla{Note}: This is the method of estimating the restricted model that we are used to. Nothing has changed. The unrestricted model is estimated as before.
+	\end{example*}
+\end{frame}
+\begin{frame}{Advanced Inference: Testing Procedure} %Title
+	\label{frame:mht14} %Label 
+	\begin{example*}[Returns to Education and Experience]
+	Suppose we are considering the model:
+	\[
+		\ln(\text{Wage}) = \beta_0 + \beta_1\text{Edu} + \beta_2\text{Exper} + \eps
+	.\] 
+	We want to test the null hypothesis that returns to experience are the same as returns to education (\(\green{H_0}:\beta_1 = \beta_2\)). The restricted model is:
+	\[
+		\ln(\text{Wage}) = \beta_0 + \beta_1(\text{Edu} + \text{Exper}) + \eps
+	.\] 
+	To estimate this model we take
+	\[
+		\hat\beta_0^R,\hat\beta_1^R = \arg\min_{b_0,b_1}\frac{1}{n} \sum_{i=1}^n \left(\ln(\text{Wage}_i) - b_0 - b_1(\text{Edu}_i + \text{Exper}_i)\right)^2
+	.\] 
+	\end{example*}
+\end{frame}
+\begin{frame}{Advanced Inference: Testing Procedure} %Title
+	\label{frame:mht15} %Label 
+	After fitting our \green{restricted model} and our \red{unrestricted model}, we get two different measures of fit:
+	\begin{itemize}
+		\item \(\green{\text{SSE}_\text{R}}\): The sum of squared errors from our restricted model
+		\[
+			\green{\text{SSE}_\text{R}} = \sum_{i=1}^n (Y_i - \widehat Y_i^R)^2
+		.\] 
+		\item \(\red{\text{SSE}_{\text{U}}}\): The sum of squared errors from our unrestricted model
+		\[
+			\red{\text{SSE}_\text{U}} = \sum_{i=1}^n (Y_i - \widehat Y_i^U)^2
+		.\] 
+	\end{itemize}
+	Because the unrestricted model has fewer restrictions on the parameter estimates than the restricted model, we will always have that \(\red{\text{SSE}_\text{U}} \leq \green{\text{SSE}_\text{R}}\), that is the unrestricted model will always have a lower SSE than the restricted model.
+	\begin{itemize}
+		\item<2-> \ucla{Key Idea}: If the null hypothesis restrictions are true \(\red{\text{SSE}_\text{U}}\) will not be too much smaller than  \(\green{\text{SSE}_\text{R}}\). 
+		\item<3> If the null hypothesis is false, than \(\green{\text{SSE}_\text{R}}\) should be much larger than \(\red{\text{SSE}_\text{U}}\) since we are imposing false restrictions
+	\end{itemize}
+\end{frame}
+\begin{frame}{Advanced Inference: Testing Procedure} %Title
+	\label{frame:mht16	} %Label 
+	\ucla{Key Idea}:
+	\begin{itemize}
+		\item<1-> If the null hypothesis restrictions are true \(\red{\text{SSE}_\text{U}}\) will not be too much smaller than  \(\green{\text{SSE}_\text{R}}\). 
+		\item<2-> If the null hypothesis is false, than \(\green{\text{SSE}_\text{R}}\) should be much larger than \(\red{\text{SSE}_\text{U}}\) since we are imposing false restrictions.
+	\end{itemize}
+	\onslide<3->
+	\ucla{Testing Procedure:} Reject if \(\green{\text{SSE}_\text{R}} - \red{\text{SSE}_\text{U}}\) is ``sufficiently'' large.
+	
+\end{frame}
+\begin{frame}{Advanced Inference: The F-Statistic} %Title
+	\label{frame:mht16} %Label 
+	Formally, we will compare our \(\green{\text{SSE}_\text{R}}\) to our \(\red{\text{SSE}_\text{U}}\) by constructing the following F-statistic.
+	\[
+		F^* = \frac{(\green{\text{SSE}_\text{R}} - \red{\text{SSE}_\text{U}})/J}{\red{\text{SSE}_\text{U}}/(n-p -1)} 
+	.\]
+	where
+	\begin{itemize}
+		\item \(n\) is the sample size
+		\item \(J\) is the number of restrictions in  \(\green{H_0}\).
+		\begin{itemize}
+			\item Think ``count the equality signs''
+		\end{itemize}
+		\item \(p+1\) is the number of parameters in the unrestricted model (\(p\) slope parameters plus an intercept).
+	\end{itemize}
+\end{frame}
+\begin{frame}{Advanced Inference: The F-Statistic} %Title
+	\label{frame:mht17} %Label 
+	Under the null hypothesis that the restrictions hold, the F-statistic is distributed 
+	\[
+		F^* \sim F(J, n - p - 1)
+	.\]
+	The p-value is then computed as probability that a random variable with this distribution would take on a value larger than our observed test statistic \(F^*\).
+
+	\only<2>{
+	\begin{itemize}	
+	\item We can calculate the probability (under the null hypothesis) that a random variable distributed \(F(J,n-p-1)\) takes on a value less than or equal to a constant \(c\) using the  ``pf'' command in \(R\):
+	 \[
+		 \Pr\left(F(J,n-p-1) \leq c\right) = \text{pf}(c, J, n-p-1)
+ 	.\] 
+	\end{itemize}}
+	\only<3>{
+	The p-value is the probability that we would obtain our observed value of \(F^*\) or something even larger (an even larger deviation of  \(\red{\text{SSE}_\text{U}}\) from \(\green{\text{SSE}_\text{R}}\)) under the null. So, the p-value for this test can be computed:
+	\[
+		p  =  \Pr\left(F(J,n-p-1) > F^*\right) = 1 - \text{pf}(F^*, J, n-p-1)
+	.\] 
+	As before, we reject if this p-value is smaller than some prespecified level \(p < \alpha\).}
+\end{frame}
+\begin{frame}{Advanced Inference: The F-Statistic} %Title
+	\label{frame:mht18} %Label 
+	Let's see how this works in practice. 
+	\begin{example*}[Demand Estimation]
+		A hamburger restaurant considers the following model for sales:
+		\[
+			\text{Sales} = \beta_0 + \beta_1\text{Price} + \beta_2\text{Advert} + \beta_3\text{Advert}^2 + \eps
+		.\] 
+		We want to test the null hypothesis that advertising has no effect on sales (\(\green{H_0}:\beta_2 = \beta_3 = 0\)) against the alternative that it does (\(\red{H_1}:\beta_2 \neq 0\text{ or }\beta_3 \neq 0\)).
+		\onslide<2->
+		After collecting a sample of size \(n=75\) and estimating the \green{restricted model}
+		\[
+			\text{Sales} = \beta_0 + \beta_1\text{Price} + \eps
+		,\] 
+		we find that \(\green{\text{SSE}_\text{R}} = 1896.391\). Estimating the \red{unrestricted model} gives us that \(\red{\text{SSE}_\text{U}} = 1531.084\). Should we reject our null hypothesis at level \(\alpha = 0.05\)?
+	\end{example*}
+\end{frame}
+%TODO: Give a restricted model and ask what the null hypothesis is.
+%TODO: Find the critical value and use this to run the hypothesis test.
+\begin{frame}{Advanced Inference: The F-Statistic} %Title
+	\label{frame:mht19} %Label 
+	\begin{example*}[Demand Estimation]
+	We find that \(\green{\text{SSE}_\text{R}} = 1896.391\) and \(\red{\text{SSE}_\text{U}} = 1531.084\). Should we reject our null hypothesis at level \(\alpha = 0.05\)? 
+	\vspace{0.2cm}
+
+	Let's construct our F-Statistic. 
+	\begin{itemize}
+		\item We know that \(n = 75\).
+		\item  The full model has a total of \(p+1 = 3+1=4\) parameters. 
+		\item Our null hypothesis is \(\green{H_0}:\beta_2 = \beta_3 = 0\), for a total of \(J=2\) restrictions
+	\end{itemize}
+	\vspace{0.2cm}
+	So we can construct our test statistic:
+	\[
+		F^* = \frac{(\green{\text{SSE}_\text{R}} - \red{\text{SSE}_\text{U}})/J}{\red{\text{SSE}_\text{U}}/(n-p-1)} = \frac{(1892.391-1531.084)/2}{1531.084/71} \approx 8.377
+	.\]	
+	\end{example*}
+\end{frame}
+\begin{frame}{Advanced Inference: The F-Statistic} %Title
+	\label{frame:mht20} %Label 
+	\begin{example*}[Demand Estimation]
+	We compute the p-value using the \(F(J,n-p-1) = F(2,71)\) distribution:
+	 \begin{align*}
+		 p = \Pr(F(2,71) > F^*) &= \Pr\left(F(2,71) > 8.3777\right) \\
+								&= 1 - \Pr\left(F(2,71) \leq 8.3777\right) \\
+								&= 1 - \text{pf}(8.377, 2, 71) \\
+								&= 0.0005
+	.\end{align*} 
+	Since \(p < \alpha = 0.05\) we reject the null hypothesis and conclude that advertising does have a significant effect on sales.
+	\end{example*}
+\end{frame}
+\begin{frame}{Advanced Inference: The F-Statistic} %Title
+	\label{frame:mht21} %Label 
+	\begin{example*}[Model Significance]
+		Consider the model 
+		\[
+		    Y = \beta_0 + \beta_1X_1 + \dots + \beta_pX_p + \eps
+		.\]
+		A classical example of an F-test is testing for the \underline{significance} of the model.
+		\vspace{0.3cm}
+		\begin{itemize}
+			\item This is a test for whether \underline{any} of our regressors \(X_1,\dots,X_p\) is statistically significant.
+			\item Formally the hypotheses we are interested in are:
+			\[
+				\green{H_0}:\beta_1 = \dots\beta_p = 0\vsbox \red{H_1}:\beta_j \neq 0\text{ for some } 1\leq j \leq p
+			.\] 
+			\item Intuitively, we are just testing whether our model does better at predicting \(Y\) than a constant.
+			 \item This is the F-statistic that \(R\) reports in a regression summary.
+		\end{itemize}
+	\end{example*}
+\end{frame}
+\begin{frame}{Advanced Inference: The F-Statistic} %Title
+	\label{frame:mht22} %Label 
+	\begin{example*}[Model Significance]
+		Because the null hypothesis is so restrictive, the formulas simplify considerably.
+
+		The restricted model sets all slope parameters to zero and so just contains a constant:
+		\[
+			Y = \beta_0 + \eps \implies \hat\beta_0^R = \arg\min_{b_0} \frac{1}{n} \sum_{i=1}^n (Y_i - b_0)^2 \implies \hat\beta_0^R  =\bar Y
+		.\] 
+		This means that \(\green{\text{SSE}_\text{R}} = \sum_{i=1}^n (Y_i - \bar Y)^2 = \text{SST}\). The unrestricted model includes all slope parameters estimated normally so \(\red{\text{SSE}_\text{U}} = \text{SSE}\).
+	\end{example*}
+\end{frame}
+\begin{frame}{Advanced Inference: The F-Statistic} %Title
+	\label{frame:mht23} %Label 
+	\begin{example*}[Model Significance]
+		Recall from our discussion of \(R^2\) that we have the following decomposition:
+		 \[
+			 \underbrace{\sum_{i=1}^n (Y_i - \bar Y)^2}_{\text{SST}} = \underbrace{\sum_{i=1}^n (Y_i - \hat Y_i)^2}_{\text{SSR}} + \underbrace{\sum_{i=1}^n \hat\eps_i^2}_\text{SSE}
+		\] 
+		where \(\hat Y_i\) is the prediction from the unrestricted model and  \(\hat\eps_i\) is the estimated residual from the unrestricted model.
+		\vspace{0.3cm}
+		Using this, and since \(R^2 = \text{SSR}/\text{SST}\) we can simplify the F-statistic:
+		\[
+			F^* = \frac{(\green{\text{SSE}_\text{R}} - \red{\text{SSE}_\text{U}})/J}{\red{\text{SSE}_\text{U}}/(n-p-1)}  = \frac{(\text{SST} -\text{SSE})/p}{\text{SSE}/(n-p-1)} = \frac{R^2/p}{(1-R^2)/(n-p-1)} 
+		.\] 
+		\onslide<2->
+		\ucla{Key Idea}: The overall significance of the model is determined by the overall fit of the model!
+	\end{example*}
+\end{frame}
+%TODO: Question about a (beta1 + beta2) restriction
+%TODO: Question about the equivalence between F and t-statistic
+\begin{frame}{The F-Test: Questions} %Title
+	\label{frame:} %Label 
+	\begin{center}
+		\red{\Large{Questions?}}
+	\end{center}
+\end{frame}
+\begin{frame}{The F-Test: Why Impose Restrictions} %Title
+	\label{frame:why-restrictions} %Label 
+	Suppose we are just interested in prediction. A natural question here is: why bother imposing restrictions? Why not just estimate all parameters in the unrestricted model? 
+	\begin{itemize}
+		\item<2-> Estimating more parameters increases the variance of each of our estimates.
+		\item<3-> Estimating too many parameters can decrease the interpretability of our model and lead to overfitting.
+	\end{itemize}
+	\onslide<4->
+	However, as we will now see, imposing too many restrictions can lead to problems as well.
+\end{frame}
+
+\section{Model Selection and Omitted Variables Bias}%
+\begin{frame}{Model Selection and Omitted Variables Bias} %Title
+	\label{frame:mht24} %Label 
+	For the most part in this lecture, we have taken as a given that we have some model:
+	\[
+	    Y= \beta_0 + \beta_1X_1 + \dots+\beta_pX_p + \eps
+	.\] 
+	\onslide<2->
+	However, in practice, we are the ones that must select which variables to include in our model:
+	\begin{itemize}
+		\item Which of the available data we should use as regressors?
+		\item Should we include transformations of our regressors?
+		\item What are the trade-offs between including and excluding a variable?
+	\end{itemize}
+	\onslide<3->
+	Selecting the right model is a bit of an art, there is no easy rule/recipe to follow. Good model selection combines statistical reasoning as well as knowledge of the problem/setting at hand.
+\end{frame}
+%TODO: Derive OVB in homework
+
+\begin{frame}{Omitted Variables Bias} %Title
+	\label{frame:omitted1} %Label 
+	We have covered what happens when we include irrelevant variables. Now let's consider what happens when we exclude a relevant variable.
+
+	Recall in the beginning of class we were interested in the relationship between energy drinks consumed and anxiety levels. We looked at a study that (essentially) estimated the following model
+	\[
+		\text{Anxiety} = \beta_0 + \beta_1\text{Energy Drinks} + \eps
+	\]
+	and found that \(\beta_1 > 0\). We reasoned that this positive association may be due to the fact that people who drink more energy drinks may be taking more classes, and it is the classes that are driving anxiety levels rather than the energy drinks. That is, if we were to instead consider the model
+	\[
+		\text{Anxiety} = \beta_0^\circ + \beta_1^\circ\text{Energy Drinks} + \beta_2^\circ\text{Classes} + \eps^\circ
+	,\]
+	we would find a value of \(\beta_1^\circ\) that would be much smaller than our \(\beta_1\) from before. This difference  \(\beta_1 - \beta_1^\circ\) is called an \red{omitted variables bias}.
+\end{frame}
+
+
+\begin{frame}{Omitted Variables Bias} %Title
+	\label{frame:omitted2} %Label 
+	Let's suppose we have access to two possible explanatory variables \(X_1,X_2\) and we consider two models. The first model contains only  \(X_1\)
+	\[
+	    Y = \beta_0 + \beta_1 X_1 + \eps 
+	.\]
+	The second model contains both \(X_1\) and  \(X_2\)
+	 \[
+	    Y = \beta_0^\circ + \beta_1^\circ X_1 + \beta_2^\circ X_2 + \eps^\circ
+	.\] 
+	\onslide<2->
+	\red{Question}: What is the relationship between \(\beta_1^\circ\) and  \(\beta_1\)? 
+	 \begin{itemize}
+		 \item In other words, how does the observed relationship between \(Y\) and  \(X_1\) change when we account for \(X_2\)?
+	\end{itemize}
+	\onslide<3->
+	By performing some algebra, we can find that
+	\[
+		\beta_1 = \beta_1^\circ + \underbrace{\beta_2^\circ\frac{\Cov(X_1,X_2)}{\Var(X_1)}}_{\text{Omitted Variables Bias}}
+	.\] 
+\end{frame}
+\begin{frame}{Omitted Variables Bias} %Title
+	\label{frame:omitted3} %Label 
+	\onslide<1->
+	The omitted variables bias from excluding \(X_2\) in our regression model is given:
+	\[
+		\beta_2^\circ\frac{\Cov(X_1,X_2)}{\Var(X_1)} 
+	.\]
+	\ucla{Some Intuition:}
+	\begin{itemize}
+		\item<1|only@1> If \(X_2\) has a positive relationship with the outcome \(Y\) and  \(X_1\) and  \(X_2\) are positively related, then we will have a postive omitted variables bias, \(\beta_1 > \beta_1^\circ\).
+		\begin{itemize}
+			\item Classes and Anxiety levels have a positive relationship, Classes and Energy Drink consumption have a positive relationship.
+		    \item It will look like energy drink consumption has a stronger positive relationship with anxiety level than it ``truly'' does since people drinking more energy drinks are likely to be taking more classes.
+		\end{itemize}
+		\item<2|only@2> If \(X_2\) has a negative relationship with the outcome and  \(X_1\) and  \(X_2\) are positively related then we will have a negative omitted variables bias,  \(\beta_1 < \beta_1^\circ\).
+		\begin{itemize}
+			\item Suppose we are interested in relationship between anxiety levels, taking Advil PM, and amount of sleep a student is getting. We believe that more sleep helps lower anxiety levels so \(\beta_2^\circ < 0\) and that taking Advil PM induces sleep so that \(\Cov(X_1,X_2) > 0\).
+			\item If we were to just regress anxiety levels on whether or not someone is taking Advil PM, we may get a fairly negative value for \(\beta_1\) and conclude that Advil PM appears to reduce anxiety levels.
+		    \item But, this negative \(\beta_1\) value is probably due to omitting the sleep variable. Once we include it, it is more likely that we get \(\beta_1^\circ \approx 0\).
+		\end{itemize}
+	\end{itemize}
+	\only<3>{
+	Can keep reasoning through all the different cases, and will do so more in homework. But important to note that it is rare that \(\beta_1 = \beta_1^\circ\).
+	\begin{itemize}
+		\item Would need either \(\beta_2^\circ = 0\),  \(X_2\) has no effect on the outcome  \(Y\) or,
+		\item \(\Cov(X_1,X_2) = 0\),  \(X_2\) has no (linear) relationship with  \(X_1\).
+	\end{itemize}}
+\end{frame}
+%TODO: Homework Question: Come up with an example for one of these and explain reasoning
+
+\begin{frame}{Omitted Variables Bias: Questions?} %Title
+	\label{frame:questions-ovb} %Label 
+	\centering
+	\red{\Large Questions?}
+\end{frame}
+\begin{frame}{Modeling: Indicator Variables} %Title
+	\label{frame:indicator} %Label 
+	The final modeling technique we will talk about is using indicator or ``Dummy'' variables.
+
+	\begin{definition}[Indicator Variables]
+		\label{def:dummy}
+		A indicator or ``dummy'' variable \(D\) is a variable \(D\) is a variable that only takes on two values. Usually
+		 \[
+		    D \in \{0,1\} 
+		.\] 
+	\end{definition}
+	\onslide<2->
+	\ucla{Question:} Why would this sort of variable be useful?
+	\begin{itemize}
+		\item Can turn a categorical variable into a numeric variable
+		\begin{itemize}
+			\item Ex. create a dummy variable that is equal to one if a persons favorite color is ``blue''
+		\end{itemize}
+		\item Helpful for letting parameters of regression be individual to certain subgroups:
+		\begin{itemize}
+			\item Can multiply parameters by dummy variables
+		\end{itemize}
+		\item Deal with special effects for certain thresholds:
+		\begin{itemize}
+			\item College degree vs. no college degree
+		\end{itemize}
+	\end{itemize}
+	\onslide<3->
+	Let's see some examples of this
+\end{frame}
+\begin{frame}{Indicator Variables: Intercept Changes} %Title
+	\label{frame:intercept-changes} %Label 
+	\begin{example*}[Home Characteristics]
+		Suppose we are interested in estimating the sales price for a house. In the past we've estimated:
+		\[
+			\text{Price} = \beta_0 + \beta_1\text{Sqft} + \eps
+		.\]
+		\ucla{Problem:} There are many \underline{qualitative} factors that affect the price:
+		\begin{itemize}
+			\item Is the house close to UCLA?
+			\item Does the house have a pool?
+		\end{itemize}
+		\onslide<2->
+		\vspace{0.3cm}
+		\ucla{Solution:} Model whether the qualitative factor is present by using a dummy variable!
+		\[
+		    D = \begin{cases}
+		    	1 & \text{if characteristic is present} \\
+				0 & \text{if characteristic is not present}
+		    \end{cases}
+		.\] 
+		For example, let's let \(D= 1\) if the house is within 5 miles of UCLA and  \(D= 0\) otherwise.
+	\end{example*}
+\end{frame}
+\begin{frame}{Indicator Variables: Intercept Changes} %Title
+	\begin{example*}[Home Characteristics]
+		Let's let \(D= 1\) if the house is within 5 miles of UCLA and  \(D= 0\) otherwise. We now consider the model 
+		\[
+			\text{Price} = \beta_0 + \delta D + \beta_2\text{Sqft} + \eps
+		.\] 
+		\ucla{Note:} We can now think of \(\delta\) as the price premium for a house that is close to UCLA.
+		\[
+			\widehat{\text{Price}} = \begin{cases}
+				(\beta_0 + \delta)  + \beta_2\text{Sqft}& \text{if the house is within 5 miles of UCLA} \\
+				\beta_0 + \beta_2\text{Sqft} &\text{otherwise}
+			\end{cases}
+		.\] 
+		This is equivalent to having a different \underline{intercept term} for houses within 5 miles of UCLA. 
+	\end{example*}
+\end{frame}
+\begin{frame}[t]{Indicator Variables: Intercept Changes} %Title
+	\label{frame:indicator-intercept} %Label 
+	Space to draw what this would look like:
+\end{frame}
+\begin{frame}{Indicator Variables: Intercept Changes} %Title
+	\ucla{Question:} What if instead of letting \(D=1\) when the house is close to UCLA, we set:
+	 \[
+	    LD = \begin{cases}
+	    	1 & \text{if house is more than 5 miles from UCLA} \\
+			0 & \text{if house is withing 5 miles of UCLA}
+	    \end{cases}
+	\] 
+	Note that this is the opposite of what we had before.
+	
+	\ucla{Answer:} This is perfectly fine, it just changes the interpretation!
+	\onslide<2->
+	\begin{example*}[Home Characteristics]
+		If instead of using \(D\) we modify the previous regression to be
+		\[
+			\text{Price} = \beta_0 + \delta LD + \beta_2\text{Sqft} + \eps
+		.\] 
+		Then \(\delta\) is the price discount for not being close to UCLA (expect \(\delta < 0\)).
+	\end{example*}
+	
+	\ucla{Notes:}
+	\begin{itemize}
+		\item The group corresponding to \(D=0\) is sometimes called the \red{reference group}. 
+		\item Be careful not to include both \(D\) and  \(LD\) and a constant in a regression. Since  \(D = 1 - LD\), this causes perfect collinearity (rank condition is violated).
+	\end{itemize}
+\end{frame}
+\begin{frame}{Indicator Variables: Slope Changes} %Title
+	\label{frame:slope-changes} %Label 
+	\begin{example*}[Returns to Education]
+		Suppose we are interested in the relationship between educational attainment and wages. We could suspect that having a college degree has a particular impact above and beyond an additional year of education. Following the example above, we may encode the dummy variable:
+		\[
+		    D = \begin{cases}
+		    	1 & \text{if person has a college degree} \\
+				0 & \text{otherwise}
+		    \end{cases}
+		\] 
+		and estimate the model:
+		\[
+			\ln(\text{Wages}) = \beta_0 + \delta D + \beta_2\text{Edu} + \eps
+		.\] 
+	\end{example*}
+	\ucla{Question:} But, what if we believe that an additional year of education after completing college has a different effect than an additional year of education before completing college?
+\end{frame}
+\begin{frame}{Indicator Variables: Slope Changes} %Title
+	\label{frame:slope2} %Label 
+	\begin{example*}[Returns to Education]
+	\only<1>{
+	\ucla{Question:} What if we believe that an additional year of education after completing college has a different effect than an additional year of education before completing college?}
+	\onslide<2->
+	In this case, we may want the \underline{slope} parameter to differ for college graduates as well. To model this, we can estimate the model:
+	\[
+		\ln(\text{Wages}) = \beta_0 + \delta D + \beta_2 \text{Edu} + \gamma D \cdot \text{Edu} + \eps
+	.\] 
+	Now we are allowing both the slope and the intercept to change for college graduates:	
+	\begin{align*}
+		\underbrace{\widehat Y(\text{Edu} = 0)}_{\text{Intercept}} &= \begin{cases}
+			\beta_0 + \delta & \text{if college graduate} \\
+			\beta_0 &\text{if not college graduate}
+		\end{cases}
+		\intertext{and for the slope:}
+			\frac{\partial \widehat Y}{\partial \text{Edu}} &= \begin{cases}
+			\beta_2 + \gamma & \text{if college graduate} \\
+			\beta_2 &\text{otherwise}
+		\end{cases}
+	.\end{align*} 
+	\end{example*}
+\end{frame}
+\begin{frame}[t]{Indicator Variables: Slope Changes} %Title
+	\label{frame:slope3} %Label 
+	Space to draw what this would look like:
+\end{frame}
+\begin{frame}{Indicator Variables: Summary} %Title
+	\label{frame:ind-summary} %Label 
+	In summary: Indicator variables can allow for a lot of flexibility in our model! 
+	\begin{itemize}
+		\item Allows for the intercepts and slopes to differ by subgroup
+		\item Can allow us to include qualitative data in our models
+		\item Just have to be a bit careful about collinearity
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusion} %Title
+	\label{frame:conclusion1} %Label 
+	Essentially in this lecture, we have considered model selection. There are two competing risks when doing model selection:
+	\begin{itemize}
+		\item<1-> Including irrelevant variables
+		\begin{itemize}
+			\item Increases the variance of each parameter estimate, risk of overfitting, decreases interpretability of our model
+			\item Can use F-test to check for irrelevant variables
+		\end{itemize}
+		\item<2-> Excluding relevant variables
+		\begin{itemize}
+			\item Leads to omitted variables bias, interpretation of our model can be incorrect, 
+			\item Can think through omitted variables bias formula. This formula is not exact once we consider more variables, but the reasoning is the same. Often useful in causal inference settings. 
+		\end{itemize}
+	\end{itemize}
+	\onslide<3->
+	There are some statistical procedures that can try to help with model selection. We have gone over one, looking at the adjusted \(R^2\). However, this is a rough selection critetion and there are more sophisticated ones. If you are interested I can send some references.
+\end{frame}
+
+\end{document}
+
+

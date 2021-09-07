@@ -1,0 +1,281 @@
+\documentclass[10pt]{article}
+
+% Packages with options
+\usepackage[english]{babel}
+\usepackage[mathscr]{euscript}
+\usepackage[margin=1in]{geometry} 
+\usepackage[utf8]{inputenc}
+\usepackage[small]{titlesec}
+
+% Primary Packages
+\usepackage{adjustbox, amsbsy, amsmath, amssymb, amsthm, bm, commath, chngcntr, dsfont, econometrics, fancyhdr, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
+
+% Hyperref Setup
+\usepackage[pdfauthor={Manu Navjeevan},
+			bookmarks=false,%
+			pdftitle={Homework 2 Solutions},%
+			pdftoolbar=false,%
+			pdfmenubar=true]{hyperref} 
+
+% Rest of the setup is in the "setup/setup_long" package
+\usepackage{cleveref, setup} % cleverref should be last
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Homework 2 Solutions} %Title
+\author{Manu Navjeevan}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Single Linear Regression Theory Review}%
+
+\begin{enumerate}
+	\item Recall that we define our parameters of interest \(\beta_0\) and  \(\beta_1\) as the parameters governing the  ``line of best fit'' between \(Y\) and  \(X\):
+	 \begin{equation}
+		 \label{eq:argmin}
+		 \beta_0,\beta_1 = \arg\min_{b_0,b_1} \E[(Y - b_0 - b_1X)^2]
+	.\end{equation} 
+	Once we define these parameters we define the regression error term \(\eps = Y - \beta_0 - \beta_1X\) which then generates the linear model
+	 \[
+	    Y = \beta_0 + \beta_1X + \eps
+	.\] 
+	\begin{enumerate}
+		\item Using the first order conditions for \(\beta_0\) and  \(\beta_1\) (set the derivatives of the right hand side of \eqref{eq:argmin} with respect to \(b_0\) and  \(b_1\) equal to zero at) show why \(\E[\eps] = \E[\eps X]=0\).
+		
+			\green{Answer:} \ucla{Taking derivatives of \eqref{eq:argmin} with respect to \(b_0\) and \(b_1\) gives:
+			 \begin{align*}
+				 \frac{\partial }{\partial b_0} &= -2\E[(Y - b_0 - b_1X)] \\
+				 \frac{\partial }{\partial b_1} &= -2\E[(Y - b_0 - b_1X)X] 
+			\end{align*}
+			At the true optimizers \(\beta_0\) and  \(\beta_1\), these derivatives are equal to zero, giving 
+		    \begin{align*}
+				-2\E[(Y - \beta_0 - \beta_1X)] &= 0 \\
+				-2\E[(Y- \beta_0 - \beta_1X)X] &= 0
+		    \end{align*}
+		  Dividing the above equations by \(-2\) and recalling that  \(\eps =  Y - \beta_0 - \beta_1X\) gives the result.}
+		\item Using the definition of \(\beta_0\) and  \(\beta_1\) as line of best fit parameters, give an intuitive explanation for why  \(\E[\eps] = 0\).
+
+		\green{Answer:} \ucla{If \(\E[\eps] \neq 0\), this means that our line is either consistently above or below our data, that is we are either consistently ``overshooting'' or ``undershooting'' \(Y\). This is clearly not optimal and our line would be closer to \(Y\) on average if we adjusted \(\beta_0\) down (decreased \(\beta_0\)) to fix an  ``overshoot'' or adjusted \(\beta_0\) up (increased \(\beta_0\))  to fix an ``undershoot''.}
+	\end{enumerate}
+
+\end{enumerate}
+
+\section*{Hypothesis Testing and Confidence Intervals}%
+
+In the following questions, whenver running a hypothesis test, please state the null and alternative hypotheses, show some work, and state the conclusion of the test.
+
+\begin{enumerate}
+	\item In an estimated simple regression model based on \(n = 64\), the estimated slope parameter, \(\hat\beta_1\), is  \(0.310\) and the standard error of \(\hat\beta_1\) is 0.082.
+	\begin{enumerate}
+		\item What is \(\hat\sigma_{\beta_1}^2\)? Recall \(\sigma_{\beta_1}\) is the terms such that, approximately for large  \(n\),
+		\[
+			\sqrt{n}(\hat\beta_1 - \beta_1)\sim N(0,\sigma_{\beta_1})
+		.\] 
+
+		\green{Answer:} \ucla{Recall from lecture that \(\text{se}(\hat\beta_1) = \sqrt{\Var(\hat\beta_1)} = \sqrt{\hat\sigma_{\beta_1}^2/n}\). Using this we find that 
+		\[
+			\text{se}(\hat\beta_1) = \hat\sigma_{\beta_1}/\sqrt{n} \implies \hat\sigma_{\beta_1}^2 = (\text{se}(\hat\beta_1))^2\cdot n = 0.082^2\cdot 64 \approx 0.430 
+		\]}
+		\item Test the hypothesis that the slope is zero against the alternative that it is not at the \(1\%\) level of significance (\(\alpha = 0.01\)).
+		
+		\green{Answer:} \ucla{We are testing, at level \(\alpha = 0.01\),the null and alternate hypotheses
+		\[
+				\green{H_0}: \ucla{\beta_1} = 0 \vsbox \red{H_1}: \ucla{\beta_1} \neq 0
+		.\]
+		We compute our test statistic 
+		\[
+			t^* = \frac{\hat\beta_1 - 0}{\text{se}(\hat\beta_1)} = \frac{0.310}{0.082} =  3.78 
+		.\]
+		There are two ways to conduct this test. This first way would be to compute a p-value. Since this is a two sided test, we want to compute \(\Pr(|Z| > |t^*|)\) where \(Z \sim N(0,1)\). By symmetry of the normal distribution and this is equal to  \[2\Pr(Z> 3.78) = 2(1-\text{pnorm}(3.78)) = 0.000156 < 0.01 = \alpha\]
+		Since the p-value is less than \(\alpha\), we reject this null hypothesis.}
+	
+		\ucla{Another way of running this test would be to reject if \(|t^*| > z_{1-\alpha/2} = z_{0.995}\). Using qnorm(0.995) we find \(z_{0.995} = 2.57\). Since  \(|t^*| = 3.78 > 2.57 = z_{0.995}\) we reject this null hypothesis and conclude in favor of our alternative hypothesis that  \(\beta_1 \neq 0\).}
+
+		\item Test the hypothesis that the slope is negative against the alternative that it is positive at the \(1\%\) level of significance (\(\alpha = 0.01)\). 
+
+
+		\green{Answer:} \ucla{Formally the hypotheses that we are testing are given:
+		\[
+			\green{H_0}: \beta_1 \leq 0 \vsbox \red{H_1}: \beta_1 > 0
+		.\] 
+		We should already know that we will reject this null hypothesis given our answer in part (b) and since \(\hat\beta \geq 0\). However, let's conduct this test formally in two ways. We can use the same value \(t^* = 3.78\) from part (b). First, let us construct a p-value. Since this is a one sided test with a  ``\(>\)'' sign in the alternate hypothesis, the p-value is given \(\Pr(Z > t^*) = 1 - \text{pnorm}(3.78) \approx 0.00001\). This is clearly less than \(\alpha = 0.01\) so we reject the null hypothesis.}
+
+		\ucla{Alternatively, we can compare \(t^*\) to  \(z_{1-\alpha}\) and reject if  \(t^* > z_{1-\alpha}\). Using  qnorm(0.99) we find that  \(z_{1-\alpha} = 2.326\). Since \(t^* = 3.78 > 2.326 = z_{0.99}\) we reject this null hypothesis and conclude in favor of the alternative hypothesis that \(\beta_1 > 0\).}
+
+		\item Test the hypothesis that the slope is positive against the alternative that it is negative at the \(5\%\) level of significance. What is the p-value?
+
+		\green{Answer:} \ucla{The hypotheses that we are testing are given 
+		\[
+		    \green{H_0}: \beta_1 \geq 0 \vsbox \red{H_1}: \beta_1 < 0
+		.\]
+		Again, we should already know that we will fail to reject this null hypotheses since \(\hat\beta_1 \geq 0\). But, just to be sure, let's compute the p-value. Since this alternative hypothesis contains a ``\(<\)'' sign the p-value is computed  \(\Pr(Z < t^*) = \text{pnorm}(3.78) = 0.9999\). This p-value is much larger than \(\alpha = 0.05\) so we fail to reject the null hypothesis that \(\beta_1 \geq 0\).}	
+		\item Generate a \(99\%\) confidence interval for  \(\beta_1\). How can we use this interval to run the hypothesis test in part (b)?
+
+		\green{Answer:} \ucla{A \(99\%\) confidence interval for \(\beta_1\) would be given 
+		 \[
+			 \hat\beta_1 \pm z_{0.995}\cdot\text{se}(\hat\beta_1) = 0.310 \pm 2.57\cdot 0.082  = [0.09926, 0.52074]
+		.\] 
+	     Since zero is not contained in this interval, we know that we would reject the null hypothesis in part (b) in favor of the alternative that \(\beta_1 \neq 0\).}
+	\end{enumerate}
+	\item Consider a simple regression of log-income (income is measured thousands of dollars), \(Y\), against years of education,  \(X\). After collecting a sample of size \(n=50\) we estimate the following regression equation. 
+	 \[
+		 \widehat Y = \hat\beta_0 + 0.0180 X
+	.\]
+	\begin{enumerate}
+		\item Using the following information to solve for \(\hat\beta_0\) as well as the estimated variance \(\widehat\Var(\hat\beta_0)\), which is the square of the standard error. 
+		\begin{itemize}
+			\item The standard error of \(\hat\beta_0\) is  \(2.174\)
+			\item The test statistic, \(t^*\), associated with the hypothesis test for
+			 \[
+				 H_0:\beta_0 = 0\hbox{ }\text{ vs. }\hbox{ }H_1:\beta_0 \neq 0
+			,\]
+			is equal to 1.257. 
+		\end{itemize}
+
+		\green{Answer:} \ucla{The estimated variance is the square of the standard error so 
+		\[
+			\Var(\hat\beta_0) = 2.174^2 = 4.72
+		.\] 
+		To find \(\hat\beta_0\) we invert the test statistic 
+		\[
+			1.257 = t^* = \frac{\hat\beta_0 - 0}{2.174} \implies \hat\beta_0 = 1.257 \cdot 2.174 =  2.732
+		.\] }	
+
+		\item Use the following information to solve for the standard error \(\hat\beta_1\) as well as the estimated variance \(\widehat\Var(\hat\beta_1)\), which is the square of the standard error.
+		\begin{itemize}
+			\item The test statistic, \(t^*\), associated with the hypothesis test for
+			 \[
+				 H_0:\beta_1 = 0\hbox{ }\text{ vs. }\hbox{ }H_1:\beta_1 \neq 0
+			,\]
+			is equal to \(5.754\)
+		\end{itemize}
+
+		\green{Answer:} \ucla{Again, we invert the test statistic. However, in this case we know \(\hat\beta_1 = 0.0180\). 
+		 \[
+			 5.754 = t^* = \frac{0.0180 - 0}{\text{se}(\hat\beta_1)} \implies \text{se}(\hat\beta_1) = \frac{0.0180}{5.754}  = 0.003
+		.\]
+		The Variance of \(\hat\beta_1\) is the square of the standard error so that \(\Var(\hat\beta_1) = 0.000009\).}
+		\item Given that \(Y\) is a logged variable,  \(Y = \log(\text{income})\), how do we interpret  \(\hat\beta_1\)?
+
+
+		\green{Answer:} \ucla{Since a one unit increase in \(\log(Y)\) corresponds to a  \(\approx 100\%\) increase in \(Y\) and a one unit increase in \(X\) is associated with an estimated 0.180 unit increase in  \(\log(Y)\) we can conclude that we estimate that a one unit increase in years of education is associated with a \(1.8\%\) increase in income.}
+
+		\item Suppose that we are interested in the average value of log-income for someone with \(16\) years of education. We want to use the model above to test the hypothesis that the average value of log-income for someone with 16 years of education is less than or equal to 1.85. That is we want to test
+		\[
+			H_0: \lambda = \beta_0 + 16\beta_1 \leq 1.85 \hbox{ }\text{ vs. }\hbox{ }H_1: \lambda = \beta_0 + 16\beta_1 > 1.85
+		.\]
+		Use the fact that \(\widehat\Cov(\hat\beta_0,\hat\beta_1) = 2.84\) to test this hypothesis at level \(\alpha = 0.1\).
+
+
+		\green{Answer:} \ucla{We want to compute the standard error of the linear combination \(\hat\lambda = \hat\beta_0 + 16\hat\beta_1\). To do so, we will use the formula \(\Var(aX + bY) = a^2\Var(X) + b^2\Var(Y) + 2ab\Cov(X,Y)\).
+		\begin{align*}
+			\Var(\hat\lambda) &= \Var(\hat\beta_0) + 16^2\Var(\hat\beta_1) + 2\cdot16\cdot\Cov(\hat\beta_0, \hat\beta_1) \\
+							  &= 4.72 + 256\cdot0.000009 + 32\cdot2.84 \\
+							  &= 95.6023
+		.\end{align*}
+		This means that the standard error of \(\hat\lambda\) is given  \(\text{se}(\hat\lambda) = \sqrt{\Var(\hat\lambda)} \approx 9.777\). The value of \(\hat\lambda\) is given \(\hat\lambda = 2.732 + 16\cdot0.0180 = 3.02\). Given this, we can compute our test statistic via the general formulation
+		\[
+			t^* = \frac{\text{Estimated Value}-\text{Null Hypothesis}}{\text{Standard Error of Estimator}} = \frac{3.02-1.85}{9.777} \approx 0.11
+		.\]
+		Since \(0.11 < z_{0.9} = \text{qnorm}(0.9) = 1.281\) we \green{fail to reject} this null hypothesis and cannot conclude that the average value of log-income for a person with 16 years of education is greater than 1.85. We can also compute the p-value \(\Pr(Z > t^*) = 1 - \text{pnorm}(0.11) = 0.456 > 0.1\) and reach the same conclusion.
+	    }
+		\item Use the above to generate a \(90\%\) confidence interval for \(\lambda\).
+
+		\green{Answer:} \ucla{Using \(\hat\lambda = 3.05\), \(\text{se}(\hat\lambda) = 9.777\) and  \(z_{0.95} = 1.65\) we construct a \(90\%\) confidence interval
+		\[
+			\hat\lambda \pm z_{0.95}\cdot 9.77 = 3.05 \pm 1.65\cdot 9.777 = [-13.0825, 19.18205]
+		.\]
+		We are \(90\%\) confident that the true value of  \(\lambda\) lies in this interval.}
+	\end{enumerate}
+	\item (\red{Challenge}) Suppose we find that \(\hat\beta_1 > 0\). If we reject the null hypothesis that  \(\beta_1 = 0\) in favor of an alternative hypothesis that  \(\beta_1 \neq 0\) at level \(\alpha\), up to what level can we be sure that would we reject the null hypothesis that \(\beta_1 \leq 0\) against an alternative that \(\beta_1 > 0\)? (Please give some explanation here as well as your answer, which will be some multiple of \(\alpha\)).
+
+		\green{Answer:} \ucla{Recall that we reject the null hypothesis \(H_0: \beta_1 = 0\) in favor of the two sided alternative \(H_1: \beta_1 \neq 0\) at level \(\alpha\) if  \(|t^*| > z_{1-\alpha/2}\) where
+		 \[
+			 t^* = \frac{\hat\beta_1 - 0 }{\text{se}(\hat\beta_1)} 
+		.\]
+	Because \(\hat\beta_1 > 0\) we know that  \(t^* = |t^*|\), that is we know that  \(t^*\) is positive. So, we have that  \(t^* > z_{1-\alpha/2}\). Another way of putting this is that \(\Pr(Z > t^*) < \alpha/2\).}
+
+	\ucla{We reject the null hypothesis \(H_0: \beta_1\leq 0\) in favor of the one sided alternative \(H_1:\beta_1 > 0\) at level \(\tilde\alpha\) if  \(t^* > z_{1-\tilde\alpha}\). Since we know that \(t^* > z_{1-\alpha/2}\) we can take  \(\tilde\alpha = \alpha/2\) and still reject this null hypothesis. Alternatively, we know we reject this null hypothesis if the p-value,  \(p = \Pr(Z > t^*)\) is less than  \(\tilde\alpha\). Since we know that  \(\Pr(Z > t^*) < \alpha/2\) we can take  \(\tilde\alpha = \alpha/2\) and still reject the null against a one sided alternative.}
+\end{enumerate}
+
+\section*{\(R^2\) and Goodness of Fit}%
+\begin{enumerate}
+	\item Consider the following estimated regression equation.
+	\[
+	    \widehat Y = 6.83 + 0.869 X 
+	.\]
+	Write the estimated regression equation that would result if
+	\begin{enumerate}
+		\item All values of \(X\) were divided by 20 before estimation.
+
+			\green{Answer:} \ucla{Recall from class that \(\hat\beta_0\) does not change and \(\hat\beta_1\) get's scaled by \(\frac{1}{c}\) where \(c = \frac{1}{20}\). If \(\tilde X = \frac{1}{20}X\) the new estimated regression line would be
+		\[
+		    Y = 6.83 + \frac{1}{\frac{1}{20}} \cdot 0.869\tilde X =  6.83 + 17.38\tilde X
+		.\] }
+		\item All values of \(Y\) were divided by 20 before estimation. 
+
+		\green{Answer:} \ucla{Recall from lecture that scaling \(Y\) by  \(c\) scales the estimated parameters by \(c\) as well. The new regression line with  \(\tilde Y\) is given 
+		 \[
+		    \tilde Y = \frac{1}{20}\hat\beta_0 + \frac{1}{20}\hat\beta_1 X = 0.3415 + 0.04345 X   
+		.\] }
+		\item All values of \(X\) and  \(Y\) were divided by 20 before estimation.
+
+		\green{Answer:} \ucla{Let's construct new variables \(\tilde Y = \frac{1}{20}Y\), \(\tilde X = \frac{1}{20}X\) and consider estimating the new regression line
+		\[
+		    \tilde Y = \beta_0^\circ + \beta_1^\circ X + \eps^\circ
+		.\]
+		\begin{align*}
+			\hat\beta_1^\circ &= \frac{\sum_{i=1}^n (\tilde Y_i - \bar{\tilde Y})(\tilde X_i - \bar{\tilde X})}{\sum_{i=1}^n (\tilde X_i - \bar{\tilde X})^2} \\
+							  &= \frac{\sum_{i=1}^n (\frac{1}{20}Y_i - \frac{1}{20}\bar Y)(\frac{1}{20}X_i - \frac{1}{20}\bar X)}{\sum_{i=1}^n (\frac{1}{20}X - \frac{1}{20}\bar X)^2} \\
+							  &= \frac{(\frac{1}{20})^2\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X)}{(\frac{1}{20})^2\sum_{i=1}^n (X_i - \bar X)^2} \\
+							  &= \frac{\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X)}{\sum_{i=1}^n (X_i - \bar X)^2} \\
+							  &= \hat\beta_1 = 0.869
+		\end{align*}
+	   and 
+	   \begin{align*}
+		   \hat\beta_0^\circ &= \bar{\tilde Y} - \hat\beta_1^\circ\bar{\tilde X} \\
+							&= \frac{1}{20}\bar Y - \hat\beta_1\frac{1}{20}\bar X  \\
+							&= \frac{1}{20}(\underbrace{\bar Y - \hat\beta_1\bar X}_{=\hat\beta_0}) = \frac{1}{20}6.83 = 0.3415 
+	   \end{align*}
+	   So the final regression estimated regression line is 
+	   \[
+		   \tilde Y = 0.3415 + 0.869\tilde X
+	   .\] }
+	\end{enumerate}
+	\item Given the quantities in the questions below, calculate and interpret \(R^2\):
+	 \begin{enumerate}
+		 \item \( \sum_{i=1}^n (Y_i - \bar Y)^2 = 631.63\) and \( \sum_{i=1}^n \hat\eps_i^2 = 182.85\).
+
+		 \green{Answer:} \ucla{We calculate 
+		 \[
+			 R^2= 1 - \frac{\text{SSE}}{\text{SST}} = 1 - \frac{182.85}{631.63} = 0.7105  
+		 .\] 
+	 	 About 71\% of the variance in \(Y\) is explained by the linear model with  \(X\).}
+		 \item \( \sum_{i=1}^n Y_i^2 = 5930.94\), \(\bar Y = 16.035\),  \(n = 20\), and  \(\text{SSR} = 666.72\).
+
+		\green{Answer:} \ucla{We know SSR so we need to calculate SST. Using the useful equality from Homework 1
+		\begin{align*}
+			\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)^2 = \frac{1}{n}\sum_{i=1}^n Y_i^2 - (\bar Y)^2  \implies SST = \sum_{i=1}^n Y_i^2 - n(\bar Y)^2 &= 5930.94 - 20(16.035)^2 \\
+			&= 788.5155
+		.\end{align*}
+	    and so 
+	    \[
+			R^2 = \frac{\text{SSR}}{\text{SST}} = \frac{666.72}{788.5155}  = 0.8455382
+	    .\] 
+	    About \(85\%\) of the variance in  \(Y\) is explained by the linear model with  \(X\).}
+	\end{enumerate}
+	\item Suppose \(R^2 = 0.7911\),  \(\text{SST}=552.36\), and \(n=20\). Find \(\hat\sigma_\eps^2\).
+
+		\green{Answer:} \ucla{Recall that \(\hat\sigma_\eps^2 = \frac{1}{n}\cdot\text{SSE}\). To get SSE use
+		\[
+			R^2 = 1 - \frac{\text{SSE}}{\text{SST}} \implies 0.7911 = 1 - \frac{\text{SSE}}{552.36} \implies \text{SSE} = 115.388 \implies \hat\sigma_\eps^2 = \frac{1}{20}115.388  = 5.7694
+		.\] }
+\end{enumerate}
+
+
+
+
+\end{document}
+

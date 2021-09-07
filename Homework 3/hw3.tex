@@ -1,0 +1,152 @@
+\documentclass[10pt]{article}
+
+% Packages with options
+\usepackage[english]{babel}
+\usepackage[mathscr]{euscript}
+\usepackage[margin=1in]{geometry} 
+\usepackage[utf8]{inputenc}
+\usepackage[small]{titlesec}
+
+% Primary Packages
+\usepackage{adjustbox, amsbsy, amsmath, amssymb, amsthm, blkarray, bm, commath, chngcntr, dsfont, econometrics, fancyhdr, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
+
+% Hyperref Setup
+\usepackage[pdfauthor={Manu Navjeevan},
+			bookmarks=false,%
+			pdftitle={Econ 103: Homework 3},%
+			pdftoolbar=false,%
+			pdfmenubar=true]{hyperref} %hyperref needs to be last
+
+% Rest of the setup is in the "setup/setup_long" package
+\usepackage{cleveref, setup}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Econ 103: Homework 3}%Title
+\author{Manu Navjeevan}
+\date{Due: End of Day, Monday, September 6th}
+
+\begin{document}
+\maketitle
+
+\section*{Single Linear Regression Review}%
+\begin{enumerate}
+	\item (\red{Challenge}, Linear Regression as Line of Best Fit). Recall that our single linear regression model, defined in terms of the ``line of best fit'' is an approximation of the true conditional mean rather than the true conditional mean. However, in the case that \(X\) is binary, (\(X \in \{0,1\}\)), the parameters  \(\beta_0\) and  \(\beta_1\) from the linear model
+	\[
+		Y = \beta_0 + \beta_1X + \eps,\;\;\E[\eps] = \E[\eps X] = 0
+	.\] 
+	exactly describe the conditional mean. In this exercise we will show this. 	
+	\begin{enumerate}
+		\item Use the following equalities, true for a random variable \(X\) that takes values  \(X\in \{0,1\}\), to get an expression for \(\Cov(X,Y).\)
+		\begin{align*}
+			\E[Y] &= \E[Y|X=0]\Pr(X=0) + \E[Y|X=1]\Pr(X=1)\\
+			\E[X] &= \Pr(X=1) \\
+			\E[XY] &= \E[Y|X=1]\Pr(X=1)
+		\end{align*}
+		It may be helpful to let \(p = \Pr(X=1)\) and note that  \(\Pr(X=0) = 1-p\).
+		\item Use the following expression, true for a random variable \(X\) that takes values  \(X\in \{0,1\}\), to get a simplified expression for \(\beta_1 = \frac{\Cov(X,Y)}{\Var(X)}\):
+		\[
+			\Var(X) = \Pr(X=1)\Pr(X=0) 
+		 .\] 
+		\item Use the expressions for \(\E[Y]\) and \(\E[X]\) above, as well as the expression for \(\beta_1\) that you derived in part (b) to get a simplified expression for 
+		\[
+			\beta_0 = \E[Y] - \beta_1\E[X]
+		.\] 
+		\item Use the expressions for \(\beta_0\) and  \(\beta_1\) from above as well as the linear model:
+		 \[
+			 Y = \beta_0 + \beta_1X + \eps
+		 .\] 
+		 What is the predicted value of \(Y\) when  \(X=0\)? What about when  \(X=1\)?
+	\end{enumerate}
+\end{enumerate}
+
+
+\section*{Multiple Linear Regression}%
+\label{sec:multiple-linear-regression}
+
+
+\begin{enumerate}
+	\item (Single Hypothesis Testing). Consider the linear model
+	\[
+	    Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \eps
+	.\]
+	We want to test the hypotheses:
+	\[
+	    H_0: \beta_2 = 0 \vsbox H_1: \beta_2 \neq 0
+	\] 
+	at level \(\alpha = 0.05\).
+	\begin{enumerate}
+		\item Suppose on a sample of size \(n = 100\) we find that  \(\sigma_\eps^2 = 400\),  \(\sigma_{X_2}^2 = 200\), \(\hat\beta_2 = 1\), and \(\rho_{12}^2 = 0.5\), where we recall that \(\rho_{12}\) is the sample correlation coeffecient between  \(X_1\) and  \(X_2\). Conduct the hypothesis test in the setup of this problem.
+		%\item What is the largest value of \(\rho_{12}\) for which we would \underline{fail to reject} this null hypothesis?
+		\item Give an intuitive explanation for why the variance of \(\hat\beta_1\) is increasing with the correlation between \(X_1\) and  \(X_2\).
+	\end{enumerate}
+
+	\item (Single Hypothesis Testing). Suppose we are interested in exploring the relationship between income, years of education, and experience. To investigate this relationship, we consider the following model:
+	 \[
+		 \ln(\text{Income}) = \beta_0 + \beta_1\text{Edu} + \beta_2\text{Exper} + \eps
+	.\] 
+	After fitting this model with sample size \(n=100\) we find the following variance covariance matrix.
+	\begin{equation*}
+	\Cov(\hat\beta) = 
+	  \begin{blockarray}{lccc}
+		  & {\hat\beta_0} &{\hat\beta_1} &{\hat\beta_2}\\
+		  \begin{block}{l(ccc)}
+		  {\hat\beta_0} & 0.05 & 0.25 & 0.16 \\
+		  {\hat\beta_1} & 0.25 & 0.08 & 0.1 \\
+		  {\hat\beta_2} & 0.16 & 0.1 & 0.36 \\
+	  	  \end{block}
+	  \end{blockarray}
+	\end{equation*}
+	We want to prove that returns to education are larger than returns to experience.
+	\begin{enumerate}
+		\item Formally state, in terms of parameters of the model, the null and alternative hypotheses associated with this test (Hint: Recall the null is that returns to education are \underline{smaller} than returns to experience, our goal will be to provide evidence against this null hypothesis).
+		\item Suppose we find that \(\hat\beta_1 = 1.1\) and \(\hat\beta_2 = 0.7\). What is the result of running the hypothesis test specified in part (a) at level \(\alpha = 0.05\)? (Hint: It may be useful to recall that we can write  \(X- Y = X + (-Y)\)).
+		\item Keeping all other values the same, what is the largest value of \(\Cov(\hat\beta_1,\hat\beta_2)\) for which we would \underline{reject} this null hypothesis? (This may be larger or smaller than the existing covariance).
+	\end{enumerate}
+	\item (Multiple Hypotheses Testing). Suppose a hamburger restaurant is investigating the relationship between the number of burgers it sells in a month, the price of a burger in dollars, and the money it spends on advertising in tens of thousands of dollars, and whether or not it is open on Saturdays.
+
+	Consider the following unrestricted model:
+	\[
+		\text{Sales} = \beta_0 + \beta_1\text{Price} + \beta_2\text{Advert} + \beta_3\text{Saturdays} + \eps 
+	.\]
+	And the restricted model
+	\[
+		\text{Sales} = \beta_0 + \beta_1(\text{Advert} + \text{Saturdays} - \text{Price}) + \eps
+	.\] 
+	\begin{enumerate}
+		\item In terms of the unrestricted model parameters, state the null hypothesis being imposed by the restricted model (something like \(H_0: \beta_1 = 2\beta_2 = 20\beta_3\)).
+		\item Interpret this null hypothesis in context.
+		\item Suppose \(n=104\) and, after estimating both the restricted and unrestricted models, we find that \(\text{SSE}_\text{R} = 1000\), \(\text{SSE}_\text{U} = 800\). Use this information the compute the F-statistic.
+		\item Using the command \(\text{pf}(F^*, J, n-p-1)\) in  \(R\), compute the  \(p\)-value. Recall that:
+		 \[
+			 \Pr\left(F(J,n-p-1) \leq c\right) = \text{pf}(c, J, n-p-1)
+		.\]
+		\item Using this p-value report the result of the test at level \(\alpha = 0.05\). Interpret the test result in the context of the problem.
+	\end{enumerate}
+	\item (Polynomial Modeling). When estimating wage equations, we expect that young, inexperienced workers will have relatively low wages and that with additional experience their wages will rise, but then begin to decline after middle age, as the worker nears retirement. This life cycle pattern of wages can be captured by introducing experience and experience squared to explain the level of wages. If we also include years of education, we have the equation
+	\[
+		\text{Wages} = \beta_0 + \beta_1\text{Educ} + \beta_2\text{Exper} + \beta_3\text{Exper}^2 + \eps
+	.\] 
+	\begin{enumerate}
+		\item In terms of the parameters of this model, what is the expected marginal effect of experience on wages?
+		\item Given the explanation above, what signs do we expect on the coeffecients \(\beta_2\) and  \(\beta_3\)?
+		 \item Suppose we estimate that \(\hat\beta_2 = 20\) and  \(\hat\beta_3 = -0.6\). After how many years of experience do we esimate that wages will  start to decline?
+	\end{enumerate}
+		
+	\item (Omitted Variables Bias). Consider the two models:
+	\begin{align*}
+		Y &= \beta_0 + \beta_1X_1 + \eps \\
+		Y &= \beta_0^\circ + \beta_1^\circ X_1 + \beta_2^\circ X_2 + \eps^\circ
+	.\end{align*}
+	Recall that the \underline{omitted variables bias}  is the difference between  \(\beta_1\) and  \(\beta_1^\circ\),  \(\text{OVB} = \beta_1 - \beta_1^\circ\).
+	\begin{enumerate}
+		\item From lecture, give the formula for the omitted variables bias.
+		\item Suppose that \(X_2\) has a negative relationship with the outcome and  \(X_1\) and  \(X_2\) are negatively related. What is the sign of the omitted variables bias? Which should be larger, \(\beta_1\) or  \(\beta_1^\circ\)?
+		\item (\red{Challenge}). Give an example that illustrates this. That is, come up with an example in which \(X_1\) and  \(X_2\) are negatively related and  \(X_2\) is negatively associated with the outcome. Then, within the context of the example, give an explanation for why excluding \(X_2\) from your model would make the coeffecient on  \(X_1\) either larger or smaller. This explanation should not just use the omitted variables formula and rather provide reasoning within the context of the example.	
+	\end{enumerate}
+\end{enumerate}
+
+
+
+\end{document}
+

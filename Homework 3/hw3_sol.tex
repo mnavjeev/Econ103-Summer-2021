@@ -1,0 +1,249 @@
+\documentclass[10pt]{article}
+
+% Packages with options
+\usepackage[english]{babel}
+\usepackage[mathscr]{euscript}
+\usepackage[margin=1in]{geometry} 
+\usepackage[utf8]{inputenc}
+\usepackage[small]{titlesec}
+
+% Primary Packages
+\usepackage{adjustbox, amsbsy, amsmath, amssymb, amsthm, blkarray, bm, commath, chngcntr, dsfont, econometrics, fancyhdr, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
+
+% Hyperref Setup
+\usepackage[pdfauthor={Manu Navjeevan},
+			bookmarks=false,%
+			pdftitle={Econ 103: Homework 3 Solutions},%
+			pdftoolbar=false,%
+			pdfmenubar=true]{hyperref} %hyperref needs to be last
+
+% Rest of the setup is in the "setup/setup_long" package
+\usepackage{cleveref, setup}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Econ 103: Homework 3 Solutions}%Title
+\author{Manu Navjeevan}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Single Linear Regression Review}%
+\begin{enumerate}
+	\item (\red{Challenge}, Linear Regression as Line of Best Fit). Recall that our single linear regression model, defined in terms of the ``line of best fit'' is an approximation of the true conditional mean rather than the true conditional mean. However, in the case that \(X\) is binary, (\(X \in \{0,1\}\)), the parameters  \(\beta_0\) and  \(\beta_1\) from the linear model
+	\[
+		Y = \beta_0 + \beta_1X + \eps,\;\;\E[\eps] = \E[\eps X] = 0
+	.\] 
+	exactly describe the conditional mean. In this exercise we will show this. 	
+	\begin{enumerate}
+		\item Use the following equalities, true for a random variable \(X\) that takes values  \(X\in \{0,1\}\), to get an expression for \(\Cov(X,Y).\)
+		\begin{align*}
+			\E[Y] &= \E[Y|X=0]\Pr(X=0) + \E[Y|X=1]\Pr(X=1)\\
+			\E[X] &= \Pr(X=1) \\
+			\E[XY] &= \E[Y|X=1]\Pr(X=1)
+		\end{align*}
+		It may be helpful to let \(p = \Pr(X=1)\) and note that  \(\Pr(X=0) = 1-p\).
+
+		\green{Answer:} \darkucla{Let \(p = \Pr(X=1)\). Using the equalities:
+		\begin{align*}
+			\E[X] &= p \\
+			\E[Y] &= \E[Y|X=1]p + \E[Y|X=0](1-p) \\
+			\E[YX] &= \E[Y|X=1]p
+		\end{align*}
+		we can write 
+		\begin{align*}
+			\Cov(X,Y) &= \E[YX] - \E[X]\E[Y] \\
+					  &= \E[Y|X=1]p - p\left(\E[Y|X=1]p + \E[Y|X=0](1-p)\right) \\
+					  &= \E[Y|X=1]p - p\left(\E[Y|X=1]p + \E[Y|X=0] - \E[Y|X=0]p\right)\\
+					  &= \underbrace{\E[Y|X=1]p - p^2\E[Y|X=1]}_{\text{pull out p}} - \underbrace{p\E[Y|X=0] + \E[Y|X=0]p^2}_{\text{pull out p}} \\
+					  &= p\underbrace{\left(\E[Y|X=1] - p\E[Y|X=1]\right)}_{\text{pull out }\E[Y|X=1]} - p\underbrace{\left(\E[Y|X=0] - p\E[Y|X=0]\right)}_{\text{pull out }\E[Y|X=0]} \\
+					  &= p(1-p)\E[Y|X=1] - p(1-p)\E[Y|X=0]
+		\end{align*}
+		Any answer after line 2 would be accepted. Just important to set up for part (b)}
+		\item Use the following expression, true for a random variable \(X\) that takes values  \(X\in \{0,1\}\), to get a simplified expression for \(\beta_1 = \frac{\Cov(X,Y)}{\Var(X)}\):
+		\[
+			\Var(X) = \Pr(X=1)\Pr(X=0) 
+		 .\] 
+
+		 \green{Answer:} \darkucla{Using the definition \(p = \Pr(X=1)\) and noting that  \(\Pr(X=0) = 1- \Pr(X-1) = 1-p\), we can write \(\Var(X) = p(1-p)\). Using our answer from part (a), we can simplify:
+		 \begin{align*}
+			 \beta_1 = \frac{\Cov(X,Y)}{\Var(X)} &= \frac{p(1-p)\E[Y|X=1] - p(1-p)\E[Y|X=0]}{p(1-p)}   \\
+												 &= \E[Y|X=1] - \E[Y|X=0]
+		 \end{align*}}
+		\item Use the expressions for \(\E[Y]\) and \(\E[X]\) above, as well as the expression for \(\beta_1\) that you derived in part (b) to get a simplified expression for 
+		\[
+			\beta_0 = \E[Y] - \beta_1\E[X]
+		.\] 
+
+		\green{Answer:} \darkucla{Using \(\beta_1 = \E[Y|X=1] - \E[Y|X=0]\), \(\E[X] = p\), and \(\E[Y] = p\E[Y|X=1] + (1-p)\E[Y|X=0]\) :
+		\begin{align*}
+			\beta_0 = \E[Y] - \beta_1\E[X] 
+			&= \underbrace{p\E[Y|X=1] + (1-p)\E[Y|X=0]}_{\E[Y]} - \underbrace{p(\E[Y|X=1] - \E[Y|X=0])}_{\beta_1\E[X]} \\
+			&= (1-p)\E[Y|X=0] + p\E[Y|X=0] \\
+			&= \E[Y|X=0]
+		\end{align*}}
+		\item Use the expressions for \(\beta_0\) and  \(\beta_1\) from above as well as the linear model:
+		 \[
+			 Y = \beta_0 + \beta_1X + \eps
+		 .\] 
+		 What is the predicted value of \(Y\) when  \(X=0\)? What about when  \(X=1\)?
+
+		 \green{Answer:} \darkucla{The predicted value of \(Y\) when  \(X=0\) is  \(\beta_0 = \E[Y|X=0]\). The predicted value of \(Y\) when  \(X=1\) is  \(\beta_0 + \beta_1 = \E[Y|X=1]\). While normally the line of best fit does not coincide with the true conditional expectation, in this case it does.}
+	\end{enumerate}
+\end{enumerate}
+
+
+\section*{Multiple Linear Regression}%
+\label{sec:multiple-linear-regression}
+
+
+\begin{enumerate}
+	\item (Single Hypothesis Testing). Consider the linear model
+	\[
+	    Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \eps
+	.\]
+	We want to test the hypotheses:
+	\[
+	    H_0: \beta_2 = 0 \vsbox H_1: \beta_2 \neq 0
+	\] 
+	at level \(\alpha = 0.05\).
+	\begin{enumerate}
+		\item Suppose on a sample of size \(n = 100\) we find that  \(\sigma_\eps^2 = 400\),  \(\sigma_{X_2}^2 = 200\), \(\hat\beta_2 = 1\), and \(\rho_{12}^2 = 0.5\), where we recall that \(\rho_{12}\) is the sample correlation coeffecient between  \(X_1\) and  \(X_2\). Conduct the hypothesis test in the setup of this problem.
+		
+		\green{Answer:} \darkucla{We first use this information to calculate
+		\[
+			\hat\sigma_{\beta_2}^2 = \frac{\sigma_\eps^2}{(1-\rho_{12})^2\sigma_X^2} = 4 \implies \sigma_{\beta_2}/\sqrt{n} = 2/10 = 0.2  
+		.\] We can then construct our test statistic
+	    \[
+			t^* = \frac{\hat\beta_2 - 0}{\sqrt{\beta_2}/\sqrt{n}} = \frac{1}{0.2} = 5  
+	    .\] 
+		Since this test statistic is larger than \(z_{1-\alpha/2} = 1.96\) we reject the null hypothesis and conclude in favor of the alternative that  \(\beta_2 \neq 0\).}
+		\item Give an intuitive explanation for why the variance of \(\hat\beta_1\) is increasing with the correlation between \(X_1\) and  \(X_2\).
+
+		\green{Answer:} \darkucla{Recall that in a multiple regression model, we interpret the coeffecient \(\beta_1\) as the (approximate) association between  \(X_1\) and \(Y\) while holding  \(X_2\) constant. If,. in our data, \(X_1\) and  \(X_2\) are highly correlated, it is difficult for us to parse out this effect since whenever  \(X_1\) moves,  \(X_2\) tends to move too. This makes it difficult to distinguish the effect of  \(X_1\) on  \(Y\) from the effect of  \(X_2\) on  \(Y\) and reduces our certainty in what the true parameter \(\beta_1\) is. The variance of our estimator  \(\hat\beta_1\) can be interpreted as a measure of our uncertainty about the true parameter  \(\beta_1\), so a high correlation will increase the variance of  \(\hat\beta_1\). (Variations on this answer will be accepted, the main point is to remark that it is difficult to parse out the effect of \(X_1\) on  \(Y\) from the effect on  \(X_2\) on  \(Y\)).} 
+	\end{enumerate}
+
+	\item (Single Hypothesis Testing). Suppose we are interested in exploring the relationship between income, years of education, and experience. To investigate this relationship, we consider the following model:
+	 \[
+		 \ln(\text{Income}) = \beta_0 + \beta_1\text{Edu} + \beta_2\text{Exper} + \eps
+	.\] 
+	After fitting this model with sample size \(n=100\) we find the following variance covariance matrix.
+	\begin{equation*}
+	\Cov(\hat\beta) = 
+	  \begin{blockarray}{lccc}
+		  & {\hat\beta_0} &{\hat\beta_1} &{\hat\beta_2}\\
+		  \begin{block}{l(ccc)}
+		  {\hat\beta_0} & 0.05 & 0.25 & 0.16 \\
+		  {\hat\beta_1} & 0.25 & 0.08 & 0.1 \\
+		  {\hat\beta_2} & 0.16 & 0.1 & 0.36 \\
+	  	  \end{block}
+	  \end{blockarray}
+	\end{equation*}
+	We want to prove that returns to education are larger than returns to experience.
+	\begin{enumerate}
+		\item Formally state, in terms of parameters of the model, the null and alternative hypotheses associated with this test (Hint: Recall the null is that returns to education are \underline{smaller} than returns to experience, our goal will be to provide evidence against this null hypothesis).
+
+		\green{Answer:} \darkucla{The null hypothesis can be expressed as \(H_0: \beta_1 \leq \beta_2 \iff \beta_1 - \beta_2 \leq 0\). The alternative hypothesis is then \(H_1: \beta_1 > \beta_2 \iff \beta_1 - \beta_2 > 0\).}
+		\item Suppose we find that \(\hat\beta_1 = 1.1\) and \(\hat\beta_2 = 0.7\). What is the result of running the hypothesis test specified in part (a) at level \(\alpha = 0.05\)? (Hint: It may be useful to recall that we can write  \(X- Y = X + (-Y)\)).
+
+		\green{Answer:} \darkucla{We will consider the linear combination of parameters \(\lambda= \beta_1 - \beta_2\) and test the null hypothesis  \(H_0:\lambda \leq 0\) against the one sided alternative  \(H_1:\lambda > 0\). Using the covariance matrix above, we find that 
+		\[
+			\Var(\hat\lambda) = \Var(\hat\beta_1) + \Var(\hat\beta_2) - 2\Cov(\hat\beta_1, \hat\beta_2) = 0.08 + 0.36 - 2\cdot 0.1 = 0.24
+		.\]
+		Then we can construct our test statistic
+		\[
+			t^* = \frac{\hat\lambda - 0}{\sqrt{\Var(\hat\lambda)}} = \frac{0.4}{0.489} = 0.8164
+		.\]
+		Given this, since \(t^* \leq z_{1-\alpha} = 1.64\), we fail to reject this null hypothesis. We cannot reject the hypothesis that returns to experience are higher than returns to education.}
+		\item Keeping all other values the same, what is the largest value of \(\Cov(\hat\beta_1,\hat\beta_2)\) for which we would \underline{reject} this null hypothesis? (This may be larger or smaller than the existing covariance).
+
+		\green{Answer:} \darkucla{So, the correct answer to this is to notice that the variance of \(\hat\lambda\) is decreasing as the Covariance is increasing. For small variances we reject the null hypothesis. Our only restriction is that the variance needs to positive. So, we can take \(2\Cov(\hat\beta_1,\hat\beta_2) < \Var(\hat\beta_0) + \Var(\hat\beta_1) \implies \Cov(\hat\beta_1,\hat\beta_2) < 0.22\).}
+
+		\darkucla{However, in office hours, I was confused and mentioned that you can find an upper bound by inverting the test statistic (using \(t^* > 1.64\)). This gives a lower bound on rejecting the null hypothesis  \(\Cov(\hat\beta_0,\hat\beta_1) > 0.19\). This answer will also be accepted as well as an answer that claims that the upper bound is unattainable.}
+	\end{enumerate}
+	\item (Multiple Hypotheses Testing). Suppose a hamburger restaurant is investigating the relationship between the number of burgers it sells in a month, the price of a burger in dollars, and the money it spends on advertising in tens of thousands of dollars, and whether or not it is open on Saturdays.
+
+	Consider the following unrestricted model:
+	\[
+		\text{Sales} = \beta_0 + \beta_1\text{Price} + \beta_2\text{Advert} + \beta_3\text{Saturdays} + \eps 
+	.\]
+	And the restricted model
+	\[
+		\text{Sales} = \beta_0 + \beta_1(\text{Advert} + \text{Saturdays} - \text{Price}) + \eps
+	.\] 
+	\begin{enumerate}
+		\item In terms of the unrestricted model parameters, state the null hypothesis being imposed by the restricted model (something like \(H_0: \beta_1 = 2\beta_2 = 20\beta_3\)).
+
+		\green{Answer:} \darkucla{The restricted model is imposing that a ten thousand dollar increase in advertising is associated with the same change in sales as being open on Saturday or a one dollar decrease in price. Formally, we can write this as:
+		\[
+		    H_0: -\beta_1 = \beta_2 = \beta_3
+		.\] }
+		\item Interpret this null hypothesis in context.
+
+		\green{Answer:} \darkucla{See above. A correct answer should include units. It is ok to use language like ``the effect of\dots''}
+		\item Suppose \(n=104\) and, after estimating both the restricted and unrestricted models, we find that \(\text{SSE}_\text{R} = 1000\), \(\text{SSE}_\text{U} = 800\). Use this information the compute the F-statistic.
+
+		\green{Answer:} \darkucla{First, note that \(n-p-1 = 100\) and \(J= 2\) (count the equality signs in the null hypothesis). Using this, we compute \(F^*\):
+		 \[
+			 F^* = \frac{(\text{SSE}_\text{R} - \text{SSE}_\text{U})/J}{\text{SSE}_\text{U}/(n-p-1)} = \frac{(1000 - 800)/2}{800/100} = \frac{100}{8} = 12.5  
+		.\] }
+		\item Using the command \(\text{pf}(F^*, J, n-p-1)\) in  \(R\), compute the  \(p\)-value. Recall that:
+		 \[
+			 \Pr\left(F(J,n-p-1) \leq c\right) = \text{pf}(c, J, n-p-1)
+		.\]
+
+		\green{Answer:} \darkucla{We can calculate the p-value via \(p = 1 - \text{pf}(F^*, J, n-p-1) = 1 - \text{pf}(12.5, 2, 100) \approx 0\).}
+		\item Using this p-value report the result of the test at level \(\alpha = 0.05\). Interpret the test result in the context of the problem.
+
+		\green{Answer:} \darkucla{Since the p-value is less than \(\alpha = 0.05\) we \underline{reject} this null hypothesis. We conclude in favor of the alternative hypothesis, which is to say that either a one dollar decrease in price is associated with a different change in sales than a ten thousand dollar increase in advertising or a ten thousand dollar increase in advertising is associated with a different change in sales than being open Saturday. (There are many ways to state this, just important that you note that at least one of two restrictions is violated and units are used).}
+	\end{enumerate}
+	\item (Polynomial Modeling). When estimating wage equations, we expect that young, inexperienced workers will have relatively low wages and that with additional experience their wages will rise, but then begin to decline after middle age, as the worker nears retirement. This life cycle pattern of wages can be captured by introducing experience and experience squared to explain the level of wages. If we also include years of education, we have the equation
+	\[
+		\text{Wages} = \beta_0 + \beta_1\text{Educ} + \beta_2\text{Exper} + \beta_3\text{Exper}^2 + \eps
+	.\] 
+	\begin{enumerate}
+		\item In terms of the parameters of this model, what is the expected marginal effect of experience on wages?
+
+		\green{Answer:} \darkucla{Taking derivatives gives 
+		\[
+			\frac{\partial \widehat Y}{\partial \text{Exper}} = \beta_2 + 2\beta_3\text{Exper}
+		.\] }
+		\item Given the explanation above, what signs do we expect on the coeffecients \(\beta_2\) and  \(\beta_3\)?
+
+		\green{Answer:} \darkucla{Since we expect returns on experience to be positive to begin with, but then diminish as experience increases, we would expect \(\beta_2 > 0\) and  \(\beta_3 < 0\).}
+		 \item Suppose we estimate that \(\hat\beta_2 = 20\) and  \(\hat\beta_3 = -0.6\). After how many years of experience do we esimate that wages will  start to decline?
+
+			 \green{Answer:} \darkucla{Setting the marginal effect equal to zero and solving for experience gives
+			 \[
+			     20 - 2\cdot 0.6\text{Exper} = 0 \implies \text{Exper} = \frac{20}{1.2} = 16.6666 
+			 .\]
+		 	 An answer of 16.6666, 16, or 17, would be accepted.}
+	\end{enumerate}
+		
+	\item (Omitted Variables Bias). Consider the two models:
+	\begin{align*}
+		Y &= \beta_0 + \beta_1X_1 + \eps \\
+		Y &= \beta_0^\circ + \beta_1^\circ X_1 + \beta_2^\circ X_2 + \eps^\circ
+	.\end{align*}
+	Recall that the \underline{omitted variables bias}  is the difference between  \(\beta_1\) and  \(\beta_1^\circ\),  \(\text{OVB} = \beta_1 - \beta_1^\circ\).
+	\begin{enumerate}
+		\item From lecture, give the formula for the omitted variables bias.
+
+		\green{Answer:} \darkucla{From lecture:
+		\[
+			\text{OVB} = \beta_1 - \beta_1^\circ = \beta_2^\circ\frac{\Cov(X_1,X_2)}{\Var(X_1)} 
+		.\] }
+		\item Suppose that \(X_2\) has a negative relationship with the outcome and  \(X_1\) and  \(X_2\) are negatively related. What is the sign of the omitted variables bias? Which should be larger, \(\beta_1\) or  \(\beta_1^\circ\)?
+
+		\green{Answer:} \darkucla{Using the formula above and the fact that a negative times a negative is positve, we find that \(\text{OVB} >0\). This means that  \(\beta_1 >\beta_1^\circ\).}
+		\item (\red{Challenge}). Give an example that illustrates this. That is, come up with an example in which \(X_1\) and  \(X_2\) are negatively related and  \(X_2\) is negatively associated with the outcome. Then, within the context of the example, give an explanation for why excluding \(X_2\) from your model would make the coeffecient on  \(X_1\) either larger or smaller. This explanation should not just use the omitted variables formula and rather provide reasoning within the context of the example.	
+
+		\green{Answer:} \darkucla{Many possible answers. A good answer 1) clearly explains why the covariance should be negative, 2) clearly explains why the association between \(X_2\) and  \(Y\) should be negative, 3) explains, within the context of the example and without just using the formula, why this would lead to a larger slope parameter on the model that just includes \(X_1\) and excludes \(X_2\).}
+	\end{enumerate}
+\end{enumerate}
+
+
+
+\end{document}
+

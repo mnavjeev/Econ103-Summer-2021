@@ -1,0 +1,328 @@
+
+\documentclass[10pt]{article}
+
+% Packages with options
+\usepackage[english]{babel}
+\usepackage[mathscr]{euscript}
+\usepackage[margin=1in]{geometry} 
+\usepackage[utf8]{inputenc}
+\usepackage[small]{titlesec}
+
+% Primary Packages
+\usepackage{adjustbox, amsbsy, amsmath, amssymb, amsthm, bm, commath, chngcntr, dsfont, econometrics, fancyhdr, gensymb, graphicx, IEEEtrantools, longtable, marginnote, mathrsfs, mathtools, mdframed, natbib, parskip, pgf, setspace, subfigure, tabularx, textcomp, tikz}
+
+% Hyperref Setup
+\usepackage[pdfauthor={Manu Navjeevan},
+			bookmarks=false,%
+			pdftitle={Econ 103: Homework 1},%
+			pdftoolbar=false,%
+			pdfmenubar=true]{hyperref} 
+
+% Rest of the setup is in the "setup/setup_long" package
+\usepackage{cleveref, setup_long} % cleverref should be last
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Econ 103: Homework 1} %Title
+\author{Manu Navjeevan}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Econ 41 Review}%
+\label{sec:econ41review}
+
+\begin{enumerate}
+	\item \underline{Discrete Random Variables.} Suppose that we are interested in the number of cups of coffee drank by a (randomly selected) student at UCLA. This quantity can be represented as a random variable \(Y\) with probability mass function:
+	 \[
+		 p_Y(a) = \begin{cases}
+		 	\frac{1}{4}  & \text{if } a\in \{0,1,2\} \\
+			\frac{1}{8}  & \text{if } a = 3 \\
+			\frac{3}{32}  &\text{if } a = 4 \\
+			c &\text{if } a = 5 \\
+			0 &\text{otherwise}
+		 \end{cases}
+	,\]
+	where \(c\) is an unknown constant.
+	\begin{enumerate}
+		\item Explain why the number of cups of coffee drank in a day by a randomly selected student at UCLA is a random variable. 
+		
+		\green{Answer:} \darkucla{Not everyone at UCLA drinks the same number of cups of coffee. Depending on which UCLA student we select the answer to this question will vary.}
+		\item What is the relevant outcome space of the random variable \(Y\)? 
+
+		\green{Answer:}	\darkucla{We can see from the pmf that \(Y\) can only take on one of 6 values,  \(\{0,1,2,3,4,5\}\). So \(\calO_Y = \{1,2,3,4,5\}.\)}
+		\item Explain what the distribution of this random variable represents. In other words distribution of \(Y\) assigns a probability to any subset of the outcome space. How do we interpret this probability?
+
+		\green{Answer:} \darkucla{We can interpret \(\P_Y(A)\) as the \underline{proportion} of UCLA students whose daily coffee consumption lies in the set \(A\). For example,  \(\P_Y(\{0,1\}) \) represents the share of UCLA students that drink either zero or one cup of coffee a day.}	
+		\item Solve for \(c\). (\emph{Hint:} Recall that \(\P_Y(\calO_Y) = 1\) so that  \(\sum_{a\in\calO_Y} p_Y(a)\) must equal one).
+		
+			\green{Answer:} \darkucla{Because \(\P_Y(\calO_Y) = 1\) and \(\P_Y(\bigcup_{i=1}^n A_i) = \sum_{i=1}^n \P_Y(A_i)\) if all the \(A_1,\dots,A_n\) are pairwise disjoint we can decompose
+			\begin{align*}
+				1 = \P_Y(\calO_Y) &= \P_Y(\cup_{a\in\calO_Y} \{a\})  \\
+								  &= \sum_{a\in\calO_Y} \P_Y(\{a\}) \\ 
+								  &= \sum_{a \in \{0,1,2,3,4,5\}} p_Y(a) \\ 
+								  &= \frac{1}{4} + \frac{1}{4} + \frac{1}{4} + \frac{1}{8} +\frac{3}{32} + c     \\
+				\implies c &= \frac{1}{32}
+			\end{align*}}
+		\item What is the probability that a randomly selected student at UCLA drinks at least 3 cups of coffee a day, \(\P_Y(Y\geq 3)\)?
+
+			\green{Answer:} \darkucla{Again using the property that \(\P_Y(\bigcup_{i=1}^nA_i)\) for pairwise disjoint sets \(A_1,A_2,\dots,A_n\) 
+			\begin{align*}
+				\P_Y(Y\geq 3) = \P_Y(\{3,4,5\}) = \sum_{a \in \{3,4,5\}} \P_Y(\{a\}) = \underbrace{p_Y(3)}_{1/8} + \underbrace{p_Y(4)}_{3/32} + \underbrace{p_Y(5)}_{1/32}  = \frac{1}{4}
+			\end{align*}}
+		\item What is the expected number of cups of coffee drank per day for a randomly selected student at UCLA?
+
+			\green{Answer:} \darkucla{Recall the formula for expected value, \(\E[Y] = \sum_{a\in\calO_Y} a\cdot p_Y(a)\).
+			\begin{align*}
+				\E[Y] = \sum_{a\in\{0,1,2,3,4,5\}} a\cdot p_Y(a) 
+				&= 0\cdot \frac{1}{4} + 1\cdot\frac{1}{4} + 2\cdot\frac{1}{4} + 3\cdot\frac{1}{8} + 4\cdot\frac{3}{32} + 5\cdot\frac{1}{32}       \\ 
+				&= \frac{8}{32} + \frac{16}{32} + \frac{12}{32} + \frac{12}{32} + \frac{5}{32}   \\
+				&= \frac{53}{32} \approx 1.656
+			\end{align*}}
+	\end{enumerate}
+	\item \underline{Continuous Random Variables.} Suppose that we are interested in the income of a randomly selected Angeleno. The distribution of incomes (in tens of thousands of dollars) for residents of Los Angeles can be described as a random variable, \(X\), with the following pdf.
+	\[
+		f_X(a) = \begin{cases}
+			0.11 - ca & \text{if } 0 \leq a \leq 10 \\
+			0 &\text{otherwise }
+		\end{cases}
+	,\] 
+	where \(c\) is an unknown constant.
+	\begin{enumerate}
+		\item What is the outcome space of \(X\), \(\calO_X\)? 
+
+		\green{Answer:} \darkucla{We can see that pdf is only non-zero on the interval \([0,10]\) so \(\calO_X = [0,10]\). Strictly speaking, we could define the outcome space to be any set that contains \([0,10]\), it doesn't violate any assumption, so other answers may be accepted.}
+		\item Using the relationship 
+		\[
+			\P_X(l \leq X \leq m) = \int_l^m f_X(a)\;da
+		,\]
+		explain why the pdf must always be weakly positive, \(f_X(a) \geq 0\), for any \(a\in\SR\).
+
+		\green{Answer:} \darkucla{Suppose that the pdf \(f_X(a)\) was strictly negative on some interval \([l,m]\),  (\(f_X(a) < 0\) for  \(l\leq a\leq m\)). Then, using the relationship between probabilities and the pdf, we would find that \(\P_X(l \leq X \leq m) < 0\), which violates the assumption that \(0 \leq \P_X(A) \leq 1\) for any subset \(A\).}
+		\item Because \(\P_X(\calO_X)=1\) we must have that 
+		\(
+			\int_0^{10} f_X(a)\;da = 1
+		.\)
+		Using this fact, solve for \(c\).
+
+		\green{Answer:} \darkucla{The pdf must integrate to one so
+		\begin{align*}
+			1 = \int_0^{10} 0.11 - ca \; da = 0.11\cdot 10 - c\frac{a^2}{2}\bigg|_{0}^{10} = 1.1 - 50c \implies c =0.002   
+		\end{align*}}
+	\item What is the expected value of \(X\), \(\E[X]\)?
+	
+		\green{Answer:} \darkucla{Recall that for a continuous random variable \(\E[X] = \int_{\calO_X} a\cdot f_X(a)\;da\). Using this
+		\begin{align*}
+			\E[X] = \int_0^{10} a(0.11-0.002a)\;da 
+			&= \int_{0}^{10} 0.11a - 0.002a^2\;da \\
+			&= 0.11\frac{a^2}{2}\bigg|_0^{10} - 0.002\frac{a^3}{3}\bigg|_{0}^{10} \\
+			&= 0.11\cdot 50 - 0.002\frac{1000}{3} \approx 4.8333
+		\end{align*}}
+	\item What is the variance of \(X\), \(\Var(X)\)?
+
+		\green{Answer:} \darkucla{Recall that \(\Var(X) = \E[X^2] - (\E[X])^2\). For a continuous random variable \(\E[X^2] = \int_{\calO_X} a^2\cdot f_X(a)\;da\):
+		\begin{align*}
+			\E[X^2] = \int_0^{10} a^2(0.11- 0.002a)\;da 
+			&= \int_0^{10} 0.11\cdot a^2 - 0.002a^3 \;da \\
+			&= 0.11\frac{a^3}{3}\bigg|_0^{10} - 0.002\frac{a^4}{4}\bigg|_0^{10} \\
+			&= 0.11\frac{1000}{3} - 5 \approx 31.6666      
+		\end{align*}
+		Using this along with the solution to part (d) we can compute
+		\[
+			\Var(X) = \E[X^2] - (\E[X])^2 \approx 8.3056
+		.\]}
+	\end{enumerate}
+	\item \underline{Variance and Covariance.} Let \(Y\) be a random variable representing income (in tens of thousands of dollars) and \(X\) be a random variable representing years of education. Suppose that the marginal distribution of \(X\) is described by its probability mass function
+	\[
+		p_X(x) = \begin{cases}
+			0.05 & \text{if }x\in \{1,2,\dots,12\}  \\
+			0.09 &\text{if }x \in \{13,14,15,16\}  \\
+			0.04 &\text{if }x \in \{17\} \\
+			0 &\text{otherwise }
+		\end{cases}
+	.\]
+	The marginal distribution of \(Y\) is described by its probability density function
+	\[
+		f_Y(y) = \begin{cases}
+			0.1	 & \text{if } 0\leq y\leq 10 \\
+			0 &\text{otherwise }
+		\end{cases}
+	.\]	
+	\begin{enumerate}
+		\item What is the expectation of \(Y\),  \(\E[Y]\)? What is its variance,  \(\Var(Y)\)?
+		
+		\green{Answer:} \darkucla{Using the formulas from above we can calculate
+		\begin{align*}
+			\E[Y] = \int_0^{10} 0.1a\;da= 5 \andbox \Var(Y) = \int_{0}^{10} (a-5)^2\cdot 0.1\;da = 100/12
+		\end{align*}}
+		\item What is the expectation of \(X\),  \(\E[X]\)? What is its variance, \(\Var(X)\)?
+
+		\green{Answer:} \darkucla{Using the formulas from above we calculate:
+		\begin{align*}
+			\E[X] &= 0.05(1 + 2 + \dots + 12) + 0.09(13 + 14 + 15 + 16) + 0.004\cdot 17 	= 9.8\\
+			\E[X^2] &= 0.05(1^2 + 2^2 + \dots + 12^2) + 0.09(13^2 + 14^2 + 15^2 + 16^2) + 0.004\cdot 17^2  = 120.2 \\
+			\implies \Var(X) &= \E[X^2] - (\E[X])^2 = 24.16
+		\end{align*}}
+		\item Using \(\E[YX] = 60\) compute the covariance between  \(Y\) and  \(X\),  \(\Cov(X,Y)\).
+
+			\green{Answer:} \darkucla{From lecture we showed that \(\Cov(X,Y) = \E[XY] - \E[X]\E[Y]\). From part (a) we have that \(\E[Y] = 5\) and from part (b) we have that  \(\E[X] = 9.8\). Using this we find that
+			 \[
+				 \Cov(X,Y) = \E[XY] - \E[X]\E[Y]  = 60 - 9.8\cdot 5 = 11 
+			.\] }
+		\item Calculate the correlation coefficient between \(X\) and  \(Y\).
+		 \[
+			 \rho_{YX} = \frac{\Cov(X,Y)}{\sigma_X\sigma_Y} 
+		.\] 
+
+		\green{Answer:} \darkucla{Using the above, we find that \(\sigma_X = \sqrt{24.16}\) and \(\sigma_Y = \sqrt{100/12}\). Since \(\Cov(X,Y) = 11\) we can calculate 
+		\[
+			\rho_{XY} = \frac{\Cov(X,Y)}{\sigma_X \sigma_Y} = \frac{11}{\sqrt{24.16}\sqrt{100/12}} \approx  0.775
+		.\] }
+		\item What does this covariance tell us about the relationship between education levels and income? Is there a positive or negative association?
+
+		\green{Answer:} \darkucla{Since the covariance is positive we can see that there is a positive association between education levels and income. In general, people with higher education levels may earn more than people with lower education levels.}
+		\item Should we interpret this result as a \emph{causal} relationship between education and income? What are some reasons we may want to refrain from this interpretation?
+
+		\green{Answer:} \darkucla{We cannot necessarily interpret this as a causal relationship, it is purely associative. Some hidden factors (often referred to as	 confounding variables) that may affect both education and income may be technical skill and parental income level. Students that have high levels of education may have a high ability at some skill and so may have obtained high earnings otherwise. People who attend college also generally have parents that are better off than there non-college attending counterparts. This could allow them to get referrals to high paying jobs more easily even in the absence of a college degree.}
+		\item (\red{Challenge}) A common inequality used in econometrics is the \emph{Cauchy-Schwarz} inequality. It states that, for any random variables \(X\) and  \(Y\), and any functions  \(g(\cdot)\) and  \(h(\cdot)\), 
+		 \[
+			 \left|\E[g(X)h(Y)]\right| \leq \sqrt{\E[g^2(X)]}\sqrt{\E[h^2(Y)]}
+		.\] 
+		Use this inequality to show why the correlation coefficient is bounded between negative one and one, \(-1 \leq \rho_{XY} \leq 1\). (\emph{Hint}: Try \(g(x) = x - \mu_X\) and \(h(y) = y - \mu_Y\)).
+
+		\green{Answer:} \darkucla{Use \(g(x) = x -\mu_X\) and  \(h(x) = y - \mu_Y\) so that we can write \(\Cov(X,Y) = \E[(X-\mu_X)(Y-\mu_X)] = \E[g(X)h(Y)]\). Then applying Cauchy-Schwarz
+		\[
+			\left|\Cov(X,Y)\right| \leq \sqrt{\E[g^2(X)]}\sqrt{\E[h^2(X)} = \underbrace{\sqrt{\E[(X-\mu_X)^2]}}_{\sigma_X}\underbrace{\sqrt{\E[(Y-\mu_Y)^2]}}_{\sigma_Y}
+		.\] 
+		Since \(|\Cov(X,Y)|\leq \sigma_X\sigma_Y\), \(|\rho_{XY}| \leq 1\).}	
+	\end{enumerate}
+\end{enumerate}
+\section*{Introduction to Single Linear Regression}%
+\begin{enumerate}
+	\item \underline{Useful Equalities.}  Recall that in deriving the form of \(\hat\beta_1\) we used the following equalities
+	\[
+		\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X) = \frac{1}{n}\sum_{i=1}^n Y_iX_i - \bar Y \bar X \andbox \frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2 = \frac{1}{n}\sum_{i=1}^n  X_i^2 - (\bar X)^2
+	.\] 
+	Show either one of these equalities (only have to show one or the other).
+
+	\green{Answer:} \darkucla{Showing these in order:
+	\begin{align*}
+		\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X) 
+		&= \frac{1}{n}\sum_{i=1}^n Y_i X_i - \bar X \frac{1}{n}\sum_{i=1}^n Y_i-\bar Y\frac{1}{n}\sum_{i=1}^n  X_i + \bar Y \bar X  \\
+		&= \frac{1}{n}\sum_{i=1}^n  Y_i X_i - \bar X \bar Y - \bar Y \bar X + \bar Y\bar X \\ 
+		&= \frac{1}{n}\sum_{i=1}^n  Y_i X_i - \bar X\bar Y
+	\end{align*}
+    The second one follows basically the same steps:
+\begin{align*}
+	\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2 
+	&= \frac{1}{n}\sum_{i=1}^n  \left(X_i^2 - 2X_i\bar X + (\bar X)^2\right) \\
+	&= \frac{1}{n}\sum_{i=1}^n X_i^2 - 2\bar X \frac{1}{n}\sum_{i=1}^n X_i + (\bar X)^2 \\
+	&= \frac{1}{n}\sum_{i=1}^n  X_i^2 - 2(\bar X)^2 + (\bar X)^2 \\
+	&= \frac{1}{n}\sum_{i=1}^n X_i^2 - (\bar X)^2
+\end{align*}}
+	\item \underline{Assumptions for Inference.} Suppose we are interested in the relationship between the size of the average American's social circle, \(X\), and whether or not they are unemployed, \(Y\). To investigate this relationship we want to estimate the following regression equation\footnote{Recall that this regression specification corresponds to finding the line of best fit parameters \(\beta_0, \beta_1 = \arg\min_{b_0,b_1}\E[(Y-b_0-b_1X)^2]\) and defining \(\eps = Y -\beta_0 - \beta_1X\)}
+	\[
+		Y = \beta_0 + \beta_1X + \eps,\;\;\; \E[\eps] = \E[\eps X] = 0
+	.\] 
+	To estimate the regression coefficient parameters we collect a sample of size \(n\), \(\{Y_i,X_i\}_{i=1}^{n}\). Recall that for valid asymptotic inference on our estimates \(\hat\beta_0\) and \(\hat\beta_1\) we require the following assumptions: Random Sampling, Homoskedasticity, and Rank condition.
+	\begin{itemize}
+		\item Random Sampling: Assume that \(\{Y_,X_i\}\) are independently and identically distributed from the population of interest, \((Y_i,X_i) \overset{\text{i.i.d}}{\sim} (Y,X)\).
+		\item Homoskedasticity: Assume that \(\Var(\eps|X=x)=\sigma_\eps^2\) for all possible values of  \(x\).
+		 \item Rank Condition: There must be at least two distinct values of \(X\) that appear in the population.
+	 \end{itemize}
+	\begin{enumerate}
+		\item Suppose we collect our sample by only randomly surveying people on UCLA campus. Which assumption would be violated?
+
+			\green{Answer:} \darkucla{In this case the random sampling assumption would be violated. By only sampling people at UCLA campus we are not drawing from the population of interest, which is the population of all (adult) Americans. People on UCLA campus are probably not representative of the entire country.}
+		\item Suppose we collect our sample and find that everyone appears to have exactly one friend. Which assumption would be violated? Why is this a problem when computing the line of best fit through our sample?
+
+		\green{Answer:} \darkucla{In this condition we are violating the rank condition. We need at least two \(x\) values to make a well defined line, otherwise the slope would be infinite.}
+
+		\item Suppose random sampling, homoskedasticity, and the rank condition are all satisfied, but \(n = 10\). Why might inferences based on the approximation 
+		\[
+			\frac{\hat\beta_1 - \beta_1}{\hat\sigma_{\beta_1}/\sqrt{n}} \sim N(0,1) 
+		\]
+		not be valid?
+
+		\green{Answer:} \darkucla{This approximation is based on the Central Limit Theorem, which only applies when \(n\) is large. For small  \(n\) the normal distribution may not be a good approximation for the distribution of  \(\hat\beta_1\).}
+	\end{enumerate}
+	\item \underline{Hypothesis Testing.} Suppose now that we are interested in investigating the relationship between the size of someone's social circle, \(X\), and their income (in tens of thousands of dollars), \(Y\). We want to estimate the following linear regression model
+	\[
+		Y = \beta_0 + \beta_1X + \eps,\;\;\; \E[\eps] = \E[\eps X] = 0
+	.\] 
+	To do so we collect a random sample of size \(n = 64\),  \(\{Y_i,X_i\}_{i=1}^{64}\) and find that \(\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2 = 100\), \(\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X) = 225\), \(\bar Y = 5.5\), and  \(\bar X = 1.5\).
+	\begin{enumerate}
+		\item Using this information find and interpret \(\hat\beta_1\) and \(\hat\beta_0\).
+
+		\green{Answer:} \darkucla{Recall from lecture
+		\begin{align*}
+			\hat\beta_1 = \frac{\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X)}{\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2} 
+			&\implies \hat\beta_1 = \frac{225}{100} = 2.25  \\
+			\hat\beta_0 = \bar Y - \hat\beta_1\bar X 
+			&\implies \hat\beta_0 = 5.5 - 2.25\cdot 1.5 = 2.125
+		\end{align*}
+	    Interpreting \(\hat\beta_0\) in context we can say that we estimate that the average value of income for someone with no friends to be \(\$21,250\). We interpret  \(\hat\beta_1\) in context by saying that we estimate that having an additional friend is associated with a  \(\$22,500\) increase in income.}
+		\item After finding \(\hat\beta_1\) and  \(\hat\beta_1\) describe how you would construct the estimated residuals  \(\hat\eps_i\).
+
+		\green{Answer:} \darkucla{We would construct the estimated residuals \(\hat\eps_i = Y_i - \hat\beta_0 - \hat\beta_1X_i\) for each  \((Y_i,X_i)\) in our sample.}
+		\item We find that \(\frac{1}{n}\sum_{i=1}^n \hat\eps_i^2 = 36\). Use this and the result that, for \(n\) large, 
+		\[
+			\frac{\hat\beta_1 - \beta_1}{\hat\sigma_{\beta_1}/\sqrt{n}}\sim N(0,1) 
+		,\]
+		to compute the (approximate) probability that, if the true value was given \(\beta_1 = 0\), we would see a value of \(|\hat\beta_1|\) equal to or larger than the one that we observed.
+
+		\green{Answer:} \darkucla{Under the assumption that \(\beta_1 = 0\), we want to compute  \(\Pr(|\hat\beta_1|\geq 2.25)\). To compute this see that
+		\[
+			\Pr(|\hat\beta_1| \geq 2.25) = \Pr\left(\left|\frac{\hat\beta_1-0}{\hat\sigma_{\beta_1}/\sqrt{n}}\right| \geq \frac{2.25}{\hat\sigma_{\beta_1}/\sqrt{n}}\right)  \approx \Pr\left(|Z| \geq \frac{2.25}{\hat\sigma_{\beta_1}/\sqrt{n}}\right) 
+		.\] 
+		What remains is to compute \(\hat\sigma_{\beta_1}\). Recall from lecture that
+		 \[
+			 \hat\sigma_{\beta_1}^2 = \frac{\hat\sigma_\eps^2}{\hat\sigma_X^2} = \frac{36}{100} \implies \hat\sigma_{\beta_1}/\sqrt{n} = \frac{6}{10}\frac{1}{8}  = 0.075
+		 .\]
+		 So \(\Pr\left(|Z|\geq \frac{2.25}{\hat\sigma_{\beta_1}/\sqrt{n}}\right) = \Pr\left(|Z| \geq 30\right) \approx 0\).}
+		\item Use this result to test, at level \(\alpha = 0.1\), the hypotheses
+		\[
+			H_0: \beta_1 = 0\hbox{ }\text{ vs. }H_1:\beta_1 \neq 0
+		\]
+
+		\green{Answer:} \darkucla{In part (c) we found that the p-value for this test was very close to zero. Since \(0 \leq  \alpha =0.1\) we can reject this null hypothesis in favor of the alternative hypothesis and conclude that there is a relationship between the size of someone's circle and their income.}
+		\item Conduct this test in another fashion by constructing the test statistic \(t^*\) and comparing to either  \(z_{0.95} = 1.64\) or  \(z_{0.9} = 1.24\) (indicate which value you are comparing the test statistic too).
+
+		\green{Answer:} \darkucla{We can also conduct this test by constructing the test statistic \(t^*\) and comparing its absolute value to \(z_{1-\alpha/2} = z_{0.95}\) (since we are running a two-sided test at \(\alpha = 0.1\)). The test statistic is constructed:
+		\[
+			t^* = \frac{\hat\beta_1 - 0}{\hat\sigma_{\beta_1}/\sqrt{n}} = \frac{2.25}{0.6/8} = 30  
+		.\] 
+		Since \(|t^*| = 30 \gg 1.64 = z_{0.95}\) we reject the null hypothesis that there is no relationship between the size of one's social circle and income in favor of the alternative hypothesis that there is a relationship between the two.} 
+		\item Construct a \(90\%\) confidence interval for  \(\beta_1\). How could we use this to conduct the hypothesis test in part (d)?
+
+		\green{Answer:} \darkucla{Recall that a \(90\%\) confidence interval for \(\beta_1\) consists of all the values \(b\) for which we would \underline{not} reject, at level \(\alpha = 1 - 0.9 = 0.1\), the null hypothesis \(\green{H_0}:\beta_1 = b\) in favor of an alternative \(\red{H_1}:\beta_1 \neq b\). We \underline{fail to reject} this null hypothesis in favor of the two sided alternative if \(|(\hat\beta - b)/\hat\sigma_{\beta_1}/\sqrt{n}| = |t^*| \leq z_{1-\alpha/2} = z_{0.95}\implies b \in [\hat\beta - z_{1-\alpha/2}\hat\sigma_{\beta_1}\sqrt{n},\hat\beta+z_{1-\alpha/2}\hat\sigma_{\beta_1}/\sqrt{n}]\). In part (c) we found that \(\hat\sigma_{\beta_1}/\sqrt{n} = 0.075\) and we  know \(z_{0.95} = 1.64\) so that our 90\% confidence interval for \(\beta_1\) is given:
+		\[
+			2.25 \pm 1.64\cdot0.075 = [2.127, 2.373]
+		.\] 
+	Since zero is not contained in this interval we can conclude that we would \red{reject} the null hypothesis in part (d).}
+		\item Suppose that we find we made an error in our calculation and actually \(\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2 = 1\). If all other values stayed the same, how would this change the result of the hypothesis test in part (d)?
+
+		\green{Answer:} \darkucla{To rerun this test we will need to recompute \(\hat\beta_1\) and  \(\hat\sigma_{\beta_1}\). Using the formula 
+		\[
+			\hat\beta_1 = \frac{\frac{1}{n}\sum_{i=1}^n (Y_i - \bar Y)(X_i - \bar X)}{\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2} \implies \hat\beta_1 = \frac{225}{1} = 225  
+		.\]
+		Now we recompute \(\hat\sigma_{\beta_1}\) via
+		\[
+			\hat\sigma_{\beta_1}^2 =\frac{\frac{1}{n}\sum_{i=1}^n \hat\eps_i^2}{\frac{1}{n}\sum_{i=1}^n (X_i - \bar X)^2} \implies \hat\sigma_{\beta_1}^2 = 36 
+		.\]
+		The standard error is now given \(\hat\sigma_{\beta_1}/\sqrt{n} = 6/8 = 0.75\). Our test statistic can now be computed
+		\[
+			t^* = \frac{225}{0.75} = 300 
+		.\] 
+		Clearly, we still reject our null hypothesis.}
+	\end{enumerate}
+
+\end{enumerate}
+
+
+
+
+\end{document}
+
+
