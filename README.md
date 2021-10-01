@@ -28,7 +28,7 @@ The rough outline of topics covered is as follows:
 - F-tests and multiple hypothesis testing
 - Polynomial and Interatctionm odeling
 - Adjusted R^2 and basics of model selection
-- Omitted Varaibles Bias 
+- Omitted Variables Bias 
 - Homework 3 
 
 ## Week 6: Causality
