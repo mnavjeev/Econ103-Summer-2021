@@ -38,4 +38,4 @@ The rough outline of topics covered is as follows:
 - Identification using Instrumental Variables (Imbens and Angrist, 1994)
 - Final Project
 
-The midterm was taken during Week 4. The 
+The midterm was taken during Week 4. 
