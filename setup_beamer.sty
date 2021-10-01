@@ -1,0 +1,160 @@
+\ProvidesPackage{setup_beamer}
+
+
+% Change expectation and probability to bold font
+\renewcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Declare some shortcuts
+\newcommand{\ind}{\mathds{1}}
+\newcommand{\wcov}{\rightsquigarrow}
+\newcommand{\andbox}{\hbox{ }\text{ and }\hbox{ }}
+\newcommand{\vsbox}{\hbox{ }\text{ vs. }\hbox{ }}
+
+% Make capital vectors commands from econometrics packages
+\newcommand{\vA}{\mathbf{A}}
+\newcommand{\vB}{\mathbf{B}}
+\newcommand{\vC}{\mathbf{C}}
+\newcommand{\vD}{\mathbf{D}}
+\newcommand{\vE}{\mathbf{E}}
+\newcommand{\vF}{\mathbf{F}}
+\newcommand{\vG}{\mathbf{G}}
+\newcommand{\vH}{\mathbf{H}}
+\newcommand{\vI}{\mathbf{I}}
+\newcommand{\vJ}{\mathbf{J}}
+\newcommand{\vK}{\mathbf{K}}
+\newcommand{\vL}{\mathbf{L}}
+\newcommand{\vM}{\mathbf{M}}
+\newcommand{\vN}{\mathbf{N}}
+\newcommand{\vO}{\mathbf{O}}
+\newcommand{\vP}{\mathbf{P}}
+\newcommand{\vQ}{\mathbf{Q}}
+\newcommand{\vR}{\mathbf{R}}
+\newcommand{\vS}{\mathbf{S}}
+\newcommand{\vT}{\mathbf{T}}
+\newcommand{\vU}{\mathbf{U}}
+\newcommand{\vV}{\mathbf{V}}
+\newcommand{\vW}{\mathbf{W}}
+\newcommand{\vX}{\mathbf{X}}
+\newcommand{\vY}{\mathbf{Y}}
+\newcommand{\vZ}{\mathbf{Z}}
+
+% Declare New Math Operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\cube}{Cub}
+\DeclareMathOperator{\err}{err}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\polylog}{polylog}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Var}{Var}
+
+% Command to add numbering to otherwise unnembered equations 
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+% Set up fat title, roman body theorem styles
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem*{assumption*}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem*{definition*}{Definition}
+\newtheorem{example}{Example}
+\newtheorem*{example*}{Example}
+\newtheorem{remark}{Remark}
+\newtheorem*{remark*}{Remark}
+\newtheorem{specification}{Specification}
+\newtheorem*{specification*}{Specification}
+
+% Set up fat title, italic body theorem styles
+\theoremstyle{plain}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem*{prop*}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+
+% Set bibliography style
+\bibliographystyle{apalike}
+
+% Try to setup the colorscheme
+\definecolor{uclablue}{HTML}{2774AE}
+\definecolor{ucladarkblue}{RGB}{0, 85, 135}
+\definecolor{uclagold}{RGB}{255, 184, 0}
+\definecolor{pastelred}{HTML}{d62d0e}
+\definecolor{pastelgreen}{RGB}{2,117,36}
+\newcommand{\ucla}[1]{\textcolor{uclablue}{#1}}
+\newcommand{\darkucla}[1]{\textcolor{ucladarkblue}{#1}}
+\newcommand{\gold}[1]{\textcolor{uclagold}{#1}}
+\newcommand{\red}[1]{\textcolor{pastelred}{#1}}
+\newcommand{\green}[1]{\textcolor{pastelgreen}{#1}}
+\mode<presentation>
+{
+  \usetheme{default}
+  \usecolortheme[named=uclablue]{structure}
+  \usefonttheme{default}
+  \usefonttheme[onlymath]{serif}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\setbeamercolor{author in head/foot}{fg=uclablue}
+\setbeamercolor{title in head/foot}{fg=uclablue}
+\setbeamercolor{date in head/foot}{fg=uclablue}
+
+\setbeamertemplate{footline}
+{
+\leavevmode
+\hbox{%
+        \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.5ex,dp=2ex,leftskip=0.33cm]{author in head/foot}%
+            \usebeamerfont{author in head/foot}\insertshortauthor~(\insertshortinstitute)
+        \end{beamercolorbox}%
+
+        \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=2ex,center]{title in head/foot}%
+            \usebeamerfont{title in head/foot}\insertshorttitle
+        \end{beamercolorbox}%
+
+        \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.5ex,dp=2ex,leftskip=2cm]{date in head/foot}%
+            %\usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+            \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+        \end{beamercolorbox}}%
+        \vskip0pt%
+    }
+
+
+\setbeamertemplate{frametitle}{%
+	\vspace{5pt}
+	\usebeamerfont{frametitle}\insertframetitle%
+	\vspace{2pt}
+	\vphantom{g}% To avoid fluctuations per frame
+	\textcolor{black}{\hrule}% Uncomment to see desired effect, without a full-width hrule
+}
+
+% Change bullet to dot
+\setbeamertemplate{itemize item}{\color{uclablue}\textbullet}
+\setbeamertemplate{itemize subitem}{\color{uclablue}\textopenbullet}
+\setbeamertemplate{itemize subsubitem}{\color{uclablue}\texttwelveudash}
+
+% Disable some vbox error
+\vfuzz=5pt
+
+% Little bit larger slides
+\setbeamersize{text margin left=7.5mm,text margin right=7.5mm} 
+
+% Section headers
+\AtBeginSection[]
+{
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+
+% Fade out text command 
+\newcommand{\semitransp}[2][35]{\color{fg!#1}#2}
+
