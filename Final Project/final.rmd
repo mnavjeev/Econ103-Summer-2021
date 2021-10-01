@@ -67,21 +67,18 @@ For this section, we will investigate the relationship between average rent as a
 
 ```{r rent1, include = TRUE}
 # Put your plot here and discuss below
-plot(rentpct, mobility)
-abline(lm(mobility ~ rentpct))
+
 
 ```
 
 
 #### Exploratory Data Analysis
-Using the functions "mean", "median" and "var", report the sample mean, sample median, and sample variance for both mobility and average rent as percentage of income. Put all discussion below the code chunk.
+Using the functions "mean", "median" and "var", report the sample mean, sample median, and sample variance for both mobility and average rent as percentage of income. Write your answers below the code chunk:
 
 ``` {r EDA, include = TRUE}
 # Code for sample mean, median, and variance of rentpct
 
 # Code for sample mean, median, and variance of mobility
-
-# Discuss below:
 
 ```
 
@@ -174,7 +171,6 @@ Put all discussion below the code chunk.
 ```
 
 
-
 #### Plotting
 
 Pick one of your explanatory variables to visualize. Make a scatter plot of this variable and mobility. On top of this scatter plot, fix the other two explanatory variables at their mean values and use your fitted multiple regression model to plot the estimated relationship between your chosen explanatory variable and mobility. Based on this plot, does homoskedasticity look to violated?
@@ -199,6 +195,8 @@ Hint: the vcov(regression) command may be useful here. Put all discussion below 
 
 
 ```
+
+
 
 #### Model Selection II
 

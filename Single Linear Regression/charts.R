@@ -160,9 +160,6 @@ abline(lm(ly2 ~ lx2), col = "darkblue")
 dev.off()
 
 
-
-
-
 # R^2 varies
 eps1 = rnorm(50, 0, 10)
 eps2 = rnorm(50, 0, 27)
@@ -231,5 +228,4 @@ plot(x, y2, col = "darkred", xlab = "X", ylab = "Y", main = "E[Y|X=x] = ln(4 + 1
 abline(reg3, col = "darkred", lwd = 2)
 lines(xpred,ypred2, col = "darkblue", lwd = 2)
 dev.off()
-
 
