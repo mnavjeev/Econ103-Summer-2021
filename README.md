@@ -1,5 +1,5 @@
 # Econ103-Summer-2021
-Files from teaching Econ 103, Introduction to Econometrics in Summer 2021. As always, anyone should feel free to use these feels without feeling the need to obtain permission or give credit. To compile the latex files, you will need to place either the "setup_beamer.sty" file (for compiling slide decks) or the "setup.sty" file (for compiling the homeworks), in the same directory as the .tex file.
+Files from teaching Econ 103, Introduction to Econometrics in Summer 2021. As always, anyone should feel free to use these feels without feeling the need to obtain permission or give credit. To compile the latex files, you will need to place either the "setup_beamer.sty" file (for compiling slide decks) or the "setup.sty" file (for compiling the homeworks), in the same directory as the .tex file. These slides and homeworks mainly focus on building intuition for and covering the theory behind linear regression, but I have tried to add examples whenever I could to better illustrate these concepts. 
 
 The rough outline of topics covered is as follows:
 
@@ -36,6 +36,7 @@ The rough outline of topics covered is as follows:
 - Challenges in Identifying Causal Parameters 
 - Identification under Conditional Independence
 - Identification using Instrumental Variables (Imbens and Angrist, 1994)
+- Recorded Lecture: https://drive.google.com/drive/folders/1MTJKCRUnetD07CUDqGHpzcvzHzVZGkpf?usp=sharing
 - Final Project
 
-The midterm was taken during Week 4.
+The midterm was taken during Week 4. The 
