@@ -26,7 +26,7 @@ The rough outline of topics covered is as follows:
 - Least Squares Estimation
 - Hypothesis testing for model parameters
 - F-tests and multiple hypothesis testing
-- Polynomial and Interatctionm odeling
+- Polynomial and Interatction modeling
 - Adjusted R^2 and basics of model selection
 - Omitted Variables Bias 
 - Homework 3 
